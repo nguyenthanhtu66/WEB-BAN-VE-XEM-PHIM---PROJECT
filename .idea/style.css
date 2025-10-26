@@ -270,3 +270,33 @@ body {
         font-size: 14px;
     }
 }
+.filter-bar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.filter-bar select,
+.filter-bar button {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.filter-bar select:focus {
+    outline: none;
+    border-color: #888;
+}
+
+#reset-filters {
+    background-color: #f4f4f4;
+    color: #333;
+    transition: 0.3s;
+}
+
+#reset-filters:hover {
+    background-color: #e0e0e0;
+}

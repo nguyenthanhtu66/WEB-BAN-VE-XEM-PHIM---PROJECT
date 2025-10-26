@@ -29,6 +29,35 @@
         <div class="main-container" id="main-container">
             <div class="slideshow-container">
             </div>
+            <div class="filter-bar">
+                <select id="filter-genre">
+                    <option value="">🎬 Thể loại</option>
+                    <option value="Hành động">Hành động</option>
+                    <option value="Phiêu lưu">Phiêu lưu</option>
+                    <option value="Hoạt hình">Hoạt hình</option>
+                    <option value="Tâm lý">Tâm lý</option>
+                    <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                </select>
+
+                <select id="filter-cinema">
+                    <option value="">🏢 Rạp chiếu</option>
+                    <option value="CGV">CGV</option>
+                    <option value="Galaxy">Galaxy</option>
+                    <option value="BHD">BHD</option>
+                    <option value="Lotte">Lotte</option>
+                </select>
+
+                <select id="filter-location">
+                    <option value="">📍 Địa điểm</option>
+                    <option value="TP.HCM">TP.HCM</option>
+                    <option value="Hà Nội">Hà Nội</option>
+                    <option value="Đà Nẵng">Đà Nẵng</option>
+                    <option value="Cần Thơ">Cần Thơ</option>
+                </select>
+                <button id="reset-button">
+                    Xóa filter
+                </button>
+            </div>
             <div class="movie-selection">
                 <div class="movie-status" id="playing-movies" onclick="toggleMovies('playing')">PHIM ĐANG CHIẾU</div>
                 <div class="movie-status" id="upcoming-movies" onclick="toggleMovies('upcoming')">PHIM SẮP CHIÊU</div>
@@ -138,6 +167,31 @@
             document.getElementById("playing-movies").classList.add("active");
             renderMovies(playingMovies);
         }
+//filter phim
+//need fix
+        function applyFilters() {
+            const genre = document.getElementById("filter-genre").value;
+            const cinema = document.getElementById("filter-cinema").value;
+            const location = document.getElementById("filter-location").value;
+
+            const isPlayingTab = document.getElementById("playing-movies").classList.contains("active");
+            const currentList = isPlayingTab ? playingMovies : upcomingMovies;
+
+            const enrichedMovies = currentList.map(movie => ({...movie,
+            cinema: ["CGV", "BHD", "Galaxy", "Lotte"][Math.floor(Math.random() * 4)],
+            location: ["TP.HCM", "Hà Nội", "Đà Nẵng", "Cần Thơ"][Math.floor(Math.random() * 4)]
+        }));
+
+            const filtered = enrichedMovies.filter(movie => {
+                return (!genre || movie.genre.includes(genre)) &&
+                (!cinema || movie.cinema === cinema) &&
+                (!location || movie.location === location);
+        });
+            renderMovies(filtered);
+        }
+            document.getElementById("filter-genre").addEventListener("change", applyFilters);
+            document.getElementById("filter-cinema").addEventListener("change", applyFilters);
+            document.getElementById("filter-location").addEventListener("change", applyFilters);
     </script>
 </body>
 </html>
