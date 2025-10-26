@@ -117,23 +117,27 @@
                 movieContent.appendChild(card);
             });
         }
-    //switch phim dang chieu , phim sap chieu
+//switch phim dang chieu , phim sap chieu
         function toggleMovies(type) {
             const playingTab = document.getElementById("playing-movies");
             const upcomingTab = document.getElementById("upcoming-movies");
 
+            playingTab.classList.remove("active");
+            upcomingTab.classList.remove("active");
+
             if (type === "playing") {
-                renderMovies(playingMovies);
                 playingTab.classList.add("active");
-                upcomingTab.classList.remove("active");
+                renderMovies(playingMovies);
             } else {
-                renderMovies(upcomingMovies);
                 upcomingTab.classList.add("active");
-                playingTab.classList.remove("active");
+                renderMovies(upcomingMovies);
             }
         }
 
-        window.onload = () => renderMovies(playingMovies);
+        window.onload = () =>{
+            document.getElementById("playing-movies").classList.add("active");
+            renderMovies(playingMovies);
+        }
     </script>
 </body>
 </html>
