@@ -159,12 +159,6 @@ body {
     color: #000;
     border-bottom: 3px solid #000;
 }
-
-#playing-movies {
-    border-bottom: 3px solid #000;
-    color: #000;
-}
-
 .movie-selection-content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

@@ -28,7 +28,6 @@
         </div>
         <div class="main-container" id="main-container">
             <div class="slideshow-container">
-
             </div>
             <div class="movie-selection">
                 <div class="movie-status" id="playing-movies" onclick="toggleMovies('playing')">PHIM ĐANG CHIẾU</div>
@@ -43,6 +42,98 @@
             </div>
         </div>
     </div>
+    <script>
+//list phim dang chieu
+        const playingMovies = [
+            {
+                title: "SpiderMan",
+                genre: "Hành động, Viễn tưởng",
+                duration: "181 phút",
+                rating: 8.5
+            },
+            {
+                title: "The Batman",
+                genre: "Hành động, Tội phạm",
+                duration: "176 phút",
+                rating: 8.3
+            },
+            {
+                title: "The Incridible",
+                genre: "Hoạt hình, Gia đình",
+                duration: "100 phút",
+                rating: 8.9
+            },
+            {
+                title: "Joker",
+                genre: "Tâm lý, Chính kịch",
+                duration: "122 phút",
+                rating: 8.8
+            }
+        ];
 
+//list phim sap chieu
+        const upcomingMovies = [
+            {
+                title: "PeterPan",
+                genre: "Viễn tưởng, Phiêu lưu",
+                duration: "190 phút",
+                rating: 9.0
+            },
+            {
+                title: "Frozen 3",
+                genre: "Hoạt hình, Phiêu lưu",
+                duration: "110 phút",
+                rating: 8.6
+            },
+            {
+                title: "Deadpool & Wolverine",
+                genre: "Hành động, Hài hước",
+                duration: "135 phút",
+                rating: 8.7
+            },
+            {
+                title: "Venom: The Last Dance",
+                genre: "Hành động, Khoa học viễn tưởng",
+                duration: "140 phút",
+                rating: 8.1
+            }
+        ];
+
+        function renderMovies(list) {
+            const movieContent = document.getElementById("movie-content");
+            movieContent.innerHTML = ""; // xóa cũ
+            list.forEach(movie => {
+                const card = document.createElement("div");
+                card.className = "movie-card";
+                card.innerHTML = `
+                <img class="movie-poster" src="${movie.poster}" alt="${movie.title}">
+                <div class="movie-info" style="padding: 15px;">
+                    <h3 style="font-size: 18px; font-weight: 700; color: #000;">${movie.title}</h3>
+                    <p style="font-size: 14px; color: #555; margin: 5px 0;">${movie.genre}</p>
+                    <p style="font-size: 13px; color: #777;">⏱ ${movie.duration}</p>
+                    <p style="font-size: 14px; color: #e50914; font-weight: 600; margin-top: 8px;">★ ${movie.rating}/10</p>
+                </div>
+            `;
+                movieContent.appendChild(card);
+            });
+        }
+    //switch phim dang chieu , phim sap chieu
+        function toggleMovies(type) {
+            const playingTab = document.getElementById("playing-movies");
+            const upcomingTab = document.getElementById("upcoming-movies");
+
+            if (type === "playing") {
+                renderMovies(playingMovies);
+                playingTab.classList.add("active");
+                upcomingTab.classList.remove("active");
+            } else {
+                renderMovies(upcomingMovies);
+                upcomingTab.classList.add("active");
+                playingTab.classList.remove("active");
+            }
+        }
+
+        window.onload = () => renderMovies(playingMovies);
+    </script>
 </body>
 </html>
