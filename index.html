@@ -42,7 +42,7 @@
                         <div class="slide"><img
                                 src="https://media.lottecinemavn.com/Media/WebAdmin/8acd4a56183b45209062b3872416a00f.jpg"
                                 alt=""></div>
-                    
+
                     </div>
                 </div>
                 <button class="slider-btn prev" id="prevBtn">❮</button>
@@ -84,6 +84,7 @@
                 <div class="movie-status" id="upcoming-movies" onclick="toggleMovies('upcoming')">PHIM SẮP CHIÊU</div>
             </div>
             <div class="movie-selection-content" id="movie-content">
+
             </div>
         </div>
         <div class="footer" id="footer">
@@ -171,23 +172,48 @@
         function toggleMovies(type) {
             const playingTab = document.getElementById("playing-movies");
             const upcomingTab = document.getElementById("upcoming-movies");
+            const movieContent = document.getElementById("movie-content");
 
+            // Bảo vệ lỗi
+            if (!playingTab || !upcomingTab || !movieContent) {
+                console.error("Lỗi: Không tìm thấy các phần tử tab hoặc container phim.");
+                return;
+            }
+
+            // 1. Gỡ bỏ class 'active' khỏi tất cả tab
             playingTab.classList.remove("active");
             upcomingTab.classList.remove("active");
+            // kiểm tra xem người đang ở tab nào thì render list của tab đó
+            let targetList;
+            let targetTab;
 
             if (type === "playing") {
-                playingTab.classList.add("active");
-                renderMovies(playingMovies);
-            } else {
-                upcomingTab.classList.add("active");
-                renderMovies(upcomingMovies);
+                targetList = playingMovies;
+                targetTab = playingTab;
+            } else { // Khi type là 'upcoming'
+                targetList = upcomingMovies;
+                targetTab = upcomingTab;
             }
+            // 2. Gán class active cho tab được chọn
+            targetTab.classList.add("active");
+            // Hiệu ứng chuyển đổi tab
+            movieContent.classList.add("fade-out");
+            const fadeDuration = 250; // độ trễ khi render nội dung 0.3s
+            setTimeout(() => {
+                renderMovies(targetList);
+                applyFilters();
+                movieContent.classList.remove("fade-out");
+            }, fadeDuration);
         }
 
         window.onload = () => {
+
             document.getElementById("playing-movies").classList.add("active");
             renderMovies(playingMovies);
 
+            toggleMovies('playing');
+
+            // Hiệu ứng
             const sliderContainer = document.getElementById('mySlider');
             // Thêm kiểm tra 'if' để code không lỗi nếu không tìm thấy slider
             if (sliderContainer) {
@@ -280,6 +306,11 @@
                 // Bắt đầu Auto-play
                 startAutoPlay();
             }
+
+            // hàm sẽ chạy khi người dùng thay đổi các lựa chon ở phần bộ lọc
+            document.getElementById("filter-genre").addEventListener("change", applyFilters);
+            document.getElementById("filter-cinema").addEventListener("change", applyFilters);
+            document.getElementById("filter-location").addEventListener("change", applyFilters);
 
 
         }
