@@ -91,6 +91,10 @@ body {
     padding: 40px 20px;
 }
 
+.slide {
+    cursor: pointer;
+}
+
 .slideshow-container {
     position: relative;
     background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
@@ -159,6 +163,7 @@ body {
     color: #000;
     border-bottom: 3px solid #000;
 }
+
 .movie-selection-content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -270,6 +275,7 @@ body {
         font-size: 14px;
     }
 }
+
 .filter-bar {
     display: flex;
     justify-content: center;
@@ -299,4 +305,193 @@ body {
 
 #reset-filters:hover {
     background-color: #e0e0e0;
+}
+
+/* css cho banner*/
+.slideshow-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.slider-container {
+    width: 100%;
+    /* Sửa thành 100% để vừa với container */
+    aspect-ratio: 16 / 7;
+    /* Làm cho nó rộng hơn 1 chút */
+    position: relative;
+    overflow: hidden;
+    /* không cần border-radius/shadow khi nó full-width */
+}
+
+.slider-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    font-size: 50px;
+    color: white;
+    display: grid;
+    place-items: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    padding: 20px 15px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s;
+}
+
+.slider-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.slider-btn.prev {
+    left: 15px;
+    border-radius: 5px;
+}
+
+.slider-btn.next {
+    right: 15px;
+    border-radius: 5px;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.dot.active {
+    background-color: white;
+}
+
+/* --- 2. CSS CHO FILTER BAR --- */
+.filter-bar {
+    display: flex;
+    gap: 15px;
+    padding: 15px 20px;
+    background-color: #eee;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.filter-bar select,
+.filter-bar button {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-bar button {
+    background-color: #e50914;
+    color: white;
+    border-color: #e50914;
+    cursor: pointer;
+}
+
+/* --- 3. CSS CHO TAB PHIM & DANH SÁCH PHIM --- */
+.movie-selection {
+    display: flex;
+    border-bottom: 2px solid #eee;
+    margin: 0 20px;
+}
+
+.movie-status {
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #888;
+    cursor: pointer;
+    position: relative;
+    bottom: -2px;
+    /* Để khớp với border-bottom */
+    transition: color 0.3s;
+}
+
+.movie-status.active {
+    color: #e50914;
+    border-bottom: 2px solid #e50914;
+}
+
+.movie-selection-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    /* Responsive grid */
+    gap: 20px;
+    padding: 20px;
+
+    /* Hiệu ứng Fade In (được kích hoạt bởi JS) */
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.movie-selection-content.fade-out {
+    opacity: 0;
+}
+
+.movie-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.movie-poster {
+    width: 100%;
+    height: 330px;
+    /* Chiều cao cố định cho ảnh */
+    object-fit: cover;
+    /* Đảm bảo ảnh lấp đầy, không bị méo */
+    background-color: #eee;
+    /* Màu nền cho ảnh lỗi */
+}
+
+/* Hiệu ứng chuyển tab */
+#movie-content {
+    opacity: 1;
+    /* Mặc định là hiển thị */
+    transition: opacity 0.25s ease-in-out;
+    /* thời gian chuyển đổi */
+}
+#movie-content.fade-out {
+    opacity: 0;
+    /* Nội dung sẽ mờ đi khi class này được thêm vào */
 }
