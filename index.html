@@ -36,12 +36,6 @@
                         <div class="slide"> <img
                                 src="https://media.lottecinemavn.com/Media/WebAdmin/90f3d123eed94b9ab16f0755f3617ac0.jpg"
                                 alt=""></div>
-                        <div class="slide"><img
-                                src="https://api-website.cinestar.com.vn/media/MageINIC/bannerslider/cuc-vang-cua-ngoai-banner.jpg"
-                                alt=""></div>
-                        <div class="slide"><img
-                                src="https://media.lottecinemavn.com/Media/WebAdmin/8acd4a56183b45209062b3872416a00f.jpg"
-                                alt=""></div>
 
                     </div>
                 </div>
@@ -213,99 +207,7 @@
 
             toggleMovies('playing');
 
-            // Hiệu ứng
-            const sliderContainer = document.getElementById('mySlider');
-            // Thêm kiểm tra 'if' để code không lỗi nếu không tìm thấy slider
-            if (sliderContainer) {
-                const sliderTrack = sliderContainer.querySelector('.slider-track');
-                const slides = Array.from(sliderTrack.children);
-                const nextButton = document.getElementById('nextBtn');
-                const prevButton = document.getElementById('prevBtn');
-                const dotsContainer = document.getElementById('sliderDots');
-
-                // Kiểm tra xem các phần tử có tồn tại không
-                if (!sliderTrack || !nextButton || !prevButton || !dotsContainer || slides.length === 0) {
-                    console.error("Lỗi: Không tìm thấy các thành phần của slider.");
-                    return; // Dừng lại nếu thiếu
-                }
-
-                let slideWidth = slides[0].getBoundingClientRect().width;
-                let currentIndex = 0;
-                let autoPlayInterval = null;
-                const autoPlayTime = 5000; // 5 giây
-
-                // Tạo các dấu chấm (Dots)
-                slides.forEach((_, index) => {
-                    const dot = document.createElement('button');
-                    dot.classList.add('dot');
-                    if (index === 0) dot.classList.add('active');
-                    dot.addEventListener('click', () => {
-                        goToSlide(index);
-                        resetAutoPlay();
-                    });
-                    dotsContainer.appendChild(dot);
-                });
-                const dots = Array.from(dotsContainer.children);
-
-                // Hàm cập nhật giao diện
-                function goToSlide(index) {
-                    if (index < 0) {
-                        currentIndex = slides.length - 1;
-                    } else if (index >= slides.length) {
-                        currentIndex = 0;
-                    } else {
-                        currentIndex = index;
-                    }
-                    // Cập nhật lại slideWidth phòng trường hợp cửa sổ resize
-                    slideWidth = slides[0].getBoundingClientRect().width;
-                    sliderTrack.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-                    dots.forEach(dot => dot.classList.remove('active'));
-                    dots[currentIndex].classList.add('active');
-                }
-
-                function nextSlide() { goToSlide(currentIndex + 1); }
-                function prevSlide() { goToSlide(currentIndex - 1); }
-
-                // Gán sự kiện cho Nút Next/Prev
-                nextButton.addEventListener('click', () => {
-                    nextSlide();
-                    resetAutoPlay();
-                });
-                prevButton.addEventListener('click', () => {
-                    prevSlide();
-                    resetAutoPlay();
-                });
-
-                // Logic Auto-play
-                function startAutoPlay() {
-                    stopAutoPlay(); // Đảm bảo không có interval nào chạy trùng
-                    autoPlayInterval = setInterval(nextSlide, autoPlayTime);
-                }
-                function stopAutoPlay() { clearInterval(autoPlayInterval); }
-                function resetAutoPlay() {
-                    stopAutoPlay();
-                    startAutoPlay();
-                }
-
-                // Logic "Pause on Hover"
-                sliderContainer.addEventListener('mouseenter', stopAutoPlay);
-                sliderContainer.addEventListener('mouseleave', startAutoPlay);
-
-                // Cập nhật lại slideWidth nếu cửa sổ bị resize
-                window.addEventListener('resize', () => {
-                    slideWidth = slides[0].getBoundingClientRect().width;
-                    // Cập nhật lại vị trí (không có transition)
-                    sliderTrack.style.transition = 'none';
-                    sliderTrack.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-                    // Bật lại transition
-                    setTimeout(() => {
-                        sliderTrack.style.transition = 'transform 0.6s ease-in-out';
-                    }, 0);
-                });
-
-                // Bắt đầu Auto-play
-                startAutoPlay();
-            }
+          
 
             // hàm sẽ chạy khi người dùng thay đổi các lựa chon ở phần bộ lọc
             document.getElementById("filter-genre").addEventListener("change", applyFilters);
