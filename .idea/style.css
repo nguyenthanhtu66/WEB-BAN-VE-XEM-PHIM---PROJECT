@@ -42,6 +42,7 @@ body {
 .header-menu {
     background-color: #fff;
     padding: 20px 0;
+    border-top: 3px solid #000;
     border-bottom: 3px solid #000;
 }
 
@@ -58,7 +59,6 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    position: absolute;
     left: 20px;
 }
 
@@ -106,36 +106,6 @@ body {
     justify-content: center;
     overflow: hidden;
 }
-
-.slideshow-container::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 30px;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.slideshow-container::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 30px;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
 .movie-selection {
     display: flex;
     justify-content: center;
@@ -404,6 +374,7 @@ body {
     background-color: #eee;
     margin-bottom: 20px;
     border-radius: 5px;
+    border: #444444 solid 3px;
 }
 
 .filter-bar select,
@@ -495,3 +466,124 @@ body {
     opacity: 0;
     /* Nội dung sẽ mờ đi khi class này được thêm vào */
 }
+.movie-card.empty {
+    background-color: #f0f0f0;
+    position: relative;
+}
+
+.movie-poster.placeholder {
+    width: 100%;
+    height: 330px;
+    background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+.placeholder-text {
+    height: 14px;
+    background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s infinite;
+    margin: 8px 0;
+    border-radius: 4px;
+}
+.see-more-btn {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin:auto;
+    display: block;
+}
+.see-more-btn {
+    background-color: #e50914;
+    color: white;
+    border-color: #e50914;
+    cursor: pointer;
+}
+.footer {
+    background-color: #0b0b0b;
+    color: #ccc;
+    text-align: center;
+    padding: 30px 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #fff;
+}
+
+.footer-top {
+    border-bottom: 1px solid #222;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.footer-menu {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.footer-menu li {
+    display: inline-block;
+    margin: auto;
+}
+
+.footer-apps {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.footer-apps img {
+    height: 40px;
+    transition: 0.3s;
+}
+
+.footer-apps img:hover {
+    transform: scale(1.05);
+}
+
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.footer-social img {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0.9);
+    transition: 0.3s;
+}
+
+.footer-social img:hover {
+    filter: brightness(1.2);
+    transform: scale(1.1);
+}
+
+.footer-bottom {
+    font-size: 15px;
+    color: #aaa;
+}
+
+.footer-bottom a {
+    color: #ff4040;
+    font-weight: bold;
+}
+

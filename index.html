@@ -46,31 +46,18 @@
             </div>
             <div class="filter-bar">
                 <select id="filter-genre">
-                    <option value="">🎬 Thể loại</option>
-                    <option value="Hành động">Hành động</option>
-                    <option value="Phiêu lưu">Phiêu lưu</option>
-                    <option value="Hoạt hình">Hoạt hình</option>
-                    <option value="Tâm lý">Tâm lý</option>
-                    <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                    <option value="">Chọn Phim</option>
                 </select>
 
                 <select id="filter-cinema">
-                    <option value="">🏢 Rạp chiếu</option>
-                    <option value="CGV">CGV</option>
-                    <option value="Galaxy">Galaxy</option>
-                    <option value="BHD">BHD</option>
-                    <option value="Lotte">Lotte</option>
+                    <option value="">Chọn rạp</option>
                 </select>
 
                 <select id="filter-location">
-                    <option value="">📍 Địa điểm</option>
-                    <option value="TP.HCM">TP.HCM</option>
-                    <option value="Hà Nội">Hà Nội</option>
-                    <option value="Đà Nẵng">Đà Nẵng</option>
-                    <option value="Cần Thơ">Cần Thơ</option>
+                    <option value="">Chọn Thời Gian</option>
                 </select>
                 <button id="reset-button">
-                    Xóa filter
+                    Đặt vé nhanh
                 </button>
             </div>
             <div class="movie-selection">
@@ -78,72 +65,36 @@
                 <div class="movie-status" id="upcoming-movies" onclick="toggleMovies('upcoming')">PHIM SẮP CHIÊU</div>
             </div>
             <div class="movie-selection-content" id="movie-content">
-
             </div>
+            <button class="see-more-btn" id="see-more">Xem thêm</button>
         </div>
         <div class="footer" id="footer">
             <div class="footer-container">
+                <div class="footer-top">
+                    <ul class="footer-menu">
+                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="#">Phim</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                    <div class="footer-apps">
+                        <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                        <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+                    </div>
 
+                    <div class="footer-social">
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>Đề tài project môn lập trình web của nhóm 33</p>
+                </div>
             </div>
         </div>
     </div>
     <script>
         //list phim dang chieu
-        const playingMovies = [
-            {
-                title: "SpiderMan",
-                genre: "Hành động, Viễn tưởng",
-                duration: "181 phút",
-                rating: 8.5
-            },
-            {
-                title: "The Batman",
-                genre: "Hành động, Tội phạm",
-                duration: "176 phút",
-                rating: 8.3
-            },
-            {
-                title: "The Incridible",
-                genre: "Hoạt hình, Gia đình",
-                duration: "100 phút",
-                rating: 8.9
-            },
-            {
-                title: "Joker",
-                genre: "Tâm lý, Chính kịch",
-                duration: "122 phút",
-                rating: 8.8
-            }
-        ];
-
-        //list phim sap chieu
-        const upcomingMovies = [
-            {
-                title: "PeterPan",
-                genre: "Viễn tưởng, Phiêu lưu",
-                duration: "190 phút",
-                rating: 9.0
-            },
-            {
-                title: "Frozen 3",
-                genre: "Hoạt hình, Phiêu lưu",
-                duration: "110 phút",
-                rating: 8.6
-            },
-            {
-                title: "Deadpool & Wolverine",
-                genre: "Hành động, Hài hước",
-                duration: "135 phút",
-                rating: 8.7
-            },
-            {
-                title: "Venom: The Last Dance",
-                genre: "Hành động, Khoa học viễn tưởng",
-                duration: "140 phút",
-                rating: 8.1
-            }
-        ];
-
         function renderMovies(list) {
             const movieContent = document.getElementById("movie-content");
             movieContent.innerHTML = ""; // xóa cũ
@@ -206,42 +157,53 @@
             renderMovies(playingMovies);
 
             toggleMovies('playing');
-
-          
-
-            // hàm sẽ chạy khi người dùng thay đổi các lựa chon ở phần bộ lọc
-            document.getElementById("filter-genre").addEventListener("change", applyFilters);
-            document.getElementById("filter-cinema").addEventListener("change", applyFilters);
-            document.getElementById("filter-location").addEventListener("change", applyFilters);
-
-
         }
-        //filter phim
-        //need fix
-        function applyFilters() {
-            const genre = document.getElementById("filter-genre").value;
-            const cinema = document.getElementById("filter-cinema").value;
-            const location = document.getElementById("filter-location").value;
+        function renderEmptyMovies(count = 4) {
+            const movieContent = document.getElementById("movie-content");
+            movieContent.innerHTML = ""; // xóa cũ
 
-            const isPlayingTab = document.getElementById("playing-movies").classList.contains("active");
-            const currentList = isPlayingTab ? playingMovies : upcomingMovies;
-
-            const enrichedMovies = currentList.map(movie => ({
-                ...movie,
-                cinema: ["CGV", "BHD", "Galaxy", "Lotte"][Math.floor(Math.random() * 4)],
-                location: ["TP.HCM", "Hà Nội", "Đà Nẵng", "Cần Thơ"][Math.floor(Math.random() * 4)]
-            }));
-
-            const filtered = enrichedMovies.filter(movie => {
-                return (!genre || movie.genre.includes(genre)) &&
-                    (!cinema || movie.cinema === cinema) &&
-                    (!location || movie.location === location);
-            });
-            renderMovies(filtered);
+            for (let i = 0; i < count; i++) {
+                const card = document.createElement("div");
+                card.className = "movie-card empty";
+                card.innerHTML = `
+      <div class="movie-poster placeholder"></div>
+      <div class="movie-info" style="padding: 15px;">
+        <div class="placeholder-text title"></div>
+        <div class="placeholder-text genre"></div>
+        <div class="placeholder-text duration"></div>
+        <div class="placeholder-text rating"></div>
+      </div>
+    `;
+                movieContent.appendChild(card);
+            }
         }
-        document.getElementById("filter-genre").addEventListener("change", applyFilters);
-        document.getElementById("filter-cinema").addEventListener("change", applyFilters);
-        document.getElementById("filter-location").addEventListener("change", applyFilters);
+
+        function toggleMovies(type) {
+            const playingTab = document.getElementById("playing-movies");
+            const upcomingTab = document.getElementById("upcoming-movies");
+            const movieContent = document.getElementById("movie-content");
+
+            playingTab.classList.remove("active");
+            upcomingTab.classList.remove("active");
+
+            if (type === "playing") {
+                playingTab.classList.add("active");
+            } else {
+                upcomingTab.classList.add("active");
+            }
+
+            // Hiệu ứng mờ khi chuyển tab
+            movieContent.classList.add("fade-out");
+            setTimeout(() => {
+                renderEmptyMovies();
+                movieContent.classList.remove("fade-out");
+            }, 250);
+        }
+
+        window.onload = () => {
+            document.getElementById("playing-movies").classList.add("active");
+            renderEmptyMovies();
+        };
     </script>
 </body>
 
