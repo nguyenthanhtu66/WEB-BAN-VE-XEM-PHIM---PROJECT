@@ -100,7 +100,7 @@
  .anhdemo {
      float: left;
      margin-left: 20%;
-     margin-top: 20px;
+     margin-top: 32px;
      width: 160px;
 
  }
@@ -115,11 +115,17 @@
 
  }
 
+ .service {
+     width: 100%;
+     background-color: antiquewhite;
+     margin: 40px 0px 40px;
+ }
 
  .form-section {
      padding: 40px 60px;
      margin: 40px auto;
      width: 60%;
+     margin: 0px auto;
  }
 
  .form-title {
@@ -199,10 +205,25 @@
  .submit-button:hover {
      background-color: #b3b3b3;
  }
+ .title-description{
+    text-align: center;
+    margin-bottom: 20px;
+ }
+ .footer{
+    padding: 0px 20px 40px;
+ }
 
- .footer {
+ .description {
      width: 100%;
+     height: auto;
      position: relative;
      bottom: 0px;
-     text-align: center;
+     display: grid;
+     grid-template-columns: repeat(4, 1fr);
+     gap: 20px;
+ }
+
+ .service-description {
+     font-size: 13px;
+     float: left;
  }
