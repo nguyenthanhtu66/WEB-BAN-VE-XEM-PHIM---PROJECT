@@ -12,20 +12,48 @@
         <div class="header-label" id="header-label">
             <div class="header-container">
                 <div class="header-account">
+                    <div class="header-account">Kho vé</div>
+                    <div class="header-account">Ưu đãi</div>
                     <div class="header-account">Đăng Ký | Đăng Nhập</div>
                 </div>
             </div>
         </div>
-        <div class="header-menu" id="header-menu">
+        <div class="header-menu">
             <div class="menu-container">
                 <a class="logo" href="#">
                     <img src="logo.png" alt="dtn logo">
                 </a>
-                <div class="menu-item">TRANG CHỦ</div>
-                <div class="menu-item">GIỚI THIỆU</div>
-                <div class="menu-item">LIÊN HỆ</div>
-                <div class="menu-item">ĐẶT VÉ</div>
-                <div class="menu-item">TIN TỨC </div>
+
+                <nav class="menu-nav">
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">TRANG CHỦ</div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item has-dropdown">PHIM</div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item">Phim Đang Chiếu</div>
+                            <div class="dropdown-item">Phim Sắp Chiếu</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item has-dropdown">TIN TỨC</div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item">Tin Khuyến Mãi</div>
+                            <div class="dropdown-item">Ưu Đãi Đặc Biệt</div>
+                            <div class="dropdown-item">Tin Điện Ảnh</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">ĐẶT VÉ</div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">GIỚI THIỆU</div>
+                    </div>
+                </nav>
             </div>
         </div>
         <div class="main-container" id="main-container">
@@ -70,7 +98,6 @@
             <div class="movie-selection-content">
                 <!-- Movie 1 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/e50914/fff?text=PHIM+1" alt="Phim 1">
                     <div class="movie-info">
                         <h3>Avengers: Endgame</h3>
                         <p class="movie-genre">Hành động, Phiêu lưu</p>
@@ -81,7 +108,6 @@
 
                 <!-- Movie 2 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/1a73e8/fff?text=PHIM+2" alt="Phim 2">
                     <div class="movie-info">
                         <h3>Spider-Man: No Way Home</h3>
                         <p class="movie-genre">Hành động, Phiêu lưu</p>
@@ -92,7 +118,6 @@
 
                 <!-- Movie 3 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/34a853/fff?text=PHIM+3" alt="Phim 3">
                     <div class="movie-info">
                         <h3>The Batman</h3>
                         <p class="movie-genre">Hành động, Tội phạm</p>
@@ -103,7 +128,6 @@
 
                 <!-- Movie 4 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/fbbc04/fff?text=PHIM+4" alt="Phim 4">
                     <div class="movie-info">
                         <h3>Doctor Strange 2</h3>
                         <p class="movie-genre">Hành động, Giả tưởng</p>
@@ -114,7 +138,6 @@
 
                 <!-- Movie 5 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/ea4335/fff?text=PHIM+5" alt="Phim 5">
                     <div class="movie-info">
                         <h3>Top Gun: Maverick</h3>
                         <p class="movie-genre">Hành động, Chính kịch</p>
@@ -125,7 +148,6 @@
 
                 <!-- Movie 6 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/9c27b0/fff?text=PHIM+6" alt="Phim 6">
                     <div class="movie-info">
                         <h3>Black Panther 2</h3>
                         <p class="movie-genre">Hành động, Phiêu lưu</p>
@@ -136,7 +158,6 @@
 
                 <!-- Movie 7 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/00bcd4/fff?text=PHIM+7" alt="Phim 7">
                     <div class="movie-info">
                         <h3>Avatar 2</h3>
                         <p class="movie-genre">Khoa học viễn tưởng</p>
@@ -147,7 +168,6 @@
 
                 <!-- Movie 8 -->
                 <div class="movie-card">
-                    <img class="movie-poster" src="https://via.placeholder.com/280x400/ff5722/fff?text=PHIM+8" alt="Phim 8">
                     <div class="movie-info">
                         <h3>Jurassic World 3</h3>
                         <p class="movie-genre">Hành động, Phiêu lưu</p>
@@ -164,10 +184,12 @@
         <div class="footer">
             <div class="footer-top">
                 <ul class="footer-menu">
-                    <li><a href="#">Trang chủ</a></li>
-                    <li><a href="#">Phim</a></li>
-                    <li><a href="#">Tin tức</a></li>
-                    <li><a href="#">Liên hệ</a></li>
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Phim đang chiếu</a></li>
+                    <li><a href="#">Phim sắp chiếu</a></li>
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Hỏi đáp</a></li>
+                    <li><a href="#">Liên hệ</a></li>
                 </ul>
                 <div class="footer-apps">
                     <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
@@ -184,4 +206,7 @@
         </div>
     </div>
 </body>
+<script>
+
+</script>
 </html>
