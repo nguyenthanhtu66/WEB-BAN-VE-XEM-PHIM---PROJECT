@@ -29,25 +29,27 @@ body {
 }
 
 .header-account {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-.header-account > div {
+.header-item {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
     padding: 6px 12px;
     border-radius: 4px;
     transition: all 0.3s ease;
+    text-decoration: none; /* để a href không bị gạch chân */
 }
 
-.header-account > div:hover {
+.header-item:hover {
     background-color: rgba(255,255,255,0.15);
     transform: translateY(-1px);
 }
+
 
 .header-menu {
     background: #fff;
