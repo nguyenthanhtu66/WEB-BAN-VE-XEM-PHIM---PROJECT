@@ -1,197 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>WEB BÁN VÉ XEM PHIM</title>
-    <link rel="stylesheet" href=".idea/style.css">
+    <link rel="stylesheet" href="style/index.css">
 </head>
+
 <body>
-    <div id = "app" class = "app">
-        <div class = "header-label" id = "header-label">
-            <div class = "header-container">
+    <div id="app" class="app">
+        <div class="header-label" id="header-label">
+            <div class="header-container">
                 <div class="header-account">
-                    <div class="header-account">Đăng Ký | Đăng Nhập</div>
+                    <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
+                    <a href="Trang-Uu-Dai.html" class="header-item">Ưu đãi</a>
+                    <a href="Login.html" class="header-item">Đăng nhập</a>
                 </div>
             </div>
         </div>
-        <div class ="header-menu" id="header-menu">
+        <div class="header-menu">
             <div class="menu-container">
                 <a class="logo" href="#">
                     <img src="logo.png" alt="dtn logo">
                 </a>
-                <div class="menu-item">TRANG CHỦ</div>
-                <div class="menu-item">GIỚI THIỆU</div>
-                <div class="menu-item">LIÊN HỆ</div>
-                <div class="menu-item">ĐẶT VÉ</div>
-                <div class="menu-item">TIN TỨC </div>
+
+                <nav class="menu-nav">
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">TRANG CHỦ</div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item has-dropdown">PHIM</div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item">Phim Đang Chiếu</div>
+                            <div class="dropdown-item">Phim Sắp Chiếu</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item has-dropdown">TIN TỨC</div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item">Tin Khuyến Mãi</div>
+                            <div class="dropdown-item">Ưu Đãi Đặc Biệt</div>
+                            <div class="dropdown-item">Tin Điện Ảnh</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">ĐẶT VÉ</div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">GIỚI THIỆU</div>
+                    </div>
+                </nav>
             </div>
         </div>
         <div class="main-container" id="main-container">
             <div class="slideshow-container">
+
+                <div class="slider-container" id="mySlider">
+                    <div class="slider-track">
+                        <div class="slide"> <img
+                                src="https://media.lottecinemavn.com/Media/WebAdmin/90f3d123eed94b9ab16f0755f3617ac0.jpg"
+                                alt=""></div>
+
+                    </div>
+                </div>
+                <button class="slider-btn prev" id="prevBtn">❮</button>
+                <button class="slider-btn next" id="nextBtn">❯</button>
+                <div class="slider-dots" id="sliderDots">
+                </div>
             </div>
             <div class="filter-bar">
                 <select id="filter-genre">
-                    <option value="">🎬 Thể loại</option>
-                    <option value="Hành động">Hành động</option>
-                    <option value="Phiêu lưu">Phiêu lưu</option>
-                    <option value="Hoạt hình">Hoạt hình</option>
-                    <option value="Tâm lý">Tâm lý</option>
-                    <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                    <option value="">Chọn Phim</option>
                 </select>
 
                 <select id="filter-cinema">
-                    <option value="">🏢 Rạp chiếu</option>
-                    <option value="CGV">CGV</option>
-                    <option value="Galaxy">Galaxy</option>
-                    <option value="BHD">BHD</option>
-                    <option value="Lotte">Lotte</option>
+                    <option value="">Chọn rạp</option>
                 </select>
 
                 <select id="filter-location">
-                    <option value="">📍 Địa điểm</option>
-                    <option value="TP.HCM">TP.HCM</option>
-                    <option value="Hà Nội">Hà Nội</option>
-                    <option value="Đà Nẵng">Đà Nẵng</option>
-                    <option value="Cần Thơ">Cần Thơ</option>
+                    <option value="">Chọn Thời Gian</option>
                 </select>
                 <button id="reset-button">
-                    Xóa filter
+                    Đặt vé nhanh
                 </button>
             </div>
+            <!-- Movie Tabs -->
             <div class="movie-selection">
-                <div class="movie-status" id="playing-movies" onclick="toggleMovies('playing')">PHIM ĐANG CHIẾU</div>
-                <div class="movie-status" id="upcoming-movies" onclick="toggleMovies('upcoming')">PHIM SẮP CHIÊU</div>
+                <div class="movie-status active">PHIM ĐANG CHIẾU</div>
+                <div class="movie-status">PHIM SẮP CHIẾU</div>
             </div>
-            <div class="movie-selection-content" id="movie-content">
-            </div>
-        </div>
-        <div class="footer" id="footer">
-            <div class="footer-container">
 
+            <!-- Movie Cards (Static HTML) -->
+            <div class="movie-selection-content">
+                <!-- Movie 1 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Avengers: Endgame</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 181 phút</p>
+                        <p class="movie-rating">★ 8.4/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 2 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Spider-Man: No Way Home</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 148 phút</p>
+                        <p class="movie-rating">★ 8.2/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 3 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>The Batman</h3>
+                        <p class="movie-genre">Hành động, Tội phạm</p>
+                        <p class="movie-duration">⏱ 176 phút</p>
+                        <p class="movie-rating">★ 7.8/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 4 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Doctor Strange 2</h3>
+                        <p class="movie-genre">Hành động, Giả tưởng</p>
+                        <p class="movie-duration">⏱ 126 phút</p>
+                        <p class="movie-rating">★ 7.5/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 5 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Top Gun: Maverick</h3>
+                        <p class="movie-genre">Hành động, Chính kịch</p>
+                        <p class="movie-duration">⏱ 131 phút</p>
+                        <p class="movie-rating">★ 8.6/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 6 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Black Panther 2</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 161 phút</p>
+                        <p class="movie-rating">★ 7.9/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 7 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Avatar 2</h3>
+                        <p class="movie-genre">Khoa học viễn tưởng</p>
+                        <p class="movie-duration">⏱ 192 phút</p>
+                        <p class="movie-rating">★ 8.1/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 8 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Jurassic World 3</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 147 phút</p>
+                        <p class="movie-rating">★ 7.2/10</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="see-more-btn">Xem thêm</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-top">
+                <ul class="footer-menu">
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Phim đang chiếu</a></li>
+                    <li><a href="#">Phim sắp chiếu</a></li>
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Hỏi đáp</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+                <div class="footer-apps">
+                    <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                    <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Đề tài project môn lập trình web của nhóm 33</p>
             </div>
         </div>
     </div>
-    <script>
-//list phim dang chieu
-        const playingMovies = [
-            {
-                title: "SpiderMan",
-                genre: "Hành động, Viễn tưởng",
-                duration: "181 phút",
-                rating: 8.5
-            },
-            {
-                title: "The Batman",
-                genre: "Hành động, Tội phạm",
-                duration: "176 phút",
-                rating: 8.3
-            },
-            {
-                title: "The Incridible",
-                genre: "Hoạt hình, Gia đình",
-                duration: "100 phút",
-                rating: 8.9
-            },
-            {
-                title: "Joker",
-                genre: "Tâm lý, Chính kịch",
-                duration: "122 phút",
-                rating: 8.8
-            }
-        ];
-
-//list phim sap chieu
-        const upcomingMovies = [
-            {
-                title: "PeterPan",
-                genre: "Viễn tưởng, Phiêu lưu",
-                duration: "190 phút",
-                rating: 9.0
-            },
-            {
-                title: "Frozen 3",
-                genre: "Hoạt hình, Phiêu lưu",
-                duration: "110 phút",
-                rating: 8.6
-            },
-            {
-                title: "Deadpool & Wolverine",
-                genre: "Hành động, Hài hước",
-                duration: "135 phút",
-                rating: 8.7
-            },
-            {
-                title: "Venom: The Last Dance",
-                genre: "Hành động, Khoa học viễn tưởng",
-                duration: "140 phút",
-                rating: 8.1
-            }
-        ];
-
-        function renderMovies(list) {
-            const movieContent = document.getElementById("movie-content");
-            movieContent.innerHTML = ""; // xóa cũ
-            list.forEach(movie => {
-                const card = document.createElement("div");
-                card.className = "movie-card";
-                card.innerHTML = `
-                <img class="movie-poster" src="${movie.poster}" alt="${movie.title}">
-                <div class="movie-info" style="padding: 15px;">
-                    <h3 style="font-size: 18px; font-weight: 700; color: #000;">${movie.title}</h3>
-                    <p style="font-size: 14px; color: #555; margin: 5px 0;">${movie.genre}</p>
-                    <p style="font-size: 13px; color: #777;">⏱ ${movie.duration}</p>
-                    <p style="font-size: 14px; color: #e50914; font-weight: 600; margin-top: 8px;">★ ${movie.rating}/10</p>
-                </div>
-            `;
-                movieContent.appendChild(card);
-            });
-        }
-//switch phim dang chieu , phim sap chieu
-        function toggleMovies(type) {
-            const playingTab = document.getElementById("playing-movies");
-            const upcomingTab = document.getElementById("upcoming-movies");
-
-            playingTab.classList.remove("active");
-            upcomingTab.classList.remove("active");
-
-            if (type === "playing") {
-                playingTab.classList.add("active");
-                renderMovies(playingMovies);
-            } else {
-                upcomingTab.classList.add("active");
-                renderMovies(upcomingMovies);
-            }
-        }
-
-        window.onload = () =>{
-            document.getElementById("playing-movies").classList.add("active");
-            renderMovies(playingMovies);
-        }
-//filter phim
-//need fix
-        function applyFilters() {
-            const genre = document.getElementById("filter-genre").value;
-            const cinema = document.getElementById("filter-cinema").value;
-            const location = document.getElementById("filter-location").value;
-
-            const isPlayingTab = document.getElementById("playing-movies").classList.contains("active");
-            const currentList = isPlayingTab ? playingMovies : upcomingMovies;
-
-            const enrichedMovies = currentList.map(movie => ({...movie,
-            cinema: ["CGV", "BHD", "Galaxy", "Lotte"][Math.floor(Math.random() * 4)],
-            location: ["TP.HCM", "Hà Nội", "Đà Nẵng", "Cần Thơ"][Math.floor(Math.random() * 4)]
-        }));
-
-            const filtered = enrichedMovies.filter(movie => {
-                return (!genre || movie.genre.includes(genre)) &&
-                (!cinema || movie.cinema === cinema) &&
-                (!location || movie.location === location);
-        });
-            renderMovies(filtered);
-        }
-            document.getElementById("filter-genre").addEventListener("change", applyFilters);
-            document.getElementById("filter-cinema").addEventListener("change", applyFilters);
-            document.getElementById("filter-location").addEventListener("change", applyFilters);
-    </script>
 </body>
+<script>
+
+</script>
 </html>
