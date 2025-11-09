@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style/film.css">
+</head>
+<body>
+<div id="app" class="app">
+    <div class="header-label" id="header-label">
+        <div class="header-container">
+            <div class="header-account">
+                <div class="header-account">Kho vé</div>
+                <div class="header-account">Ưu đãi</div>
+                <div class="header-account">Đăng Ký | Đăng Nhập</div>
+            </div>
+        </div>
+    </div>
+    <div class="header-menu">
+        <div class="menu-container">
+            <a class="logo" href="#">
+                <img src="https://via.placeholder.com/100x60/e50914/ffffff?text=LOGO" alt="dtn logo">
+            </a>
+
+            <nav class="menu-nav">
+                <div class="menu-item-wrapper">
+                    <div class="menu-item">TRANG CHỦ</div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">PHIM</div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item">Phim Đang Chiếu</div>
+                        <div class="dropdown-item">Phim Sắp Chiếu</div>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">TIN TỨC</div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item">Tin Khuyến Mãi</div>
+                        <div class="dropdown-item">Ưu Đãi Đặc Biệt</div>
+                        <div class="dropdown-item">Tin Điện Ảnh</div>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item">GIÁ VÉ</div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item">GIỚI THIỆU</div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="movie-selection">
+        <div class="movie-status-container">PHIM</div>
+        <div class="movie-status active">PHIM ĐANG CHIẾU</div>
+        <div class="movie-status near-active">PHIM SẮP CHIẾU</div>
+    </div>
+    <div class="main-container" id="main-container">
+        <div class="filter-bar">
+            <select id="filter-genre">
+                <option value="">Thể Loại</option>
+            </select>
+
+            <select id="filter-cinema">
+                <option value="">Thời Lượng</option>
+            </select>
+
+            <select id="filter-location">
+                <option value="">Độ Tuổi</option>
+            </select>
+            <button id="reset-button">
+                Tìm Phim
+            </button>
+        </div>
+        <!-- Movie Cards -->
+        <div class="movie-selection-content">
+            <!-- Movie 1 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    <img src="https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" alt="Avengers: Endgame">
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3>Avengers: Endgame</h3>
+                    <p class="movie-genre">Hành động, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 181 phút</p>
+                    <p class="movie-rating">★ 8.4/10</p>
+                </div>
+            </div>
+
+            <!-- Movie 2 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+
+            <!-- Movie 3 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+
+            <!-- Movie 4 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+
+            <!-- Movie 5 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+
+            <!-- Movie 6 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+
+            <!-- Movie 7 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+
+            <!-- Movie 8 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 9 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 10 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 11 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 12 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 13 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 14 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 15 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 16 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 17 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 18 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 19 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+            <!-- Movie 20 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    🎬
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3></h3>
+                    <p class="movie-genre"></p>
+                    <p class="movie-duration"></p>
+                    <p class="movie-rating"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-top">
+            <ul class="footer-menu">
+                <li><a href="#">Chính sách</a></li>
+                <li><a href="#">Phim đang chiếu</a></li>
+                <li><a href="#">Phim sắp chiếu</a></li>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="#">Hỏi đáp</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+            <div class="footer-apps">
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Đề tài project môn lập trình web của nhóm 33</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
