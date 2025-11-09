@@ -111,6 +111,7 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
+    text-decoration: none;
 }
 
 .menu-item:hover {
@@ -159,6 +160,7 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     display: block;
+    text-decoration: none;
 }
 
 .dropdown-item:hover {
