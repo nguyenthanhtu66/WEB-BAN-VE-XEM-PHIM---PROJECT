@@ -114,6 +114,7 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
+    text-decoration: none;
 }
 
 .menu-item:hover {
@@ -239,7 +240,7 @@ body {
 }
 
 .forgot-password {
-    color: #e50914;
+    color: #4d5cff;
     text-decoration: none;
 }
 
@@ -271,12 +272,14 @@ body {
     margin-top: 20px;
     font-size: 14px;
     color: #333;
+
 }
 
 .login-register a {
     color: #e50914;
     text-decoration: none;
     font-weight: 600;
+
 }
 
 .login-register a:hover {
