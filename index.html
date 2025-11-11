@@ -97,7 +97,7 @@
                     <div class="movie-poster">
                         <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
                         <div class="movie-overlay">
-                            <button class="movie-btn btn-detail">Chi Tiết</button>
+                            <button class="movie-btn btn-detail" id="movie-btn btn-detail">Chi Tiết</button>
                             <button class="movie-btn btn-booking">Đặt Vé</button>
                         </div>
                     </div>
@@ -263,7 +263,10 @@
     </div>
 </body>
 <script>
-
+    document.getElementById('movie-btn btn-detail').addEventListener('click', function () {
+        const url = "Chi-Tiet-Phim.html";
+        window.location.href = url;
+    });
 </script>
 
 </html>
