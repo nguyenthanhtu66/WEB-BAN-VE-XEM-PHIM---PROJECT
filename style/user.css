@@ -1,0 +1,145 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #e0e0e0;
+    box-sizing: border-box;
+}
+
+header {
+    width: 100%;
+    height: 5vh;
+    background-color: black;
+    color: white;
+
+}
+
+header .content-header {
+    margin-right: 100px;
+    text-align: right;
+}
+
+.content-header div {
+    float: right;
+    margin: 7px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.content-header div a {
+    color: white;
+    text-decoration: none;
+}
+
+.content-header div a:hover {
+    color: orange;
+    text-decoration: none;
+}
+
+
+
+.user-container {
+    padding: 30px 0px 30px;
+    min-height: 100vh;
+    width: 70%;
+    margin: auto;
+
+}
+
+.avt {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.avt img {
+    border-radius: 50%;
+}
+
+.user-information div {
+    text-align: center;
+}
+
+.user-text span {
+    display: block;
+    font-size: 16px;
+}
+
+.user-email-login {
+    color: #555;
+}
+
+.user-name-login {
+    font-weight: bold;
+    font-size: 18px;
+    color: orange;
+    margin-bottom: 5px;
+}
+
+/* FORM CHỈNH SỬA */
+.user-container .input-user-information {
+    margin-top: 50px;
+    background-color: black;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.user-container .input-user-information h2 {
+    text-align: center;
+    color: orange;
+    margin-bottom: 20px;
+}
+
+.input-user-information .form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px;
+
+}
+
+label {
+    font-size: 20px;
+}
+
+input {
+    font-size: 20px;
+}
+
+.form-items {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 10px 0px 10px;
+}
+
+.form-items-full-width {
+    display: grid;
+    grid-template-columns: 14.5% 1fr;
+    margin: 10px 0px 10px;
+}
+
+.form-submit {
+    margin: 30px auto 10px;
+}
+
+.form-submit button {
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: orange;
+}
+
+.form-submit button:hover {
+    font-size: 22px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: rgb(255, 89, 0);
+    cursor: pointer;
+}
