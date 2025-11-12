@@ -220,16 +220,16 @@ body {
 }
 
 .movie-selection {
-    max-width: 1200px;
+    max-width: 1160px;
     margin: 30px auto 10px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 40px;
-    padding: 0 20px;
+    padding: 0;
 }
 
-.movie-status {
+    .movie-status {
     display: inline-flex;
     align-items: center;
     padding: 12px 20px;
@@ -250,6 +250,11 @@ body {
     border-left: 4px solid #e50914;
     margin-right: 40px;
     font-size: 16px;
+}
+.movie-status-container{
+    border-left: 3px solid #e50914;
+    padding: 10px 20px;
+    font-weight: bold;
 }
 
 .movie-status:hover:not(:first-child) {
