@@ -4,6 +4,9 @@
     box-sizing: border-box;
 }
 
+a{
+    text-decoration: none; /* an gach chan o nut xem them */
+}
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f5f5;
@@ -464,13 +467,85 @@ body {
     transition: all 0.3s ease;
     font-weight: 600;
     letter-spacing: 0.5px;
+    text-decoration: none;
 }
 
 .see-more-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3);
+
+}
+/* TIN TUC */
+.news-selection-content {
+    margin-top: 50px;
 }
 
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 25px;
+}
+.news-link {
+    text-decoration: none;
+    color: inherit; /* giữ nguyên màu chữ */
+    display: block; /* để bọc card chuẩn */
+}
+.news-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.news-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(229, 9, 20, 0.25);
+}
+
+.news-poster {
+    width: 100%;
+    height: 220px; /* thấp hơn thẻ phim */
+    overflow: hidden;
+}
+
+.news-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.news-card:hover .news-poster img {
+    transform: scale(1.05);
+}
+
+.news-info {
+    padding: 18px;
+}
+
+.news-type {
+    font-size: 14px;
+    font-weight: 600;
+    color: #007bff;    /* màu xanh phân loại */
+    margin-bottom: 6px;
+}
+
+.news-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.4;
+}
+
+
+
+
+
+/* Footer */
 .footer {
     background: linear-gradient(135deg, #1a1a1a 0%, #0b0b0b 100%);
     color: #ccc;
@@ -562,10 +637,16 @@ body {
         font-size: 14px;
         padding: 6px 12px;
     }
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 640px) {
     .movie-selection-content {
+        grid-template-columns: 1fr;
+    }
+    .news-grid {
         grid-template-columns: 1fr;
     }
 }
