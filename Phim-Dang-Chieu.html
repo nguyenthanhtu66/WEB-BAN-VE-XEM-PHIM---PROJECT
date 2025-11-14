@@ -19,7 +19,7 @@
     <div class="header-menu">
         <div class="menu-container">
             <a class="logo" href="#">
-                <img src="https://via.placeholder.com/100x60/e50914/ffffff?text=LOGO" alt="dtn logo">
+                <img src="image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
             <nav class="menu-nav">
@@ -57,8 +57,8 @@
     <div class="main-container" id="main-container">
         <div class="movie-selection">
             <div class="movie-status-container">PHIM</div>
-            <div class="movie-status active">PHIM ĐANG CHIẾU</div>
-            <div class="movie-status near-active">PHIM SẮP CHIẾU</div>
+            <a href="Phim-Dang-Chieu.html" class="movie-status active">PHIM ĐANG CHIẾU</a>
+            <a href="Phim-Sap-Chieu.html" class="movie-status near-active">PHIM SẮP CHIẾU</a>
         </div>
         <div class="filter-bar">
             <select id="filter-genre">
@@ -427,6 +427,7 @@
             <div class="footer-social">
                 <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
                 <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -435,4 +436,9 @@
     </div>
 </div>
 </body>
+<script>
+    document.getElementById('reset-button').addEventListener('click', function () {
+        window.alert("Bạn đã tìm phim ");
+    });
+</script>
 </html>
