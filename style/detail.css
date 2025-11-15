@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
+    background-color: #2e2e2e;
 }
 
 .app {
@@ -15,9 +15,12 @@ body {
 }
 
 .header-label {
-    background: black;
+    background: #1e1e1e;
     padding: 12px 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1001;
 }
 
 .header-container {
@@ -46,17 +49,18 @@ body {
 }
 
 .header-item:hover {
-    background-color: rgba(255,255,255,0.15);
+    background-color: #4c4c4c;
     transform: translateY(-1px);
 }
 
+
 .header-menu {
-    background: #fff;
+    background: #4c4c4c;
     padding: 0;
-    border-bottom: 3px solid #e50914;
+    border-bottom: 2px solid #ff6600;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     position: sticky;
-    top: 0;
+    top: 55px;
     z-index: 1000;
 }
 
@@ -87,7 +91,6 @@ body {
     transform: scale(1.2);
 }
 
-
 .menu-nav {
     display: flex;
     gap: 35px;
@@ -103,7 +106,7 @@ body {
 .menu-item {
     font-size: 15px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -116,8 +119,8 @@ body {
 }
 
 .menu-item:hover {
-    color: #e50914;
-    background-color: #fef5f5;
+    color: #ff6600;
+    background-color: #4c4c4c;
 }
 
 .menu-item.has-dropdown::after {
@@ -135,7 +138,7 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    background: #fff;
+    background: #1e1e1e;
     min-width: 200px;
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
@@ -145,6 +148,7 @@ body {
     transition: all 0.3s ease;
     padding: 8px 0;
     z-index: 100;
+
 }
 
 .menu-item-wrapper:hover .dropdown-menu {
@@ -155,7 +159,7 @@ body {
 
 .dropdown-item {
     padding: 12px 20px;
-    color: #2c3e50;
+    color: #fff;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -165,8 +169,8 @@ body {
 }
 
 .dropdown-item:hover {
-    background-color: #fef5f5;
-    color: #e50914;
+    background-color: #4c4c4c;
+    color: #ff6600;
     padding-left: 25px;
 }
 
@@ -200,7 +204,7 @@ body {
     position: absolute;
     top: 15px;
     left: 15px;
-    background: #e50914;
+    background: #ff6600;
     color: #fef5f5;
     padding: 8px 16px;
     border-radius: 8px;
@@ -209,14 +213,14 @@ body {
 }
 
 .movie-info {
-    color: #0b0b0b;
+    color: #fff;
 }
 
 .movie-title {
     font-size: 42px;
     font-weight: bold;
     margin-bottom: 30px;
-    color: #0b0b0b;
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-left: 15px;
@@ -238,14 +242,14 @@ body {
 
 .meta-icon {
     font-weight: bold;
-    color: #0b0b0b;
+    color: #fff;
     font-size:15px;
     margin-left: 15px;
 }
 
 .age-rating-badge {
-    background: #e50914;
-    color:  #0b0b0b;
+    background: #ff6600;
+    color:  #fff;
     padding: 8px 16px;
     border-radius: 6px;
     font-weight: bold;
@@ -258,7 +262,7 @@ body {
     font-size: 24px;
     font-weight: bold;
     margin: 40px 0 20px 0;
-    color: #0b0b0b;
+    color: #fff;
     text-transform: uppercase;
     padding-left: 15px;
 }
@@ -278,14 +282,14 @@ body {
 
 .description-label {
     font-weight: bold;
-    color: #0b0b0b;
+    color: #fff;
     margin-right: 8px;
 }
 
 .movie-content {
     line-height: 1.9;
     font-size: 16px;
-    color: #0b0b0b;
+    color: #fff;
     text-align: justify;
     margin-left: 15px;
 }
@@ -295,7 +299,7 @@ body {
     width: 100%;
     margin-top: 15px;
     padding: 14px 0;
-    background:  #e50914;
+    background:  #ff6600;
     border: none;
     border-radius: 10px;
     color: white;
@@ -307,13 +311,12 @@ body {
 }
 
 .book-ticket-btn:hover {
-    background:  #c00;
+    background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(229, 9, 20, 0.5);
 }
 
 .read-more {
-    color: #0b0b0b;
+    color: #fff;
     cursor: pointer;
     font-weight: 600;
     margin-top: 10px;
@@ -322,17 +325,17 @@ body {
 }
 
 .read-more:hover {
-    color: #e50914;
+    color: #ff6600;
 }
 
 .footer {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0b0b0b 100%);
+    background: linear-gradient(135deg, #1e1e1e 0%, #0b0b0b 100%);
     color: #ccc;
     text-align: center;
     padding: 40px 20px;
     font-size: 14px;
     line-height: 1.8;
-    margin-top: 0;
+    margin-top: 80px;
 }
 
 .footer a {
@@ -342,11 +345,11 @@ body {
 }
 
 .footer a:hover {
-    color: #e50914;
+    color: #ff6600;
 }
 
 .footer-top {
-    border-bottom: 1px solid #2c2c2c;
+    border-bottom: 1px solid #4c4c4c;
     padding-bottom: 25px;
     margin-bottom: 25px;
 }
@@ -356,7 +359,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 50px;
     padding: 0;
     margin: 0 0 25px 0;
     font-size: 15px;
@@ -390,6 +393,7 @@ body {
     height: 36px;
     filter: brightness(0.9);
     transition: all 0.3s ease;
+
 }
 
 .footer-social img:hover {
@@ -402,7 +406,27 @@ body {
     color: #999;
 }
 
-/* Modal Styles */
+@media (max-width: 968px) {
+    .movie-selection-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .menu-nav {
+        gap: 20px;
+    }
+
+    .menu-item {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    .movie-selection-content {
+        grid-template-columns: 1fr;
+    }
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -412,7 +436,7 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s ease;
@@ -424,7 +448,7 @@ body {
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: linear-gradient(135deg, #1e1e1e 0%, #2e2e2e 100%);
     margin: 20px;
     padding: 30px;
     border-radius: 20px;
@@ -459,7 +483,7 @@ body {
 
 /* Seat Selection */
 .seat-selection {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(76, 76, 76, 0.2);
     padding: 30px;
     border-radius: 15px;
     margin-bottom: 30px;
@@ -514,7 +538,6 @@ body {
 
 .seat.selected {
     background: #2ecc71;
-    box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
 }
 
 .seat.booked {
@@ -560,8 +583,9 @@ body {
     background: #95a5a6;
 }
 
+/* Booking Form */
 .booking-form {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(76, 76, 76, 0.2);
     padding: 25px;
     border-radius: 15px;
     backdrop-filter: blur(10px);
@@ -589,10 +613,10 @@ body {
 .form-group input,
 .form-group select {
     padding: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid #4c4c4c;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.95);
-    color: #2c3e50;
+    background: #2e2e2e;
+    color: #fff;
     font-size: 14px;
     transition: all 0.3s ease;
 }
@@ -600,12 +624,12 @@ body {
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #e50914;
-    box-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+    border-color: #ff6600;
+    box-shadow: 0 0 10px rgba(255, 102, 0, 0.3);
 }
 
 .form-group input[readonly] {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(46, 46, 46, 0.7);
     cursor: not-allowed;
 }
 
@@ -629,47 +653,25 @@ body {
 }
 
 .btn-submit {
-    background: #e50914;
+    background: #ff6600;
     color: #fff;
 }
 
 .btn-submit:hover {
-    background: #c00;
+    background: #ff8800;
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(229, 9, 20, 0.5);
+    box-shadow: 0 5px 20px rgba(255, 102, 0, 0.5);
 }
 
 .btn-cancel {
-    background: #95a5a6;
+    background: #4c4c4c;
     color: #fff;
 }
 
 .btn-cancel:hover {
-    background: #7f8c8d;
+    background: #5c5c5c;
     transform: translateY(-2px);
 }
-
-@media (max-width: 968px) {
-    .movie-detail-container {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-
-    .movie-poster {
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    .menu-nav {
-        gap: 20px;
-    }
-
-    .menu-item {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-}
-
 @media (max-width: 768px) {
     .modal-content {
         width: 95%;
@@ -697,15 +699,5 @@ body {
     .modal-title {
         font-size: 22px;
         margin-bottom: 20px;
-    }
-}
-
-@media (max-width: 640px) {
-    .movie-title {
-        font-size: 28px;
-    }
-
-    .movie-detail {
-        padding: 30px 15px;
     }
 }
