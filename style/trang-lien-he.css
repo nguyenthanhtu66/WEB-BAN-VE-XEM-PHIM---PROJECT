@@ -199,17 +199,11 @@ body {
     margin-top: 30px;
 }
 
-.service {
-    width: 100%;
-    background-color: #1e1e1e; 
-    margin: 40px 0px 40px;
-}
 
 .form-section {
     padding: 40px 60px;
     margin: 40px auto;
     width: 60%;
-    margin: 0px auto;
     background-color: #1e1e1e; 
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -304,12 +298,13 @@ body {
 }
 
 .description {
-    width: 100%;
+    margin: auto;
+    width: 60%;
     height: auto;
     position: relative;
     bottom: 0px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     margin-bottom: 30px;
 }
