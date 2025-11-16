@@ -107,7 +107,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail" id="movie-btn btn-detail">Chi Tiết</button>
+                        <a href="Chi-tiet-phim.html" class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar: The Way of Water">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" alt="The Batman">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="Top Gun: Maverick">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" alt="Oppenheimer">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -192,7 +192,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Barbie">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg" alt="Guardians of the Galaxy Vol. 3">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -227,7 +227,7 @@
 
                     <img src="https://image.tmdb.org/t/p/original/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <a class="movie-btn btn-detail">Chi tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt vé</button>
                     </div>
                 </div>
@@ -296,9 +296,9 @@
 
     </div>
 
-</div>
 
-</div>
+
+
 <!-- Modal Đặt Vé -->
 <div id="bookingModal" class="modal">
     <div class="modal-content">
@@ -429,7 +429,7 @@
             <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
             <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
             <li><a href="Tin-dien-anh.html">Tin tức</a></li>
-            <li><a href="#">Hỏi đáp</a></li>
+            <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
             <li><a href="Trang-Liên-Hệ.html">Liên hệ</a></li>
         </ul>
         <div class="footer-apps">
@@ -450,16 +450,10 @@
         <p>Đề tài project môn lập trình web của nhóm 33</p>
     </div>
 </div>
+</div>
 </body>
 <script>
-    document.getElementById('see-more-btn').addEventListener('click', function () {
-        const url = "Phim-Dang-Chieu.html";
-        window.location.href = url;
-    });
-    document.getElementById('movie-btn btn-detail').addEventListener('click', function () {
-        const url = "Chi-Tiet-Phim.html";
-        window.location.href = url;
-    });
+
     document.getElementById('reset-button').addEventListener('click', function () {
         window.alert("Bạn đã đặt vé thành công !")
     })
