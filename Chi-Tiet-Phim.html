@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style/detail.css">
+</head>
+<body>
+<div id="app" class="app">
+    <div class="header-label" id="header-label">
+        <div class="header-container">
+            <div class="header-account">
+                <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
+                <a href="Trang-Uu-Dai.html" class="header-item">Ưu đãi</a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class="header-menu">
+        <div class="menu-container">
+            <a class="logo" href="#">
+                <img src="image/231601886-Photoroom.png" alt="dtn logo">
+            </a>
+
+            <nav class="menu-nav">
+                <div class="menu-item-wrapper">
+                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">PHIM</div>
+                    <div class="dropdown-menu">
+                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim Đang Chiếu</a>
+                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim Sắp Chiếu</a>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">TIN TỨC</div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item">Tin Khuyến Mãi</div>
+                        <div class="dropdown-item">Ưu Đãi Đặc Biệt</div>
+                        <div class="dropdown-item">Tin Điện Ảnh</div>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item">GIÁ VÉ</div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item">GIỚI THIỆU</div>
+                </div>
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none;" href="Trang-Liên-Hệ.html">LIÊN HỆ</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="main-container" id="main-container">
+        <div class="movie-detail">
+            <div class="movie-detail-container">
+                <!-- Poster -->
+                <div class="movie-poster">
+                    <div class="age-rating">T13</div>
+                    <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
+                    <button class="book-ticket-btn" onclick="openBookingModal()">ĐẶT VÉ NGAY</button>
+                </div>
+                <!-- Movie Info -->
+                <div class="movie-info">
+                    <h1 class="movie-title">Spider-Man: No Way Home</h1>
+
+                    <div class="movie-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">Thể loại:</span>
+                            <span>Hành động, Phiêu lưu</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">Thời gian:</span>
+                            <span>149'</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">Quốc gia:</span>
+                            <span>Mỹ</span>
+                        </div>
+                        <div class="meta-item">
+                            <div class="age-rating-badge">T13: Phim dành cho khán giả từ đủ 13 tuổi trở lên (13+)</div>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title">MÔ TẢ</h2>
+                    <div class="movie-description">
+                        <div class="description-item">
+                            <span class="description-label">Đạo diễn:</span>
+                            <span>Jon Watts</span>
+                        </div>
+                        <div class="description-item">
+                            <span class="description-label">Diễn viên:</span>
+                            <span>Tom Holland, Zendaya, Benedict Cumberbatch</span>
+                        </div>
+                        <div class="description-item">
+                            <span class="description-label">Khởi chiếu:</span>
+                            <span>Thứ Sáu, 17/10/2025</span>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title">NỘI DUNG PHIM</h2>
+                    <div class="movie-content">
+                        <p>Sau khi danh tính Người Nhện bị lộ, Peter Parker nhờ Doctor Strange giúp cả thế giới quên đi bí mật đó, nhưng phép thuật bị sai sót đã mở ra Đa vũ trụ, mang đến những kẻ phản diện từ các vũ trụ khác.Peter cùng với MJ và Ned phải đối mặt với các ác nhân như Green Goblin và Doctor Octopus, dẫn đến một trận chiến căng thẳng làm thay đổi cuộc đời Peter và định mệnh của Đa vũ trụ.</p>
+                        <span class="read-more">Xem thêm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Đặt Vé -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Đặt Vé Xem Phim</h2>
+            <!-- Sơ đồ chọn ghế -->
+            <div class="seat-selection">
+                <div class="screen">MÀN HÌNH</div>
+                <div class="seats-container">
+                    <div class="seat-row">
+                        <button class="seat booked" data-seat="A01">A01</button>
+                        <button class="seat booked" data-seat="A02">A02</button>
+                        <button class="seat booked" data-seat="A03">A03</button>
+                        <button class="seat booked" data-seat="A04">A04</button>
+                        <button class="seat booked" data-seat="A05">A05</button>
+                        <button class="seat booked" data-seat="A06">A06</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat booked" data-seat="A07">A07</button>
+                        <button class="seat available" data-seat="A08">A08</button>
+                        <button class="seat available" data-seat="A09">A09</button>
+                        <button class="seat available" data-seat="A10">A10</button>
+                        <button class="seat booked" data-seat="A11">A11</button>
+                        <button class="seat booked" data-seat="A12">A12</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat booked" data-seat="A13">A13</button>
+                        <button class="seat booked" data-seat="A14">A14</button>
+                        <button class="seat booked" data-seat="A15">A15</button>
+                        <button class="seat booked" data-seat="A16">A16</button>
+                        <button class="seat booked" data-seat="A17">A17</button>
+                        <button class="seat booked" data-seat="A18">A18</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat selected" data-seat="A19">A19</button>
+                        <button class="seat booked" data-seat="A20">A20</button>
+                        <button class="seat booked" data-seat="A21">A21</button>
+                        <button class="seat available" data-seat="A22">A22</button>
+                        <button class="seat booked" data-seat="A23">A23</button>
+                        <button class="seat available" data-seat="A24">A24</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat available" data-seat="A25">A25</button>
+                        <button class="seat booked" data-seat="A26">A26</button>
+                        <button class="seat booked" data-seat="A27">A27</button>
+                        <button class="seat booked" data-seat="A28">A28</button>
+                    </div>
+                </div>
+
+                <div class="seat-legend">
+                    <div class="legend-item">
+                        <div class="legend-box booked"></div>
+                        <span>Ghế đã được đặt</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box selected"></div>
+                        <span>Đang chọn</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box reserved"></div>
+                        <span>Ghế trống</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form thông tin đặt vé -->
+            <div class="booking-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phim:</label>
+                        <input type="text" value="Spider-Man: No Way Home" readonly>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phòng chiếu:</label>
+                        <select id="room">
+                            <option value="A">Phòng A</option>
+                            <option value="B">Phòng B</option>
+                            <option value="C">Phòng C</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày giờ chiếu:</label>
+                        <input type="datetime-local" id="showtime" value="">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loại vé:</label>
+                        <select id="ticketType">
+                            <option value="adult">Người lớn</option>
+                            <option value="student">Học sinh/Sinh viên</option>
+                            <option value="child">Trẻ em</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá vé:</label>
+                        <input type="text" id="ticketPrice" value="100.000 đ" readonly>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Số lượng vé:</label>
+                        <input type="number" id="quantity" value="1" min="1" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Tổng tiền:</label>
+                        <input type="text" id="totalPrice" value="100.000 đ" readonly>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button class="btn-submit" onclick="submitBooking()">Đặt vé</button>
+                    <button class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-top">
+            <ul class="footer-menu">
+                <li><a href="#">Chính sách</a></li>
+                <li><a href="#">Phim đang chiếu</a></li>
+                <li><a href="#">Phim sắp chiếu</a></li>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="#">Hỏi đáp</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+            <div class="footer-apps">
+                <a href="#"><img
+                        src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                        alt="Google Play"></a>
+                <a href="#"><img
+                        src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                        alt="App Store"></a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Đề tài project môn lập trình web của nhóm 33</p>
+        </div>
+    </div>
+</div>
+<script>
+    function openBookingModal() {
+        document.getElementById('bookingModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Đóng modal
+    function closeBookingModal() {
+        document.getElementById('bookingModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // Đóng modal khi click bên ngoài
+    window.onclick = function(event) {
+        const modal = document.getElementById('bookingModal');
+        if (event.target == modal) {
+            closeBookingModal();
+        }
+    }
+    // Cập nhật số lượng và giá
+    function submitBooking() {
+        const ticketTypeText = {
+            'adult': 'Người lớn',
+            'student': 'Học sinh/Sinh viên',
+            'child': 'Trẻ em'
+        };
+
+        alert("Bạn đã đặt vé thành công");
+        closeBookingModal();
+    }
+</script>
+</body>
+</html>

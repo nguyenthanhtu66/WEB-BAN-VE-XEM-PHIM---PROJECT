@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="style/admin.css">
+</head>
+
+<body>
+    <header>
+        <div class="content-header">
+            <div> <a href="index.html">Đăng Xuất</a></div>
+            <div><i><b>Xin chào admin!</b></i></div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+
+        <aside class="sidebar">
+            <h2>QUẢN LÝ</h2>
+            <nav>
+                <ul>
+                    <li><a href="#movies">Phim</a></li>
+                    <li><a href="#orders">Đặt Vé</a></li>
+                    <li><a href="#news">Tin Tức & Ưu Đãi</a></li>
+                    <li><a href="#users">Người Dùng</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <section id="movies">
+                <h1> Quản lý Phim</h1>
+                <div class="movie-section add-movie-form">
+                    <h2>Thêm Phim Mới</h2>
+                    <form id="addMovieForm">
+                        <div class="form-group poster-upload">
+                            <label for="moviePoster">Poster Phim</label>
+                            <div class="poster-preview" id="posterPreview">
+                                <span class="preview-text">Nhấn để tải ảnh</span>
+                                <img src="" alt="Xem trước Poster" class="preview-image" />
+                            </div>
+                            <input type="file" id="moviePoster" name="moviePoster" accept="image/*" required>
+                        </div>
+
+                        <div class="form-details">
+                            <div class="form-group">
+                                <label for="movieTitle">Tên Phim:</label>
+                                <input type="text" id="movieTitle" name="movieTitle" placeholder="Nhập tên phim..."
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="movieSynopsis">Mô tả cơ bản:</label>
+                                <textarea id="movieSynopsis" name="movieSynopsis" rows="5"
+                                    placeholder="Mô tả ngắn về nội dung phim..."></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Thêm Phim</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="movie-section movie-list">
+                    <h2>Danh sách Phim</h2>
+
+                    <div class="filter-tabs">
+                        <button class="filter-btn active" data-filter="all">Tất cả</button>
+                        <button class="filter-btn" data-filter="showing">Đang chiếu</button>
+                        <button class="filter-btn" data-filter="upcoming">Chưa chiếu (Sắp chiếu)</button>
+                        <button class="filter-btn" data-filter="ended">Đã chiếu</button>
+                    </div>
+
+                    <table class="tb-list-movie">
+                        <thead>
+                            <tr>
+                                <th>Tên Phim</th>
+                                <th>Mô tả</th>
+                                <th>Trạng thái</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mai</td>
+                                <td>Bộ phim tình cảm gia đình...</td>
+                                <td>Đang chiếu</td>
+                                <td style="text-align: center;"><button class="d-button">Xóa</button></td>
+                            </tr>
+                            <tr>
+                                <td>Parasite (Ký sinh trùng)</td>
+                                <td>Một gia đình nghèo lên kế hoạch...</td>
+                                <td>Đã chiếu</td>
+                                <td style="text-align: center;"><button class="d-button">Xóa</button></td>
+                            </tr>
+                            <tr>
+                                <td>Deadpool & Wolverine</td>
+                                <td>Hai dị nhân hợp tác...</td>
+                                <td>Chưa chiếu</td>
+                                <td style="text-align: center;"><button class="d-button">Xóa</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <section id="orders">
+                <h1>Quản lý Đặt Vé</h1>
+                <table class="tb-list-orders">
+                    <thead>
+                        <tr>
+                            <th>Mã vé</th>
+                            <th>Tên khách hàng</th>
+                            <th>số lượng</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#01234</td>
+                            <td>@nguyenvana@gmail.com</td>
+                            <td>2</td>
+                            <td>145.000</td>
+                            <td>Đã thanh toán</td>
+                        </tr>
+
+                        <tr>
+                            <td>#01235</td>
+                            <td>@tranthisara@gmail.com</td>
+                            <td>3</td>
+                            <td>215.000</td>
+                            <td>Đã thanh toán</td>
+                        </tr>
+                        <tr>
+                            <td>#01236</td>
+                            <td>@phamvanb@gmail.com</td>
+                            <td>1</td>
+                            <td>90.000</td>
+                            <td>Chưa thanh toán</td>
+                        </tr>
+                        <tr>
+                            <td>#01237</td>
+                            <td>@lethic@gmail.com</td>
+                            <td>5</td>
+                            <td>350.000</td>
+                            <td>Đã thanh toán</td>
+                        </tr>
+                        <tr>
+                            <td>#01238</td>
+                            <td>@hoangd@gmail.com</td>
+                            <td>4</td>
+                            <td>280.000</td>
+                            <td>Đã thanh toán</td>
+                        </tr>
+                        <tr>
+                            <td>#01239</td>
+                            <td>@nguyenf@gmail.com</td>
+                            <td>2</td>
+                            <td>120.000</td>
+                            <td>Đã hủy</td>
+                        </tr>
+                        <tr>
+                            <td>#01240</td>
+                            <td>@trinhg@gmail.com</td>
+                            <td>1</td>
+                            <td>75.000</td>
+                            <td>Đã thanh toán</td>
+                        </tr>
+                        <tr>
+                            <td>#01241</td>
+                            <td>@vuh@gmail.com</td>
+                            <td>3</td>
+                            <td>200.000</td>
+                            <td>Đang xử lý</td>
+                        </tr>
+                        <tr>
+                            <td>#01242</td>
+                            <td>@maii@gmail.com</td>
+                            <td>6</td>
+                            <td>420.000</td>
+                            <td>Đã thanh toán</td>
+                        </tr>
+                        <tr>
+                            <td>#01243</td>
+                            <td>@jasonj@gmail.com</td>
+                            <td>2</td>
+                            <td>160.000</td>
+                            <td>Chưa thanh toán</td>
+                        </tr>
+                        <tr>
+                            <td>#01244</td>
+                            <td>@kevink@gmail.com</td>
+                            <td>4</td>
+                            <td>300.000</td>
+                            <td>Đã hủy</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section id="news">
+                <h1> Quản Lý Tin Tức</h1>
+                <div class="input-form card">
+                    <h4>Thêm/Chỉnh Sửa Tin Tức Mới</h4>
+                    <form id="news-form">
+                        <input type="text" id="news-title" placeholder="Tiêu đề Tin tức" required>
+                        <textarea id="news-content" placeholder="Nội dung tóm tắt" required></textarea>
+                        <input type="text" id="news-image-url" placeholder="URL Hình ảnh (hoặc Tải lên)">
+                        <button type="submit" class="action-btn save-btn">Lưu Tin Tức</button>
+                    </form>
+                </div>
+                <div class="data-table-container">
+                    <table class="tb-list-content">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tiêu đề</th>
+                                <th>Nội dung Tóm tắt</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>T001</td>
+                                <td>Ra mắt Phim Hè 2025</td>
+                                <td>Khám phá những siêu phẩm hành động và hài kịch...</td>
+                                <td>
+                                    <button class="action-btn edit-btn">Sửa</button>
+                                    <button class="action-btn delete-btn">Xóa</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h1> Quản Lý Ưu Đãi & Khuyến Mãi</h1>
+                <div class="input-form card">
+                    <h4>Thêm/Chỉnh Sửa Ưu Đãi Mới</h4>
+                    <form id="deal-form">
+                        <input type="text" id="deal-title" placeholder="Tiêu đề Khuyến mãi" required>
+                        <textarea id="deal-description" placeholder="Mô tả nội dung khuyến mãi" required></textarea>
+                        <input type="text" id="deal-image-url" placeholder="URL Hình ảnh khuyến mãi (hoặc Tải lên)">
+                        <button type="submit" class="action-btn save-btn">Lưu Ưu Đãi</button>
+                    </form>
+                </div>
+
+                <div class="deals-cards-grid">
+
+                    <div class="deal-card">
+                        <img src="images/deal-sample.jpg" alt="Hình ảnh ưu đãi">
+                        <div class="card-body">
+                            <h4>Giảm 50% vé xem sớm</h4>
+                            <p>Áp dụng cho suất chiếu 9h sáng mỗi ngày.</p>
+                            <div class="card-actions">
+                                <button class="action-btn edit-btn">Sửa</button>
+                                <button class="action-btn delete-btn">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deal-card">
+                        <img src="images/deal-combo.jpg" alt="Hình ảnh ưu đãi combo">
+                        <div class="card-body">
+                            <h4>Mua 1 Tặng 1 Combo</h4>
+                            <p>Khuyến mãi chỉ dành cho thành viên VIP cuối tuần.</p>
+                            <div class="card-actions">
+                                <button class="action-btn edit-btn">Sửa</button>
+                                <button class="action-btn delete-btn">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="users">
+                <h1> Quản lý Người dùng</h1>
+                <table class="tb-list-users">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Quyền</th>
+                            <th>Ngày tạo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>nguyenvana@example.com</td>
+                            <td>Admin</td>
+                            <td>2025-10-05</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Trần Thị B</td>
+                            <td>tranthib@example.com</td>
+                            <td>User </td>
+                            <td>2025-11-01</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Phạm Quốc C</td>
+                            <td>phamquocc@example.com</td>
+                            <td>User</td>
+                            <td>2025-11-09</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>004</td>
+                            <td>Lê Thị D</td>
+                            <td>lethid@example.com</td>
+                            <td>Admin</td>
+                            <td>2025-10-25</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>005</td>
+                            <td>Trần Văn E</td>
+                            <td>tranvane@example.com</td>
+                            <td>User</td>
+                            <td>2025-11-01</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>006</td>
+                            <td>Hoàng Mai F</td>
+                            <td>hoangmaif@example.com</td>
+                            <td>User</td>
+                            <td>2025-09-15</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>007</td>
+                            <td>Nguyễn Văn G</td>
+                            <td>nguyenvang@example.com</td>
+                            <td>User</td>
+                            <td>2025-11-08</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>008</td>
+                            <td>Vũ Trọng H</td>
+                            <td>vutrongh@example.com</td>
+                            <td>Admin</td>
+                            <td>2025-10-10</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>009</td>
+                            <td>Phan Thị I</td>
+                            <td>phanthii@example.com</td>
+                            <td>User</td>
+                            <td>2025-08-20</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>010</td>
+                            <td>Đỗ Minh K</td>
+                            <td>dominhmk@example.com</td>
+                            <td>User</td>
+                            <td>2025-11-05</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>011</td>
+                            <td>Bùi Văn L</td>
+                            <td>buivanl@example.com</td>
+                            <td>User</td>
+                            <td>2025-07-30</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>012</td>
+                            <td>Cao Thị M</td>
+                            <td>caothim@example.com</td>
+                            <td>Admin</td>
+                            <td>2025-10-01</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>013</td>
+                            <td>Dương Văn N</td>
+                            <td>duongvann@example.com</td>
+                            <td>User</td>
+                            <td>2025-11-10</td>
+                            <td>
+                                <button class="l-button">Khóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+
+</body>
