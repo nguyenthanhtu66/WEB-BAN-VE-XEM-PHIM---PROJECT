@@ -2,29 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Phim Sap Chieu</title>
     <link rel="stylesheet" href="style/nearfilm.css">
 </head>
-<body>
 <div id="app" class="app">
     <div class="header-label" id="header-label">
         <div class="header-container">
             <div class="header-account">
-                <div class="header-account">Kho vé</div>
-                <div class="header-account">Ưu đãi</div>
-                <div class="header-account">Đăng Ký | Đăng Nhập</div>
+                <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
+                <a href="Trang-Uu-Dai.html" class="header-item">Ưu đãi</a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
             </div>
         </div>
     </div>
     <div class="header-menu">
         <div class="menu-container">
-            <a class="logo" href="#">
+            <a class="logo" href="index.html">
                 <img src="image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
@@ -50,6 +49,9 @@
 
                 <div class="menu-item-wrapper">
                     <div class="menu-item">GIỚI THIỆU</div>
+                </div>
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none;" href="Trang-Liên-Hệ.html">LIÊN HỆ</a>
                 </div>
             </nav>
         </div>
@@ -81,448 +83,339 @@
             <!-- Movie 1 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
-                    <div class="movie-overlay">
-                        <button class="movie-btn btn-detail" id="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Spider-Man: No Way Home</h3>
-                    <p class="movie-genre">Hành động, Phiêu lưu</p>
-                    <p class="movie-duration">⏱ 148 phút</p>
-                    <p class="movie-rating">★ 8.2/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 2 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" alt="Avengers: Endgame">
                     <div class="movie-overlay">
                         <button class="movie-btn btn-detail">Chi Tiết</button>
                         <button class="movie-btn btn-booking">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Avengers: Endgame</h3>
+                    <p class="movie-genre">Hành động, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 181 phút</p>
+                    <p class="movie-rating">★ 8.4/10</p>
+                </div>
+            </div>
+            <!-- Movie 2 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    <img src="https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg" alt="Deadpool 3">
+                    <div class="movie-overlay">
+                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3>Deadpool & Wolverine</h3>
+                    <p class="movie-genre">Hành động, Hài, Siêu anh hùng</p>
+                    <p class="movie-duration">⏱ 127 phút</p>
+                    <p class="movie-rating">★ 8.5/10</p>
                 </div>
             </div>
 
             <!-- Movie 3 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/wWba3TaojhK7NdycRhoQpsG0FaH.jpg" alt="The Marvels">
                     <div class="movie-overlay">
                         <button class="movie-btn btn-detail">Chi Tiết</button>
                         <button class="movie-btn btn-booking">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>The Marvels</h3>
+                    <p class="movie-genre">Hành động, Phiêu lưu, Khoa học viễn tưởng</p>
+                    <p class="movie-duration">⏱ 105 phút</p>
+                    <p class="movie-rating">★ 6.8/10</p>
                 </div>
             </div>
 
             <!-- Movie 4 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdclSiC.jpg" alt="Dune: Part Two">
                     <div class="movie-overlay">
                         <button class="movie-btn btn-detail">Chi Tiết</button>
                         <button class="movie-btn btn-booking">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Dune: Part Two</h3>
+                    <p class="movie-genre">Khoa học viễn tưởng, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 166 phút</p>
+                    <p class="movie-rating">★ 8.6/10</p>
                 </div>
             </div>
 
             <!-- Movie 5 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/gKkl37BQuKTanygYQG1pyYgLVgf.jpg" alt="Wonka">
                     <div class="movie-overlay">
                         <button class="movie-btn btn-detail">Chi Tiết</button>
                         <button class="movie-btn btn-booking">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Wonka</h3>
+                    <p class="movie-genre">Gia đình, Hài, Giả tưởng</p>
+                    <p class="movie-duration">⏱ 116 phút</p>
+                    <p class="movie-rating">★ 7.2/10</p>
                 </div>
             </div>
 
             <!-- Movie 6 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg" alt="The Flash">
                     <div class="movie-overlay">
                         <button class="movie-btn btn-detail">Chi Tiết</button>
                         <button class="movie-btn btn-booking">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>The Flash</h3>
+                    <p class="movie-genre">Hành động, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 157 phút</p>
+                    <p class="movie-rating">★ 7.4/10</p>
                 </div>
             </div>
 
             <!-- Movie 7 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg" alt="Aquaman 2">
                     <div class="movie-overlay">
                         <button class="movie-btn btn-detail">Chi Tiết</button>
                         <button class="movie-btn btn-booking">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Aquaman and the Lost Kingdom</h3>
+                    <p class="movie-genre">Hành động, Phiêu lưu, Giả tưởng</p>
+                    <p class="movie-duration">⏱ 124 phút</p>
+                    <p class="movie-rating">★ 6.5/10</p>
                 </div>
             </div>
 
             <!-- Movie 8 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/czembW0Rk1Ke7lCJGahbOhdCuhV.jpg" alt="Godzilla x Kong">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Godzilla x Kong: The New Empire</h3>
+                    <p class="movie-genre">Hành động, Khoa học viễn tưởng</p>
+                    <p class="movie-duration">⏱ 115 phút</p>
+                    <p class="movie-rating">★ 7.1/10</p>
                 </div>
             </div>
+
             <!-- Movie 9 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/vB8o2p4ETnrfiWEgVxHmHWP9yRl.jpg" alt="Furiosa">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Furiosa: A Mad Max Saga</h3>
+                    <p class="movie-genre">Hành động, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 148 phút</p>
+                    <p class="movie-rating">★ 7.8/10</p>
                 </div>
             </div>
+
             <!-- Movie 10 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg" alt="Ghostbusters">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Ghostbusters: Frozen Empire</h3>
+                    <p class="movie-genre">Hài, Giả tưởng, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 115 phút</p>
+                    <p class="movie-rating">★ 6.9/10</p>
                 </div>
             </div>
+
             <!-- Movie 11 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/A7EByudX0eOzlkQ2FIbogzyazm2.jpg" alt="Kung Fu Panda 4">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Kung Fu Panda 4</h3>
+                    <p class="movie-genre">Hoạt hình, Gia đình, Hài</p>
+                    <p class="movie-duration">⏱ 94 phút</p>
+                    <p class="movie-rating">★ 7.3/10</p>
                 </div>
             </div>
+
             <!-- Movie 12 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Inside Out 2</h3>
+                    <p class="movie-genre">Hoạt hình, Gia đình</p>
+                    <p class="movie-duration">⏱ 96 phút</p>
+                    <p class="movie-rating">★ 8.1/10</p>
                 </div>
             </div>
+
             <!-- Movie 13 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/aciP8Km0waTLXEYf5ybFK5CSUxl.jpg" alt="Bad Boys">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Bad Boys: Ride or Die</h3>
+                    <p class="movie-genre">Hành động, Tội phạm, Giật gân</p>
+                    <p class="movie-duration">⏱ 115 phút</p>
+                    <p class="movie-rating">★ 7.6/10</p>
                 </div>
             </div>
+
             <!-- Movie 14 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/m2zXTuNPkywdYLyWlVyJZW2QOJH.jpg" alt="Kingdom of the Planet">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Kingdom of the Planet of the Apes</h3>
+                    <p class="movie-genre">Khoa học viễn tưởng, Hành động</p>
+                    <p class="movie-duration">⏱ 145 phút</p>
+                    <p class="movie-rating">★ 7.5/10</p>
                 </div>
             </div>
+
             <!-- Movie 15 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Beetlejuice 2">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Beetlejuice Beetlejuice</h3>
+                    <p class="movie-genre">Hài, Giả tưởng, Kinh dị</p>
+                    <p class="movie-duration">⏱ 104 phút</p>
+                    <p class="movie-rating">★ 7.2/10</p>
                 </div>
             </div>
+
             <!-- Movie 16 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg" alt="Alien: Romulus">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Alien: Romulus</h3>
+                    <p class="movie-genre">Kinh dị, Khoa học viễn tưởng</p>
+                    <p class="movie-duration">⏱ 119 phút</p>
+                    <p class="movie-rating">★ 7.4/10</p>
                 </div>
             </div>
+
             <!-- Movie 17 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/b33nnKl1GSFbao4l3fZDDqsMx0F.jpg" alt="Joker 2">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Joker: Folie à Deux</h3>
+                    <p class="movie-genre">Chính kịch, Tội phạm, Giật gân</p>
+                    <p class="movie-duration">⏱ 138 phút</p>
+                    <p class="movie-rating">★ 6.7/10</p>
                 </div>
             </div>
+
             <!-- Movie 18 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/yDHYTfA3R0jFYba16jBB1ef8oIt.jpg" alt="Gladiator II">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Gladiator II</h3>
+                    <p class="movie-genre">Hành động, Phiêu lưu, Chính kịch</p>
+                    <p class="movie-duration">⏱ 148 phút</p>
+                    <p class="movie-rating">★ 8.0/10</p>
                 </div>
             </div>
+
             <!-- Movie 19 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/3V4kLQg0kSqPLctI5ziYWabAZYF.jpg" alt="Wicked">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
+                    <h3>Wicked</h3>
+                    <p class="movie-genre">Giả tưởng, Nhạc kịch, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 160 phút</p>
+                    <p class="movie-rating">★ 7.9/10</p>
                 </div>
             </div>
+
             <!-- Movie 20 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    🎬
+                    <img src="https://image.tmdb.org/t/p/w500/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg" alt="Mufasa">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <button class="movie-btn btn-booking">Đặt vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3></h3>
-                    <p class="movie-genre"></p>
-                    <p class="movie-duration"></p>
-                    <p class="movie-rating"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="bookingModal" class="modal">
-        <div class="modal-content">
-            <h2 class="modal-title">Đặt Vé Xem Phim</h2>
-            <!-- Sơ đồ chọn ghế -->
-            <div class="seat-selection">
-                <div class="screen">MÀN HÌNH</div>
-                <div class="seats-container">
-                    <div class="seat-row">
-                        <button class="seat booked" data-seat="A01">A01</button>
-                        <button class="seat booked" data-seat="A02">A02</button>
-                        <button class="seat booked" data-seat="A03">A03</button>
-                        <button class="seat booked" data-seat="A04">A04</button>
-                        <button class="seat booked" data-seat="A05">A05</button>
-                        <button class="seat booked" data-seat="A06">A06</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat booked" data-seat="A07">A07</button>
-                        <button class="seat available" data-seat="A08">A08</button>
-                        <button class="seat available" data-seat="A09">A09</button>
-                        <button class="seat available" data-seat="A10">A10</button>
-                        <button class="seat booked" data-seat="A11">A11</button>
-                        <button class="seat booked" data-seat="A12">A12</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat booked" data-seat="A13">A13</button>
-                        <button class="seat booked" data-seat="A14">A14</button>
-                        <button class="seat booked" data-seat="A15">A15</button>
-                        <button class="seat booked" data-seat="A16">A16</button>
-                        <button class="seat booked" data-seat="A17">A17</button>
-                        <button class="seat booked" data-seat="A18">A18</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat selected" data-seat="A19">A19</button>
-                        <button class="seat booked" data-seat="A20">A20</button>
-                        <button class="seat booked" data-seat="A21">A21</button>
-                        <button class="seat available" data-seat="A22">A22</button>
-                        <button class="seat booked" data-seat="A23">A23</button>
-                        <button class="seat available" data-seat="A24">A24</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat available" data-seat="A25">A25</button>
-                        <button class="seat booked" data-seat="A26">A26</button>
-                        <button class="seat booked" data-seat="A27">A27</button>
-                        <button class="seat booked" data-seat="A28">A28</button>
-                    </div>
-                </div>
-
-                <div class="seat-legend">
-                    <div class="legend-item">
-                        <div class="legend-box booked"></div>
-                        <span>Ghế đã được đặt</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box selected"></div>
-                        <span>Đang chọn</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box reserved"></div>
-                        <span>Ghế trống</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Form thông tin đặt vé -->
-            <div class="booking-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Phim:</label>
-                        <input type="text" value="Spider-Man: No Way Home" readonly>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Phòng chiếu:</label>
-                        <select id="room">
-                            <option value="A">Phòng A</option>
-                            <option value="B">Phòng B</option>
-                            <option value="C">Phòng C</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Ngày giờ chiếu:</label>
-                        <input type="datetime-local" id="showtime" value="">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Loại vé:</label>
-                        <select id="ticketType">
-                            <option value="adult">Người lớn</option>
-                            <option value="student">Học sinh/Sinh viên</option>
-                            <option value="child">Trẻ em</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Giá vé:</label>
-                        <input type="text" id="ticketPrice" value="100.000 đ" readonly>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Số lượng vé:</label>
-                        <input type="number" id="quantity" value="1" min="1" max="10">
-                    </div>
-                    <div class="form-group">
-                        <label>Tổng tiền:</label>
-                        <input type="text" id="totalPrice" value="100.000 đ" readonly>
-                    </div>
-                </div>
-
-                <div class="form-buttons">
-                    <button class="btn-submit" onclick="submitBooking()">Đặt vé</button>
-                    <button class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
+                    <h3>Mufasa: The Lion King</h3>
+                    <p class="movie-genre">Hoạt hình, Gia đình, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 118 phút</p>
+                    <p class="movie-rating">★ 7.6/10</p>
                 </div>
             </div>
         </div>
@@ -532,11 +425,11 @@
         <div class="footer-top">
             <ul class="footer-menu">
                 <li><a href="#">Chính sách</a></li>
-                <li><a href="#">Phim đang chiếu</a></li>
-                <li><a href="#">Phim sắp chiếu</a></li>
+                <li><a href="Phim-Dang-Chieu.html">Phim đang chiếu</a></li>
+                <li><a href="Phim-Sap-Chieu.html">Phim sắp chiếu</a></li>
                 <li><a href="#">Tin tức</a></li>
-                <li><a href="#">Hỏi đáp</a></li>
-                <li><a href="#">Liên hệ</a></li>
+                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
+                <li><a href="Trang-Liên-Hệ.html">Liên hệ</a></li>
             </ul>
             <div class="footer-apps">
                 <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
@@ -555,41 +448,8 @@
 </div>
 </body>
 <script>
-    document.getElementById('movie-btn btn-detail').addEventListener('click', function () {
-        const url = "Chi-Tiet-Phim.html";
-        window.location.href = url;
-    });
     document.getElementById('reset-button').addEventListener('click', function () {
         window.alert("Bạn đã tìm phim ");
     });
-    function openBookingModal() {
-        document.getElementById('bookingModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    // Đóng modal
-    function closeBookingModal() {
-        document.getElementById('bookingModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    // Đóng modal khi click bên ngoài
-    window.onclick = function(event) {
-        const modal = document.getElementById('bookingModal');
-        if (event.target == modal) {
-            closeBookingModal();
-        }
-    }
-    // Cập nhật số lượng và giá
-    function submitBooking() {
-        const ticketTypeText = {
-            'adult': 'Người lớn',
-            'student': 'Học sinh/Sinh viên',
-            'child': 'Trẻ em'
-        };
-
-        alert("Bạn đã đặt vé thành công !");
-        closeBookingModal();
-    }
 </script>
 </html>

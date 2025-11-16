@@ -18,7 +18,7 @@
     </div>
     <div class="header-menu">
         <div class="menu-container">
-            <a class="logo" href="#">
+            <a class="logo" href="index.html">
                 <img src="image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
@@ -113,7 +113,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Đặt Vé -->
     <div id="bookingModal" class="modal">
         <div class="modal-content">
@@ -165,15 +164,15 @@
                 <div class="seat-legend">
                     <div class="legend-item">
                         <div class="legend-box booked"></div>
-                        <span>Ghế đã được đặt</span>
+                        <span>Ghế đã được đặt</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-box selected"></div>
-                        <span>Đang chọn</span>
+                        <span>Đang chọn</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-box reserved"></div>
-                        <span>Ghế trống</span>
+                        <span>Ghế trống</span>
                     </div>
                 </div>
             </div>
@@ -198,7 +197,7 @@
                     </div>
                     <div class="form-group">
                         <label>Ngày giờ chiếu:</label>
-                        <input type="datetime-local" id="showtime" value="">
+                        <input type="text" value="11/11/2025 17:30" readonly>
                     </div>
                 </div>
 
@@ -235,17 +234,16 @@
             </div>
         </div>
     </div>
-
     <!-- Footer -->
     <div class="footer">
         <div class="footer-top">
             <ul class="footer-menu">
-                <li><a href="#">Chính sách</a></li>
-                <li><a href="#">Phim đang chiếu</a></li>
-                <li><a href="#">Phim sắp chiếu</a></li>
-                <li><a href="#">Tin tức</a></li>
-                <li><a href="#">Hỏi đáp</a></li>
-                <li><a href="#">Liên hệ</a></li>
+                <li><a href="#">Chính sách</a></li>
+                <li><a href="Phim-Dang-Chieu.html">Phim đang chiếu</a></li>
+                <li><a href="Phim-Sap-Chieu.html">Phim sắp chiếu</a></li>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
+                <li><a href="Trang-Liên-Hệ.html">Liên hệ</a></li>
             </ul>
             <div class="footer-apps">
                 <a href="#"><img
@@ -271,29 +269,18 @@
         document.getElementById('bookingModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
-
-    // Đóng modal
     function closeBookingModal() {
         document.getElementById('bookingModal').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
-
-    // Đóng modal khi click bên ngoài
     window.onclick = function(event) {
         const modal = document.getElementById('bookingModal');
         if (event.target == modal) {
             closeBookingModal();
         }
     }
-    // Cập nhật số lượng và giá
     function submitBooking() {
-        const ticketTypeText = {
-            'adult': 'Người lớn',
-            'student': 'Học sinh/Sinh viên',
-            'child': 'Trẻ em'
-        };
-
-        alert("Bạn đã đặt vé thành công");
+        alert("Bạn đã đặt vé thành công !");
         closeBookingModal();
     }
 </script>
