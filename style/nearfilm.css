@@ -278,23 +278,25 @@ body {
 .movie-status.near-active {
     color: #ff6600;
     border-bottom: 3px solid #ff6600;
+    font-weight: bold;
 }
 
 .movie-selection-content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
     gap: 30px;
-    padding: 20px 0;
+    align-items: stretch;
 }
 
 .movie-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     background-color: #1e1e1e;
     border-radius: 12px;
     overflow: hidden;
-    cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    position: relative;
 }
 
 .movie-card:hover {
@@ -375,7 +377,11 @@ body {
 }
 
 .movie-info {
+    flex: 1;
     padding: 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 160px;
 }
 
 .movie-info h3 {
@@ -383,21 +389,27 @@ body {
     font-weight: 700;
     color: #fff;
     margin-bottom: 10px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 46px;
 }
 
 .movie-info p {
     font-size: 14px;
     color: #ccc;
-    margin: 6px 0;
+    margin: 4px 0;
+    line-height: 1.4;
 }
 
 .movie-rating {
     font-size: 15px;
     color: #ff6600;
     font-weight: 600;
-    margin-top: 10px;
+    margin-top: auto;
 }
-
 .footer {
     background: linear-gradient(135deg, #1e1e1e 0%, #0b0b0b 100%);
     color: #ccc;
