@@ -125,33 +125,22 @@ a{
     padding: 20px;
     border-radius: 15px;
 }
-/* --- Style Container Vé (Chung với form Tài khoản) --- */
-/* Đảm bảo style nền đen của bạn đã có cho accout-container */
-
-
-
 .section-title {
-    color: #ff6600; /* Màu cam nổi bật */
+    color: #ff6600;
     text-align: center;
     margin-bottom: 25px;
     font-size: 1.8em;
 }
-
-/* --- Style cho từng Vé (Ticket Item) --- */
-
 .ticket-item {
-    background-color: #2c2c2c; /* Nền vé hơi sáng hơn nền container */
+    background-color: #2c2c2c; 
     padding: 15px 20px;
     margin-bottom: 15px;
     border-radius: 6px;
 }
 
-/* Thanh màu nổi bật bên trái cho vé sắp chiếu */
 .ticket-item.upcoming {
     border-left: 5px solid #ff6600; 
 }
-
-/* Thanh màu xám/tối cho vé đã sử dụng */
 .ticket-item.history {
     border-left: 5px solid #666; 
 }
@@ -175,9 +164,6 @@ a{
     margin: 4px 0;
     font-size: 0.95em;
 }
-
-/* --- Định dạng Trạng thái Vé --- */
-
 .ticket-status {
     padding: 3px 8px;
     border-radius: 4px;
@@ -186,19 +172,15 @@ a{
 }
 
 .ticket-status.confirmed {
-    background-color: #28a745; /* Xanh lá: Đã Xác Nhận */
+    background-color: #28a745; 
     color: white;
 }
-
 .ticket-status.expired {
-    background-color: #dc3545; /* Đỏ: Đã Hủy/Hết hạn */
+    background-color: #dc3545; 
     color: white;
 }
-
-/* --- Định dạng Nút Chi tiết --- */
-
 .view-detail-btn {
-    background-color: #ff6600; /* Màu cam */
+    background-color: #ff6600;
     color: #1a1a1a; 
     border: none;
     padding: 8px 15px;

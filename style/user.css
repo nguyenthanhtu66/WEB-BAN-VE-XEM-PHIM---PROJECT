@@ -184,29 +184,10 @@ input {
 }
 
 .form-submit button:hover {
-    transform: scale(1.1); /* Phóng to 20% */
-    z-index: 100; /* Đảm bảo nó nổi trên mọi thứ */
+    transform: scale(1.1); 
+    z-index: 100; 
     border-radius: 10px;
     padding: 10px;
     background-color: rgb(255, 89, 0);
     cursor: pointer;
-}
-
-/* --- Các định dạng chung cho Container Vé --- */
-
-#my-tickets-container {
-    /* Đảm bảo container này cũng có nền đen/tối và bo tròn như form bên cạnh */
-    background-color: #1a1a1a; /* Màu nền đen/tối tương tự ảnh */
-    padding: 30px;
-    border-radius: 8px; /* Bo tròn góc */
-    color: #ffffff; /* Màu chữ trắng */
-    width: 800px; /* Độ rộng tương đương form Thông tin cá nhân */
-    margin: 20px auto; /* Canh giữa nếu cần */
-}
-
-.section-title {
-    color: #ff9900; /* Màu cam tương tự màu highlight trên tab */
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 1.8em;
 }
