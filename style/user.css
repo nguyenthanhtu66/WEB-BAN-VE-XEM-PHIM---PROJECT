@@ -33,13 +33,13 @@ header .content-header {
 }
 
 .content-header div a:hover {
-    color: orange;
+    color: #ff6600;
     text-decoration: none;
 }
 
 
 
-.user-container {
+.main-content {
     padding: 30px 0px 30px;
     min-height: 100vh;
     width: 70%;
@@ -72,11 +72,48 @@ header .content-header {
 .user-name-login {
     font-weight: bold;
     font-size: 18px;
-    color: orange;
+    color: #ff6600;
     margin-bottom: 5px;
 }
 
 /* FORM CHỈNH SỬA */
+.menu{
+    width: fit-content;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+}
+.menu-items{
+    margin: 0px;
+    padding: 10px;
+    
+}
+.menu-items:first-child{    
+    border-right: 1.5px solid grey;
+    color:#ff6600;  
+}
+.menu-items:first-child span{  
+    padding: 10px;  
+    border-bottom:3px solid #ff6600 ;
+}
+.menu-items:nth-child(2){    
+    border-left: 1.5px solid grey;
+}
+.menu-items:nth-child(2) span{    
+    padding: 10px;  
+    border-bottom:3px solid grey ;
+}
+.menu-items:hover:first-child{    
+    border-right: 1.5px solid grey;
+    color: #ff6600;
+    cursor: pointer;
+}
+.menu-items:hover:nth-child(2){    
+    border-left: 1.5px solid grey;
+    color: #ff6600;
+    cursor: pointer;
+}
+
+
 .user-container .input-user-information {
     margin-top: 50px;
     background-color: black;
@@ -86,7 +123,7 @@ header .content-header {
 
 .user-container .input-user-information h2 {
     text-align: center;
-    color: orange;
+    color: #ff6600;
     margin-bottom: 20px;
 }
 
@@ -136,7 +173,7 @@ input {
     font-size: 20px;
     border-radius: 10px;
     padding: 10px;
-    background-color: orange;
+    background-color: #ff6600;
 }
 
 .form-submit button:hover {
@@ -146,4 +183,23 @@ input {
     padding: 10px;
     background-color: rgb(255, 89, 0);
     cursor: pointer;
+}
+
+/* --- Các định dạng chung cho Container Vé --- */
+
+#my-tickets-container {
+    /* Đảm bảo container này cũng có nền đen/tối và bo tròn như form bên cạnh */
+    background-color: #1a1a1a; /* Màu nền đen/tối tương tự ảnh */
+    padding: 30px;
+    border-radius: 8px; /* Bo tròn góc */
+    color: #ffffff; /* Màu chữ trắng */
+    width: 800px; /* Độ rộng tương đương form Thông tin cá nhân */
+    margin: 20px auto; /* Canh giữa nếu cần */
+}
+
+.section-title {
+    color: #ff9900; /* Màu cam tương tự màu highlight trên tab */
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8em;
 }
