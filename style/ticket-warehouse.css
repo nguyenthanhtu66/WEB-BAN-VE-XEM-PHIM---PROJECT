@@ -75,13 +75,12 @@ header .content-header {
     color: #ff6600;
     margin-bottom: 5px;
 }
-
 .menu{
     width: fit-content;
     display: grid;
     grid-template-columns: 1fr 1fr; 
 }
-.menu-items{
+.menu div{
     margin: 0px;
     padding: 10px;
     
@@ -113,7 +112,6 @@ header .content-header {
 #active span{
     color: #ff6600;
     border-bottom:3px solid#ff6600;
-
 }
 a{
     text-decoration: none;
@@ -121,73 +119,73 @@ a{
 }
 
 
-.user-container .input-user-information {
+.user-container .my-ticket-container {
     margin-top: 50px;
     background-color: black;
     padding: 20px;
     border-radius: 15px;
 }
-
-.user-container .input-user-information h2 {
-    text-align: center;
+.section-title {
     color: #ff6600;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+.ticket-item {
+    background-color: #2c2c2c; 
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 6px;
 }
 
-.input-user-information .form-input {
+.ticket-item.upcoming {
+    border-left: 5px solid #ff6600; 
+}
+.ticket-item.history {
+    border-left: 5px solid #666; 
+}
+
+.ticket-header {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 40px;
-    padding-bottom: 0px;
-    box-sizing: border-box;
-    
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed #444444;
+    padding-bottom: 5px;
 }
 
-label {
-    font-size: 20px;
+.ticket-item h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.1em;
 }
 
-input {
-    font-size: 20px;
+.ticket-item p {
+    margin: 4px 0;
+    font-size: 0.95em;
+}
+.ticket-status {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
 }
 
-.form-items {
-    display: grid;
-    grid-template-columns: 30% 1fr;
-
+.ticket-status.confirmed {
+    background-color: #28a745; 
+    color: white;
 }
-
-.form-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin: 10px 0px 10px;
+.ticket-status.expired {
+    background-color: #dc3545; 
+    color: white;
 }
-
-.form-items-full-width {
-    display: grid;
-    grid-template-columns: 14.5% 1fr;
-    margin: 10px 0px 10px;
-}
-
-.form-submit {
-    margin: 30px auto 20px;
-    box-sizing: border-box;
-}
-
-.form-submit button {
-    font-size: 20px;
-    border-radius: 10px;
-    padding: 10px;
+.view-detail-btn {
     background-color: #ff6600;
-}
-
-.form-submit button:hover {
-    transform: scale(1.1); 
-    z-index: 100; 
-    border-radius: 10px;
-    padding: 10px;
-    background-color: rgb(255, 89, 0);
+    color: #1a1a1a; 
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
     cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
 }
