@@ -11,21 +11,21 @@
     <div class="header-label" id="header-label">
         <div class="header-container">
             <div class="header-account">
-                <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
-                <a href="Trang-Uu-Dai.html" class="header-item">Ưu đãi</a>
-                <a href="Login.html" class="header-item">Đăng nhập</a>
+                <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
+                <a href="Khuyen-mai.html" class="header-item">Khuyến mãi</a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
             </div>
         </div>
     </div>
     <div class="header-menu">
         <div class="menu-container">
-            <a class="logo" href="index.html">
+            <a href="index.html" class="logo">
                 <img src="image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
@@ -39,14 +39,14 @@
                 <div class="menu-item-wrapper">
                     <div class="menu-item has-dropdown">TIN TỨC</div>
                     <div class="dropdown-menu">
-                        <div class="dropdown-item">Tin Khuyến Mãi</div>
-                        <div class="dropdown-item">Ưu Đãi Đặc Biệt</div>
-                        <div class="dropdown-item">Tin Điện Ảnh</div>
+                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+
                     </div>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <div class="menu-item">GIÁ VÉ</div>
+                    <div class="menu-item">GIÁ VÉ</div>
                 </div>
 
                 <div class="menu-item-wrapper">
@@ -76,23 +76,23 @@
         </div>
         <div class="filter-bar">
             <select id="filter-genre">
-                <option value="">Chọn Phim</option>
+                <option value="">Chọn Phim</option>
             </select>
 
             <select id="filter-cinema">
-                <option value="">Chọn rạp</option>
+                <option value="">Chọn rạp</option>
             </select>
 
             <select id="filter-location">
-                <option value="">Chọn Thời Gian</option>
+                <option value="">Chọn Thời Gian</option>
             </select>
 
             <select id="filter-ticket">
-                <option value="">Chọn vé</option>
+                <option value="">Chọn vé</option>
             </select>
 
             <button id="reset-button">
-                Đặt vé nhanh
+                Đặt vé nhanh
             </button>
         </div>
         <!-- Movie Tabs -->
@@ -107,7 +107,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail" id="movie-btn btn-detail">Chi Tiết</button>
+                        <a href="Chi-tiet-phim.html" class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar: The Way of Water">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" alt="The Batman">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="Top Gun: Maverick">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" alt="Oppenheimer">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -192,7 +192,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Barbie">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg" alt="Guardians of the Galaxy Vol. 3">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
@@ -224,9 +224,10 @@
             <!-- Movie 8 -->
             <div class="movie-card">
                 <div class="movie-poster">
+
                     <img src="https://image.tmdb.org/t/p/original/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
+                        <a class="movie-btn btn-detail">Chi tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt vé</button>
                     </div>
                 </div>
@@ -238,138 +239,244 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Modal Đặt Vé -->
-    <div id="bookingModal" class="modal">
-        <div class="modal-content">
-            <h2 class="modal-title">Đặt Vé Xem Phim</h2>
-            <!-- Sơ đồ chọn ghế -->
-            <div class="seat-selection">
-                <div class="screen">MÀN HÌNH</div>
-                <div class="seats-container">
-                    <div class="seat-row">
-                        <button class="seat booked" data-seat="A01">A01</button>
-                        <button class="seat booked" data-seat="A02">A02</button>
-                        <button class="seat booked" data-seat="A03">A03</button>
-                        <button class="seat booked" data-seat="A04">A04</button>
-                        <button class="seat booked" data-seat="A05">A05</button>
-                        <button class="seat booked" data-seat="A06">A06</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat booked" data-seat="A07">A07</button>
-                        <button class="seat available" data-seat="A08">A08</button>
-                        <button class="seat available" data-seat="A09">A09</button>
-                        <button class="seat available" data-seat="A10">A10</button>
-                        <button class="seat booked" data-seat="A11">A11</button>
-                        <button class="seat booked" data-seat="A12">A12</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat booked" data-seat="A13">A13</button>
-                        <button class="seat booked" data-seat="A14">A14</button>
-                        <button class="seat booked" data-seat="A15">A15</button>
-                        <button class="seat booked" data-seat="A16">A16</button>
-                        <button class="seat booked" data-seat="A17">A17</button>
-                        <button class="seat booked" data-seat="A18">A18</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat selected" data-seat="A19">A19</button>
-                        <button class="seat booked" data-seat="A20">A20</button>
-                        <button class="seat booked" data-seat="A21">A21</button>
-                        <button class="seat available" data-seat="A22">A22</button>
-                        <button class="seat booked" data-seat="A23">A23</button>
-                        <button class="seat available" data-seat="A24">A24</button>
-                    </div>
-                    <div class="seat-row">
-                        <button class="seat available" data-seat="A25">A25</button>
-                        <button class="seat booked" data-seat="A26">A26</button>
-                        <button class="seat booked" data-seat="A27">A27</button>
-                        <button class="seat booked" data-seat="A28">A28</button>
-                    </div>
+        <div class="see-more-container">
+            <a href="Phim-Dang-Chieu.html" class="see-more-btn" role="button">Xem thêm</a>
+        </div>
+
+        <!-- Tin Tức-->
+        <div class="news-selection-content">
+            <div class ="container">
+                <div class = "sec-heading">
+                    <h2 class = "heading">TIN TỨC</h2>
+                </div>
+                <div class="news-grid">
+                    <!-- News 1 -->
+                    <a href="Tin-tuc-chi-tiet-1.html" class="news-link">
+                        <div class = "news-card">
+                            <div class="news-poster">
+                                <img src="https://i.imgur.com/MCHyJQX.jpeg" alt ="Quái Thú Vô Hình: Vùng Đất Chết Chóc">
+                            </div>
+                            <div class = "news-info">
+                                <p class="news-type">Bình luận phim</p>
+                                <h3 class="news-title">Review Quái Thú Vô Hình: Vùng Đất Chết Chóc – Phần phim hoàn toàn không có con người</h3>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- News 2 -->
+                    <a href="#" class="news-link">
+                        <div class = "news-card">
+                            <div class="news-poster">
+                                <img src="https://i.imgur.com/HqIIkCx.jpeg" alt ="Top 5 phim đáng xem nhất tháng 11 – Có siêu phẩm nào góp mặt?">
+                            </div>
+                            <div class = "news-info">
+                                <p class="news-type">Tin điện ảnh</p>
+                                <h3 class="news-title">Top 5 phim đáng xem nhất tháng 11 – Có siêu phẩm nào góp mặt?</h3>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- News 3 -->
+                    <a href="#" class="news-link">
+                        <div class = "news-card">
+                            <div class="news-poster">
+                                <img src="https://cdn.galaxycine.vn/media/2025/9/15/tran-chien-sau-tran-chien-500_1757909554042.jpg" alt ="Review Trận Chiến Sau Trận Chiến">
+                            </div>
+                            <div class = "news-info">
+                                <p class="news-type">Bình luận phim </p>
+                                <h3 class="news-title">Review Trận Chiến Sau Trận Chiến – Nghệ thuật khung hình của PTA và cơn địa chấn từ DiCaprio</h3>
+                            </div>
+                        </div>
+                    </a>
                 </div>
 
-                <div class="seat-legend">
-                    <div class="legend-item">
-                        <div class="legend-box booked"></div>
-                        <span>Ghế đã được đặt</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box selected"></div>
-                        <span>Đang chọn</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box reserved"></div>
-                        <span>Ghế trống</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Form thông tin đặt vé -->
-            <div class="booking-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Phim:</label>
-                        <input type="text" value="Spider-Man: No Way Home" readonly>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Phòng chiếu:</label>
-                        <select id="room">
-                            <option value="A">Phòng A</option>
-                            <option value="B">Phòng B</option>
-                            <option value="C">Phòng C</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Ngày giờ chiếu:</label>
-                        <input type="text" value="11/11/2025 17:30" readonly>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Loại vé:</label>
-                        <select id="ticketType">
-                            <option value="adult">Người lớn</option>
-                            <option value="student">Học sinh/Sinh viên</option>
-                            <option value="child">Trẻ em</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Giá vé:</label>
-                        <input type="text" id="ticketPrice" value="100.000 đ" readonly>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Số lượng vé:</label>
-                        <input type="number" id="quantity" value="1" min="1" max="10">
-                    </div>
-                    <div class="form-group">
-                        <label>Tổng tiền:</label>
-                        <input type="text" id="totalPrice" value="100.000 đ" readonly>
-                    </div>
-                </div>
-
-                <div class="form-buttons">
-                    <button class="btn-submit" onclick="submitBooking()">Đặt vé</button>
-                    <button class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
+                <div class="see-more-container">
+                    <a href="Tin-dien-anh.html" class="see-more-btn" role="button">Xem thêm</a>
                 </div>
             </div>
         </div>
+
+        <!-- Khuyến mãi-->
+        <div class="promotion-selection-content">
+            <div class ="container">
+                <div class = "sec-heading">
+                    <h2 class = "heading">KHUYẾN MÃI</h2>
+                </div>
+                <div class="promotion-grid">
+                    <!-- Promotion 1 -->
+                    <a href="Khuyen-mai-chi-tiet.html" class="promotion-link">
+                        <div class = "promotion-card">
+                            <div class="promotion-poster">
+                                <img src="img/khuyenmai-1.png" alt ="ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22">
+                            </div>
+                            <div class = "promotion-info">
+                                <h3 class="promotion-title">ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22</h3>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Promotion 2 -->
+                    <a href="#" class="promotion-link">
+                        <div class = "promotion-card">
+                            <div class="promotion-poster">
+                                <img src="img/khuyenmai-2.png" alt ="SPECIAL MONDAY - ĐỒNG GIÁ 50.000Đ/VÉ 2D THỨ 2 CUỐI THÁNG (TỪ 01/01/2025)">
+                            </div>
+                            <div class = "promotion-info">
+                                <h3 class="promotion-title">SPECIAL MONDAY - ĐỒNG GIÁ 50.000Đ/VÉ 2D THỨ 2 CUỐI THÁNG (TỪ 01/01/2025)</h3>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Promotion 3 -->
+                    <a href="#" class="promotion-link">
+                        <div class = "promotion-card">
+                            <div class="promotion-poster">
+                                <img src="img/khuyenmai-3.jpg" alt ="GÀ RÁN SIÊU MÊ LY ĐỒNG GIÁ CHỈ 79K CÁC SET GÀ RÁN">
+                            </div>
+                            <div class = "promotion-info">
+                                <h3 class="promotion-title">GÀ RÁN SIÊU MÊ LY ĐỒNG GIÁ CHỈ 79K CÁC SET GÀ RÁN</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="see-more-container">
+                    <a href="Khuyen-mai.html" class="see-more-btn" role="button">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <button class="see-more-btn" id="see-more-btn">Xem thêm</button>
+
+
+
+
+<!-- Modal Đặt Vé -->
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <h2 class="modal-title">Đặt Vé Xem Phim</h2>
+        <!-- Sơ đồ chọn ghế -->
+        <div class="seat-selection">
+            <div class="screen">MÀN HÌNH</div>
+            <div class="seats-container">
+                <div class="seat-row">
+                    <button class="seat booked" data-seat="A01">A01</button>
+                    <button class="seat booked" data-seat="A02">A02</button>
+                    <button class="seat booked" data-seat="A03">A03</button>
+                    <button class="seat booked" data-seat="A04">A04</button>
+                    <button class="seat booked" data-seat="A05">A05</button>
+                    <button class="seat booked" data-seat="A06">A06</button>
+                </div>
+                <div class="seat-row">
+                    <button class="seat booked" data-seat="A07">A07</button>
+                    <button class="seat available" data-seat="A08">A08</button>
+                    <button class="seat available" data-seat="A09">A09</button>
+                    <button class="seat available" data-seat="A10">A10</button>
+                    <button class="seat booked" data-seat="A11">A11</button>
+                    <button class="seat booked" data-seat="A12">A12</button>
+                </div>
+                <div class="seat-row">
+                    <button class="seat booked" data-seat="A13">A13</button>
+                    <button class="seat booked" data-seat="A14">A14</button>
+                    <button class="seat booked" data-seat="A15">A15</button>
+                    <button class="seat booked" data-seat="A16">A16</button>
+                    <button class="seat booked" data-seat="A17">A17</button>
+                    <button class="seat booked" data-seat="A18">A18</button>
+                </div>
+                <div class="seat-row">
+                    <button class="seat selected" data-seat="A19">A19</button>
+                    <button class="seat booked" data-seat="A20">A20</button>
+                    <button class="seat booked" data-seat="A21">A21</button>
+                    <button class="seat available" data-seat="A22">A22</button>
+                    <button class="seat booked" data-seat="A23">A23</button>
+                    <button class="seat available" data-seat="A24">A24</button>
+                </div>
+                <div class="seat-row">
+                    <button class="seat available" data-seat="A25">A25</button>
+                    <button class="seat booked" data-seat="A26">A26</button>
+                    <button class="seat booked" data-seat="A27">A27</button>
+                    <button class="seat booked" data-seat="A28">A28</button>
+                </div>
+            </div>
+
+
+            <div class="seat-legend">
+                <div class="legend-item">
+                    <div class="legend-box booked"></div>
+                    <span>Ghế đã được đặt</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box selected"></div>
+                    <span>Đang chọn</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box reserved"></div>
+                    <span>Ghế trống</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form thông tin đặt vé -->
+        <div class="booking-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phim:</label>
+                    <input type="text" value="Spider-Man: No Way Home" readonly>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phòng chiếu:</label>
+                    <select id="room">
+                        <option value="A">Phòng A</option>
+                        <option value="B">Phòng B</option>
+                        <option value="C">Phòng C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ngày giờ chiếu:</label>
+                    <input type="datetime-local" id="showtime" value="">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Loại vé:</label>
+                    <select id="ticketType">
+                        <option value="adult">Người lớn</option>
+                        <option value="student">Học sinh/Sinh viên</option>
+                        <option value="child">Trẻ em</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Giá vé:</label>
+                    <input type="text" id="ticketPrice" value="100.000 đ" readonly>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Số lượng vé:</label>
+                    <input type="number" id="quantity" value="1" min="1" max="10">
+                </div>
+                <div class="form-group">
+                    <label>Tổng tiền:</label>
+                    <input type="text" id="totalPrice" value="100.000 đ" readonly>
+                </div>
+            </div>
+
+            <div class="form-buttons">
+                <button class="btn-submit" onclick="submitBooking()">Đặt vé</button>
+                <button class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Footer -->
 <div class="footer">
     <div class="footer-top">
         <ul class="footer-menu">
-            <li><a href="#">Chính sách</a></li>
-            <li><a href="Phim-Dang-Chieu.html">Phim đang chiếu</a></li>
-            <li><a href="Phim-Sap-Chieu.html">Phim sắp chiếu</a></li>
-            <li><a href="#">Tin tức</a></li>
+            <li><a href="Chinh-sach.html">Chính sách</a></li>
+            <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
+            <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
+            <li><a href="Tin-dien-anh.html">Tin tức</a></li>
             <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
             <li><a href="Trang-Liên-Hệ.html">Liên hệ</a></li>
         </ul>
@@ -394,14 +501,7 @@
 </div>
 </body>
 <script>
-    document.getElementById('see-more-btn').addEventListener('click', function () {
-        const url = "Phim-Dang-Chieu.html";
-        window.location.href = url;
-    });
-    document.getElementById('movie-btn btn-detail').addEventListener('click', function () {
-        const url = "Chi-Tiet-Phim.html";
-        window.location.href = url;
-    });
+
     document.getElementById('reset-button').addEventListener('click', function () {
         window.alert("Bạn đã đặt vé thành công !")
     })
