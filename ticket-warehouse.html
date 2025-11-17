@@ -1,64 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kho Vé</title>
+    <title>Vé của tôi </title>
     <link rel="stylesheet" href="style/ticket-warehouse.css">
 </head>
+
 <body>
-     <header class="header">
-        <div class="header-label" id="header-label">
-            <div class="header-container">
-                <div class="header-account">
-                    <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
-                    <a href="Trang-Uu-Dai.html" class="header-item">Ưu đãi</a>
-                    <a href="Login.html" class="header-item">Đăng nhập</a>
-                </div>
-            </div>
-        </div>
-        <div class="header-menu">
-            <div class="menu-container">
-                <a class="logo">
-                    <img src="image/231601886-Photoroom.png" alt="dtn logo">
-                </a>
-
-                <nav class="menu-nav">
-                    <div class="menu-item-wrapper">
-                        <a class="menu-item" style="text-decoration: none;" href="index.html">TRANG CHỦ</a>
-                    </div>
-
-                    <div class="menu-item-wrapper">
-                        <div class="menu-item has-dropdown">PHIM</div>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-item">Phim Đang Chiếu</div>
-                            <div class="dropdown-item">Phim Sắp Chiếu</div>
-                        </div>
-                    </div>
-
-                    <div class="menu-item-wrapper">
-                        <div class="menu-item has-dropdown">TIN TỨC</div>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-item">Tin Khuyến Mãi</div>
-                            <div class="dropdown-item">Ưu Đãi Đặc Biệt</div>
-                            <div class="dropdown-item">Tin Điện Ảnh</div>
-                        </div>
-                    </div>
-
-                    <div class="menu-item-wrapper">
-                        <div class="menu-item">ĐẶT VÉ</div>
-                    </div>
-
-                    <div class="menu-item-wrapper">
-                        <div class="menu-item">GIỚI THIỆU</div>
-                    </div>
-                    <div class="menu-item-wrapper">
-                        <div class="menu-item">LIÊN HỆ</div>
-                    </div>
-                </nav>
-            </div>
+    <header>
+        <div class="content-header">
+            <div> <a href="index.html">Đăng Xuất</a></div>
+            <div><i><b>Xin chào A!</b></i></div>
         </div>
     </header>
-    
+
+    <div class="user-container">
+        <main class="main-content">
+            <div class="user-information">
+                <div class="avt"> <img src="image/avatar.png" alt="Avatar"></div>
+                <div class="user-email-login"> <span class="user-email-login">nguyenvana@gmail.com</span></div>
+                <div class="user-name-login"> <span>Nguyễn Văn A</span></div>
+            </div>
+
+
+            <div class="my-ticket-container">
+                <div class="menu">
+                    <a href="user.html">
+                        <div class="menu-items">
+                            <span>Tài khoản</span>
+                        </div>
+                    </a>
+                    <div id="active" class="menu-items">
+                        <span>Vé của tôi</span>
+                    </div>
+                </div>
+
+                <div id="tickets" class="my-tickets">
+                    <h2 class="section-title">Danh Sách
+
+
+                        <h2 class="section-title">Danh Sách Vé Đã Đặt</h2>
+
+                        <div class="ticket-list">
+                            <div class="ticket-item upcoming">
+                                <div class="ticket-header">
+                                    <h3>Phim: Spider-Man: No Way Home</h3>
+                                    <span class="ticket-status confirmed">Đã Xác Nhận</span>
+                                </div>
+                                <p><strong>Thời gian:</strong> 20:30 - 17/10/2025</p>
+                                <p><strong>Ghế:</strong> A1, A2</p>
+                                <p><strong>Tổng tiền:</strong> 150.000 VNĐ</p>
+                                <a href="Chi-Tiet-Phim.html"> <button class="view-detail-btn">Xem chi tiết</button></a>
+                            </div>
+
+                            <div class="ticket-list">
+                                <div class="ticket-item upcoming">
+                                    <div class="ticket-header">
+                                        <h3>Phim: GODZILLA X KONG: ĐẾ CHẾ MỚI</h3>
+                                        <span class="ticket-status confirmed">Đã Xác Nhận</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 20:30 - 18/11/2025</p>
+                                    <p><strong>Ghế:</strong> A1, A2</p>
+                                    <p><strong>Tổng tiền:</strong> 150.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item upcoming">
+                                    <div class="ticket-header">
+                                        <h3>Phim: DUNE: PART TWO</h3>
+                                        <span class="ticket-status confirmed">Đã Xác Nhận</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 18:00 - 25/11/2025</p>
+                                    <p><strong>Ghế:</strong> D5, D6</p>
+                                    <p><strong>Tổng tiền:</strong> 200.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item upcoming">
+                                    <div class="ticket-header">
+                                        <h3>Phim: THANH GƯƠM DIỆT QUỶ</h3>
+                                        <span class="ticket-status confirmed">Đã Xác Nhận</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 10:15 - 03/12/2025</p>
+                                    <p><strong>Ghế:</strong> B3</p>
+                                    <p><strong>Tổng tiền:</strong> 110.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item upcoming">
+                                    <div class="ticket-header">
+                                        <h3>Phim: CÔ GÁI ĐẾN TỪ HÔM QUA</h3>
+                                        <span class="ticket-status confirmed">Đã Xác Nhận</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 19:45 - 08/12/2025</p>
+                                    <p><strong>Ghế:</strong> H2</p>
+                                    <p><strong>Tổng tiền:</strong> 100.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item upcoming">
+                                    <div class="ticket-header">
+                                        <h3>Phim: NHÀ BÀ NỮ</h3>
+                                        <span class="ticket-status confirmed">Đã Xác Nhận</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 21:00 - 15/12/2025</p>
+                                    <p><strong>Ghế:</strong> K5</p>
+                                    <p><strong>Tổng tiền:</strong> 95.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item upcoming">
+                                    <div class="ticket-header">
+                                        <h3>Phim: KHÔNG GIỚI HẠN</h3>
+                                        <span class="ticket-status confirmed">Đã Xác Nhận</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 16:00 - 20/12/2025</p>
+                                    <p><strong>Ghế:</strong> M7</p>
+                                    <p><strong>Tổng tiền:</strong> 85.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item history">
+                                    <div class="ticket-header">
+                                        <h3>Phim: TÊN PHIM ĐÃ XEM</h3>
+                                        <span class="ticket-status expired">Đã Sử Dụng</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 15:30 - 10/11/2025</p>
+                                    <p><strong>Ghế:</strong> C5</p>
+                                    <p><strong>Tổng tiền:</strong> 80.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item history">
+                                    <div class="ticket-header">
+                                        <h3>Phim: LẬT MẶT 7</h3>
+                                        <span class="ticket-status expired">Đã Hủy</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 14:00 - 05/10/2025</p>
+                                    <p><strong>Ghế:</strong> F1</p>
+                                    <p><strong>Tổng tiền:</strong> 90.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item history">
+                                    <div class="ticket-header">
+                                        <h3>Phim: THẦN ĐÈN</h3>
+                                        <span class="ticket-status expired">Đã Sử Dụng</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 22:00 - 15/09/2025</p>
+                                    <p><strong>Ghế:</strong> G11, G12</p>
+                                    <p><strong>Tổng tiền:</strong> 180.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item history">
+                                    <div class="ticket-header">
+                                        <h3>Phim: TÊN PHIM ĐÃ XEM</h3>
+                                        <span class="ticket-status expired">Đã Sử Dụng</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 15:30 - 10/11/2025</p>
+                                    <p><strong>Ghế:</strong> C5</p>
+                                    <p><strong>Tổng tiền:</strong> 80.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item history">
+                                    <div class="ticket-header">
+                                        <h3>Phim: CHIẾN TRANH VÔ CỰC</h3>
+                                        <span class="ticket-status expired">Đã Hủy</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 17:00 - 20/08/2025</p>
+                                    <p><strong>Ghế:</strong> J9, J10</p>
+                                    <p><strong>Tổng tiền:</strong> 220.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item history">
+                                    <div class="ticket-header">
+                                        <h3>Phim: AVATAR 2</h3>
+                                        <span class="ticket-status expired">Đã Sử Dụng</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 11:30 - 01/07/2025</p>
+                                    <p><strong>Ghế:</strong> L1, L2, L3</p>
+                                    <p><strong>Tổng tiền:</strong> 350.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+
+                                <div class="ticket-item history">
+                                    <div class="ticket-header">
+                                        <h3>Phim: NGƯỜI NHỆN 3</h3>
+                                        <span class="ticket-status expired">Đã Sử Dụng</span>
+                                    </div>
+                                    <p><strong>Thời gian:</strong> 18:30 - 12/06/2025</p>
+                                    <p><strong>Ghế:</strong> N4</p>
+                                    <p><strong>Tổng tiền:</strong> 120.000 VNĐ</p>
+                                    <button class="view-detail-btn">Xem chi tiết</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+        </main>
+    </div>
+
+
 </body>
-</html>

@@ -76,7 +76,6 @@ header .content-header {
     margin-bottom: 5px;
 }
 
-/* FORM CHỈNH SỬA */
 .menu{
     width: fit-content;
     display: grid;
@@ -89,11 +88,10 @@ header .content-header {
 }
 .menu-items:first-child{    
     border-right: 1.5px solid grey;
-    color:#ff6600;  
 }
 .menu-items:first-child span{  
     padding: 10px;  
-    border-bottom:3px solid #ff6600 ;
+    border-bottom:3px solid grey ;
 }
 .menu-items:nth-child(2){    
     border-left: 1.5px solid grey;
@@ -111,6 +109,15 @@ header .content-header {
     border-left: 1.5px solid grey;
     color: #ff6600;
     cursor: pointer;
+}
+#active span{
+    color: #ff6600;
+    border-bottom:3px solid#ff6600;
+
+}
+a{
+    text-decoration: none;
+    color: white;
 }
 
 
