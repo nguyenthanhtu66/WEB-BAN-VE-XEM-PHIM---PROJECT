@@ -31,8 +31,8 @@
                 <div class="menu-item-wrapper">
                     <div class="menu-item has-dropdown">PHIM</div>
                     <div class="dropdown-menu">
-                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim Đang Chiếu</a>
-                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim Sắp Chiếu</a>
+                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim đang chiếu</a>
+                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim sắp chiếu</a>
                     </div>
                 </div>
 
@@ -46,14 +46,14 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <div class="menu-item">GIÁ VÉ</div>
+                    <a class="menu-item" style="text-decoration: none;" href="Gia-Ve.html">GIÁ VÉ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <div class="menu-item">GIỚI THIỆU</div>
+                    <a class="menu-item" style="text-decoration: none;" href="Trang-Liên-Hệ.html">GIỚI THIỆU</a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" style="text-decoration: none;" href="Trang-Liên-Hệ.html">LIÊN HỆ</a>
+                    <a class="menu-item" style="text-decoration: none;" href="contact.html">LIÊN HỆ</a>
                 </div>
             </nav>
         </div>
@@ -114,7 +114,7 @@
                 <div class="movie-info">
                     <h3>Spider-Man: No Way Home</h3>
                     <p class="movie-genre">Hành động, Phiêu lưu</p>
-                    <p class="movie-duration">⏱ 148 phút</p>
+                    <p class="movie-duration">⏱ 149 phút</p>
                     <p class="movie-rating">★ 8.2/10</p>
                 </div>
             </div>
@@ -139,7 +139,7 @@
             <!-- Movie 3 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" alt="The Batman">
+                    <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Batman">
                     <div class="movie-overlay">
                         <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
@@ -156,7 +156,7 @@
             <!-- Movie 4 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="Top Gun: Maverick">
+                    <img src="https://upload.wikimedia.org/wikipedia/vi/1/1c/Top_Gun_Maverick_Poster_VN.jpg" alt="Top Gun: Maverick">
                     <div class="movie-overlay">
                         <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
@@ -173,7 +173,7 @@
             <!-- Movie 5 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" alt="Oppenheimer">
+                    <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer">
                     <div class="movie-overlay">
                         <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
@@ -190,7 +190,7 @@
             <!-- Movie 6 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Barbie">
+                    <img src="https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg" alt="Barbie">
                     <div class="movie-overlay">
                         <a class="movie-btn btn-detail">Chi Tiết</a>
                         <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
@@ -341,12 +341,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-
 <!-- Modal Đặt Vé -->
 <div id="bookingModal" class="modal">
     <div class="modal-content">
@@ -432,7 +427,7 @@
                 </div>
                 <div class="form-group">
                     <label>Ngày giờ chiếu:</label>
-                    <input type="datetime-local" id="showtime" value="">
+                    <input type="text" value="11/11/2025 17:30" readonly>
                 </div>
             </div>
 
@@ -495,7 +490,9 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>Đề tài project môn lập trình web của nhóm 33</p>
+        <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
+        <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
+        <p>Bên cạnh đó, website cũng hỗ trợ phía rạp chiếu phim trong việc quản lý lịch chiếu, quản lý vé bán ra, và thống kê doanh thu một cách hiệu quả.</p>
     </div>
 </div>
 </div>

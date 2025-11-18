@@ -10,49 +10,49 @@
     <div class="header-label" id="header-label">
         <div class="header-container">
             <div class="header-account">
-                <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
-                <a href="Trang-Uu-Dai.html" class="header-item">Ưu đãi</a>
-                <a href="Login.html" class="header-item">Đăng nhập</a>
+                <a href="ticket-warehouse.html" class="header-item">Kho vé</a>
+                <a href="Khuyen-mai.html" class="header-item">Khuyến mãi</a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
             </div>
         </div>
     </div>
     <div class="header-menu">
         <div class="menu-container">
-            <a class="logo" href="index.html">
+            <a href="index.html" class="logo">
                 <img src="image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
                     <div class="menu-item has-dropdown">PHIM</div>
                     <div class="dropdown-menu">
-                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim Đang Chiếu</a>
-                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim Sắp Chiếu</a>
+                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim đang chiếu</a>
+                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim sắp chiếu</a>
                     </div>
                 </div>
 
                 <div class="menu-item-wrapper">
                     <div class="menu-item has-dropdown">TIN TỨC</div>
                     <div class="dropdown-menu">
-                        <div class="dropdown-item">Tin Khuyến Mãi</div>
-                        <div class="dropdown-item">Ưu Đãi Đặc Biệt</div>
-                        <div class="dropdown-item">Tin Điện Ảnh</div>
+                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+
                     </div>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <div class="menu-item">GIÁ VÉ</div>
+                    <a class="menu-item" style="text-decoration: none;" href="Gia-Ve.html">GIÁ VÉ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <div class="menu-item">GIỚI THIỆU</div>
+                    <a class="menu-item" style="text-decoration: none;" href="Trang-Liên-Hệ.html">GIỚI THIỆU</a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" style="text-decoration: none;" href="Trang-Liên-Hệ.html">LIÊN HỆ</a>
+                    <a class="menu-item" style="text-decoration: none;" href="contact.html">LIÊN HỆ</a>
                 </div>
             </nav>
         </div>
@@ -86,14 +86,14 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                        <a href="Chi-tiet-phim.html" class="movie-btn btn-detail">Chi Tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
                     <h3>Spider-Man: No Way Home</h3>
                     <p class="movie-genre">Hành động, Phiêu lưu</p>
-                    <p class="movie-duration">⏱ 148 phút</p>
+                    <p class="movie-duration">⏱ 149 phút</p>
                     <p class="movie-rating">★ 8.2/10</p>
                 </div>
             </div>
@@ -103,93 +103,42 @@
                 <div class="movie-poster">
                     <img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar: The Way of Water">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
                     <h3>Avatar: The Way of Water</h3>
                     <p class="movie-genre">Khoa học viễn tưởng, Phiêu lưu</p>
                     <p class="movie-duration">⏱ 192 phút</p>
-                    <p class="movie-rating">★ 7.8/10</p>
+                    <p class="movie-rating">★ 7.6/10</p>
                 </div>
             </div>
 
             <!-- Movie 3 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/5VTN0pR8gcqV3EPUHHfMGnJYN9L.jpg" alt="The Batman">
+                    <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Batman">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
                     <h3>The Batman</h3>
                     <p class="movie-genre">Hành động, Tội phạm, Bí ẩn</p>
                     <p class="movie-duration">⏱ 176 phút</p>
-                    <p class="movie-rating">★ 8.0/10</p>
+                    <p class="movie-rating">★ 7.8/10</p>
                 </div>
             </div>
 
             <!-- Movie 4 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer">
+                    <img src="https://upload.wikimedia.org/wikipedia/vi/1/1c/Top_Gun_Maverick_Poster_VN.jpg" alt="Top Gun: Maverick">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking">Đặt Vé</button>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Oppenheimer</h3>
-                    <p class="movie-genre">Tiểu sử, Lịch sử, Chính kịch</p>
-                    <p class="movie-duration">⏱ 180 phút</p>
-                    <p class="movie-rating">★ 8.4/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 5 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" alt="Barbie">
-                    <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking">Đặt Vé</button>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Barbie</h3>
-                    <p class="movie-genre">Hài, Phiêu lưu, Giả tưởng</p>
-                    <p class="movie-duration">⏱ 114 phút</p>
-                    <p class="movie-rating">★ 7.3/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 6 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg" alt="Guardians of the Galaxy Vol. 3">
-                    <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking">Đặt Vé</button>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Guardians of the Galaxy Vol. 3</h3>
-                    <p class="movie-genre">Khoa học viễn tưởng, Hành động</p>
-                    <p class="movie-duration">⏱ 150 phút</p>
-                    <p class="movie-rating">★ 7.9/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 7 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg" alt="Top Gun: Maverick">
-                    <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi Tiết</button>
-                        <button class="movie-btn btn-booking">Đặt Vé</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
@@ -200,20 +149,72 @@
                 </div>
             </div>
 
-            <!-- Movie 8 -->
+            <!-- Movie 5 -->
             <div class="movie-card">
                 <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/feSiISwgEpVzR1v3zv2n2AU4ANJ.jpg" alt="John Wick: Chapter 4">
+                    <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer">
                     <div class="movie-overlay">
-                        <button class="movie-btn btn-detail">Chi tiết</button>
-                        <button class="movie-btn btn-booking">Đặt vé</button>
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="movie-info">
-                    <h3>John Wick: Chapter 4</h3>
-                    <p class="movie-genre">Hành động, Tội phạm, Giật gân</p>
-                    <p class="movie-duration">⏱ 169 phút</p>
-                    <p class="movie-rating">★ 7.9/10</p>
+                    <h3>Oppenheimer</h3>
+                    <p class="movie-genre">Tiểu sử, Lịch sử, Chính kịch</p>
+                    <p class="movie-duration">⏱ 180 phút</p>
+                    <p class="movie-rating">★ 8.4/10</p>
+                </div>
+            </div>
+
+            <!-- Movie 6 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    <img src="https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg" alt="Barbie">
+                    <div class="movie-overlay">
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3>Barbie</h3>
+                    <p class="movie-genre">Hài, Phiêu lưu, Giả tưởng</p>
+                    <p class="movie-duration">⏱ 114 phút</p>
+                    <p class="movie-rating">★ 7.1/10</p>
+                </div>
+            </div>
+
+            <!-- Movie 7 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+                    <img src="https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg" alt="Guardians of the Galaxy Vol. 3">
+                    <div class="movie-overlay">
+                        <a class="movie-btn btn-detail">Chi Tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt Vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3>Guardians of the Galaxy Vol. 3</h3>
+                    <p class="movie-genre">Hành động, Khoa học viễn tưởng</p>
+                    <p class="movie-duration">⏱ 150 phút</p>
+                    <p class="movie-rating">★ 8.0/10</p>
+                </div>
+            </div>
+
+            <!-- Movie 8 -->
+            <div class="movie-card">
+                <div class="movie-poster">
+
+                    <img src="https://image.tmdb.org/t/p/original/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune">
+                    <div class="movie-overlay">
+                        <a class="movie-btn btn-detail">Chi tiết</a>
+                        <button class="movie-btn btn-booking" onclick="openBookingModal()">Đặt vé</button>
+                    </div>
+                </div>
+                <div class="movie-info">
+                    <h3>Dune</h3>
+                    <p class="movie-genre">Khoa học viễn tưởng, Phiêu lưu</p>
+                    <p class="movie-duration">⏱ 155 phút</p>
+                    <p class="movie-rating">★ 8.0/10</p>
                 </div>
             </div>
 
@@ -422,6 +423,20 @@
             </div>
         </div>
     </div>
+    <div class="pagination">
+        <a href="#" class="page-btn doubleprev"><<</a>
+        <a href="#" class="page-btn prev"><</a>
+        <a href="#" class="page-number active">1</a>
+        <a href="#" class="page-number">2</a>
+        <a href="#" class="page-number">3</a>
+        <a href="#" class="page-number">4</a>
+        <a href="#" class="page-number">5</a>
+        <a class="dots">...</a>
+        <a href="#" class="page-number">36</a>
+        <a href="#" class="page-btn next">></a>
+        <a href="#" class="page-btn doublenext">>></a>
+    </div>
+
 </div>
     <div id="bookingModal" class="modal">
         <div class="modal-content">
@@ -544,30 +559,36 @@
         </div>
     </div>
     <!-- Footer -->
-    <div class="footer">
-        <div class="footer-top">
-            <ul class="footer-menu">
-                <li><a href="#">Chính sách</a></li>
-                <li><a href="Phim-Dang-Chieu.html">Phim đang chiếu</a></li>
-                <li><a href="Phim-Sap-Chieu.html">Phim sắp chiếu</a></li>
-                <li><a href="#">Tin tức</a></li>
-                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
-                <li><a href="Trang-Liên-Hệ.html">Liên hệ</a></li>
-            </ul>
-            <div class="footer-apps">
-                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
-                <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
-            </div>
-            <div class="footer-social">
-                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
-                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
-                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
-            </div>
+<div class="footer">
+    <div class="footer-top">
+        <ul class="footer-menu">
+            <li><a href="Chinh-sach.html">Chính sách</a></li>
+            <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
+            <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
+            <li><a href="Tin-dien-anh.html">Tin tức</a></li>
+            <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
+            <li><a href="Trang-Liên-Hệ.html">Liên hệ</a></li>
+        </ul>
+        <div class="footer-apps">
+            <a href="#"><img
+                    src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                    alt="Google Play"></a>
+            <a href="#"><img
+                    src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                    alt="App Store"></a>
         </div>
-        <div class="footer-bottom">
-            <p>Đề tài project môn lập trình web của nhóm 33</p>
+        <div class="footer-social">
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
         </div>
     </div>
+    <div class="footer-bottom">
+        <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
+        <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
+        <p>Bên cạnh đó, website cũng hỗ trợ phía rạp chiếu phim trong việc quản lý lịch chiếu, quản lý vé bán ra, và thống kê doanh thu một cách hiệu quả.</p>
+    </div>
+</div>
 </div>
 </body>
 <script>

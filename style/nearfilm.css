@@ -18,7 +18,6 @@ body {
     background: #1e1e1e;
     padding: 12px 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: sticky;
     top: 0;
     z-index: 1001;
 }
@@ -59,7 +58,6 @@ body {
     padding: 0;
     border-bottom: 2px solid #ff6600;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    position: sticky;
     top: 55px;
     z-index: 1000;
 }
@@ -506,4 +504,63 @@ body {
     .movie-selection-content {
         grid-template-columns: 1fr;
     }
+}
+/* Pagination (phân trang) */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 10px;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #ccc;
+    padding: 10px 16px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    border: 1px solid #333;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.pagination a:hover {
+    color: #ff6600;
+    border-color: #ff6600;
+    transform: translateY(-2px);
+}
+
+.pagination .active {
+    background-color: #ff6600;
+    color: #fff;
+    border-color: #ff6600;
+}
+
+.pagination .disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+.page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+}
+
+/* Dấu ... (không hover, không click) */
+.pagination .dots {
+    pointer-events: none;           /* không cho click */
+    background-color: transparent;  /* trong suốt */
+    border: none;                   /* không viền */
+    color: #999;                    /* màu xám nhẹ */
+    font-weight: 700;
+    padding: 10px 12px;
+}
+
+/* Tắt hiệu ứng hover riêng cho dấu ... */
+.pagination .dots:hover {
+    color: #999 !important;
+    background-color: transparent !important;
+    border: none !important;
+    transform: none !important;
 }
