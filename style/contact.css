@@ -1,13 +1,16 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+a{
+    text-decoration: none;
+}
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #2e2e2e; 
-    color: #f0f0f0;
+    background-color: #2e2e2e;
+    color: #fff;
 }
 
 .app {
@@ -16,9 +19,11 @@ body {
 }
 
 .header-label {
-    background: black   ;
+    background: #1e1e1e;
     padding: 12px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    top: 0;
+    z-index: 1001;
 }
 
 .header-container {
@@ -36,7 +41,7 @@ body {
 }
 
 .header-item {
-    color: white; 
+    color: #fff;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -47,18 +52,17 @@ body {
 }
 
 .header-item:hover {
-    background-color: rgba(255,170,0,0.15); 
+    background-color: #4c4c4c;
     transform: translateY(-1px);
 }
 
 
 .header-menu {
-    background: #383838;
+    background: #4c4c4c;
     padding: 0;
-    border-bottom: 3px solid #ff6600; 
-     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    position: sticky;
-    top: 0;
+    border-bottom: 2px solid #ff6600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    top: 55px;
     z-index: 1000;
 }
 
@@ -88,6 +92,7 @@ body {
 .logo:hover img {
     transform: scale(1.2);
 }
+
 .menu-nav {
     display: flex;
     gap: 35px;
@@ -103,7 +108,7 @@ body {
 .menu-item {
     font-size: 15px;
     font-weight: 600;
-    color: #f0f0f0; 
+    color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -112,11 +117,12 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
+    text-decoration: none;
 }
 
 .menu-item:hover {
     color: #ff6600;
-    background-color: #4c4c4c; 
+    background-color: #4c4c4c;
 }
 
 .menu-item.has-dropdown::after {
@@ -134,16 +140,17 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    background: #383838; 
+    background: #1e1e1e;
     min-width: 200px;
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
     padding: 8px 0;
     z-index: 100;
+
 }
 
 .menu-item-wrapper:hover .dropdown-menu {
@@ -154,16 +161,17 @@ body {
 
 .dropdown-item {
     padding: 12px 20px;
-    color: #f0f0f0; 
+    color: #fff;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     display: block;
+    text-decoration: none;
 }
 
 .dropdown-item:hover {
-    background-color: #4c4c4c; 
+    background-color: #4c4c4c;
     color: #ff6600;
     padding-left: 25px;
 }
@@ -314,13 +322,13 @@ body {
 
 /* Footer */
 .footer {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0b0b0b 100%);
+    background: linear-gradient(135deg, #1e1e1e 0%, #0b0b0b 100%);
     color: #ccc;
     text-align: center;
     padding: 40px 20px;
     font-size: 14px;
     line-height: 1.8;
-    margin-top: 0;
+    margin-top: 80px;
 }
 
 .footer a {
@@ -330,11 +338,11 @@ body {
 }
 
 .footer a:hover {
-    color: #ff6600; 
+    color: #ff6600;
 }
 
 .footer-top {
-    border-bottom: 1px solid #2c2c2c;
+    border-bottom: 1px solid #4c4c4c;
     padding-bottom: 25px;
     margin-bottom: 25px;
 }
@@ -344,7 +352,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 50px;
     padding: 0;
     margin: 0 0 25px 0;
     font-size: 15px;
@@ -376,17 +384,42 @@ body {
 .footer-social img {
     width: 36px;
     height: 36px;
-    filter: brightness(1.1);
+    filter: brightness(0.9);
     transition: all 0.3s ease;
-    border-radius: 50%;
+
 }
 
 .footer-social img:hover {
-    filter: brightness(1.5);
+    filter: brightness(1.2);
     transform: scale(1.15);
 }
 
 .footer-bottom {
     font-size: 14px;
     color: #999;
+}
+
+@media (max-width: 968px) {
+    .movie-selection-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .menu-nav {
+        gap: 20px;
+    }
+
+    .menu-item {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .movie-selection-content {
+        grid-template-columns: 1fr;
+    }
+
 }

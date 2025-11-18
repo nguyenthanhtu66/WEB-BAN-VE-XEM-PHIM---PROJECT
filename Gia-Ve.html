@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Đăng Nhập</title>
-    <link rel="stylesheet" href="style/login-style.css">
+    <title>Title</title>
+    <link rel="stylesheet" href="style/price.css">
 </head>
 <body>
 <div id="app" class="app">
@@ -58,37 +58,61 @@
         </div>
     </div>
     <div class="main-container" id="main-container">
-        <div class ="login">
-            <form action="" class="login-form" method="post">
-                <h2>Đăng Nhập</h2>
-                <div class = "field-input">
-                    <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="Nhập email đăng nhập" required>
-                </div>
+        <h1>BẢNG GIÁ VÉ XEM PHIM</h1>
+        <p>Áp dụng từ ngày 1/11/2025.</p>
+        <table>
+            <caption>GIÁ VÉ NGƯỜI LỚN</caption>
+            <thead>
+            <tr>
+                <th>Loại Vé</th>
+                <th>Ngày Thường (Thứ 2 - Thứ 5)</th>
+                <th>Cuối Tuần (Thứ 6 - Chủ Nhật)</th>
+                <th>Ngày Lễ / Tết</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Vé 2D</td>
+                <td>80.000 VNĐ</td>
+                <td>100.000 VNĐ</td>
+                <td>120.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Vé 3D</td>
+                <td>100.000 VNĐ</td>
+                <td>130.000 VNĐ</td>
+                <td>150.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Vé VIP</td>
+                <td>120.000 VNĐ</td>
+                <td>150.000 VNĐ</td>
+                <td>180.000 VNĐ</td>
+            </tr>
+            </tbody>
+        </table>
 
-                <div class = "field-input">
-                    <label for="password">Mật khẩu</label>
-                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
-
-                </div>
-
-                <div class ="login-option">
-                    <label>
-                        <input type="checkbox">Ghi nhớ đăng nhập
-                    </label>
-                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
-                </div>
-
-                <button type="submit" class = "login-button">Đăng nhập</button>
-
-                <div class = "login-register">
-                    Bạn chưa có tài khoản? <a href="Register.html">Đăng ký</a>
-
-                </div>
-            </form>
-        </div>
+        <br>
+        <table>
+            <caption>GIÁ VÉ TRẺ EM VÀ NGƯỜI CAO TUỔI</caption>
+            <thead>
+            <tr>
+                <th>Đối Tượng</th>
+                <th>Giá Vé (Mọi suất chiếu)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Trẻ em (&lt; 1.2m)</td>
+                <td>50.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Người cao tuổi (&gt; 60 tuổi)</td>
+                <td>60.000 VNĐ</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
     <!-- Footer -->
     <div class="footer">
         <div class="footer-top">
@@ -122,7 +146,4 @@
     </div>
 </div>
 </body>
-<script>
-
-</script>
 </html>
