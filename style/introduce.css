@@ -47,7 +47,7 @@ body {
     padding: 6px 12px;
     border-radius: 4px;
     transition: all 0.3s ease;
-    text-decoration: none; /* để a href không bị gạch chân */
+    text-decoration: none;
 }
 
 .header-item:hover {
@@ -175,160 +175,167 @@ body {
     padding-left: 25px;
 }
 
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2e2e2e 100%);
+    padding: 80px 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff6600;
+}
 
-/* Tin tuc -> Tin dien anh */
+.hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #ff6600;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero-subtitle {
+    font-size: 22px;
+    color: #fff ;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Main Content */
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
-}
-.promotion-menu {
-    max-width: 1160px;
-    margin: 30px auto 10px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 40px;
-    padding: 0;
+    padding: 60px 20px;
 }
 
-.promotion-status-container{
-    border-left: 3px solid #ff6600;
-    padding: 10px 20px;
-    font-weight: bold;
-    color: #fff;
+.section {
+    margin-bottom: 80px;
 }
 
-.promotion-status:first-child {
-    color: #fff;
-    font-weight: 700;
-    padding-left: 20px;
-    border-left: 4px solid #ff6600;
-    margin-right: 40px;
+.section-title {
+    font-size: 36px;
+    color: #ff6600;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff6600, transparent);
+}
+
+.about-content {
+    background: #1e1e1e;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    line-height: 1.8;
     font-size: 16px;
 }
-.promotion-selection-content {
+
+.about-content p {
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Features Grid */
+.features-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
-    padding: 20px 0;
-}
-.promotion-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
-.promotion-card {
-    background-color: #1e1e1e;
-    border-radius: 12px;
-    overflow: hidden;
-    height: 100%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-.promotion-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 32px rgba(255, 102, 0, 0.3);
-}
-
-.promotion-poster {
-    width: 100%;
-    height: 210px;
-    background: linear-gradient(135deg, #2e2e2e 0%, #1e1e1e 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.promotion-poster img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.promotion-info {
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-}
-.promotion-info p {
-    font-size: 14px;
-    color: #ccc;
-    margin:  0;
-    line-height: 1.35;
-}
-.promotion-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.35;
-    margin-bottom: 10px;
-    flex: 1;
-
-}
-/* Pagination (phân trang) */
-.pagination {
-    display: flex;
-    justify-content: center;
     margin-top: 40px;
-    gap: 10px;
 }
 
-.pagination a {
-    text-decoration: none;
-    color: #ccc;
-    padding: 10px 16px;
-    background-color: #1e1e1e;
-    border-radius: 8px;
-    border: 1px solid #333;
-    font-weight: 600;
-    transition: all 0.25s ease;
+.feature-card {
+    background: #1e1e1e;
+    padding: 35px;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.pagination a:hover {
+.feature-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff6600;
+    box-shadow: 0 12px 30px rgba(255, 102, 0, 0.2);
+}
+
+
+.feature-title {
+    font-size: 22px;
     color: #ff6600;
-    border-color: #ff6600;
-    transform: translateY(-2px);
+    margin-bottom: 15px;
+    font-weight: 600;
 }
 
-.pagination .active {
-    background-color: #ff6600;
+.feature-description {
     color: #fff;
-    border-color: #ff6600;
+    line-height: 1.6;
+    font-size: 15px;
 }
 
-.pagination .disabled {
-    opacity: 0.4;
-    pointer-events: none;
-}
-.page-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
+/* Stats Section */
+.stats-section {
+    background: linear-gradient(135deg, #ff6600 0%, #ff8533 100%);
+    padding: 60px 40px;
+    border-radius: 15px;
+    margin: 60px 0;
 }
 
-/* Dấu ... (không hover, không click) */
-.pagination .dots {
-    pointer-events: none;           /* không cho click */
-    background-color: transparent;  /* trong suốt */
-    border: none;                   /* không viền */
-    color: #999;                    /* màu xám nhẹ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    text-align: center;
+}
+
+.stat-item {
+    color: #fff;
+}
+
+.stat-number {
+    font-size: 48px;
     font-weight: 700;
-    padding: 10px 12px;
+    margin-bottom: 10px;
 }
 
-/* Tắt hiệu ứng hover riêng cho dấu ... */
-.pagination .dots:hover {
-    color: #999 !important;
-    background-color: transparent !important;
-    border: none !important;
-    transform: none !important;
+.stat-label {
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+/* Mission Section */
+.mission-vision {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.mission-card {
+    background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+    padding: 40px;
+    border-radius: 15px;
+    border-left: 5px solid #ff6600;
+}
+
+.mission-card h3 {
+    color: #ff6600;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.mission-card p {
+    color: #fff;
+    line-height: 1.8;
+    font-size: 15px;
 }
 
 /* Footer */
@@ -397,7 +404,6 @@ body {
     height: 36px;
     filter: brightness(0.9);
     transition: all 0.3s ease;
-
 }
 
 .footer-social img:hover {
@@ -410,28 +416,28 @@ body {
     color: #999;
 }
 
-
-@media (max-width: 968px) {
-    .movie-selection-content {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 36px;
     }
 
-    .menu-nav {
-        gap: 20px;
+    .hero-subtitle {
+        font-size: 18px;
     }
 
-    .menu-item {
-        font-size: 14px;
-        padding: 6px 12px;
+    .section-title {
+        font-size: 28px;
     }
 
-}
-
-@media (max-width: 640px) {
-    .movie-selection-content {
+    .features-grid {
         grid-template-columns: 1fr;
     }
 
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mission-vision {
+        grid-template-columns: 1fr;
+    }
 }
-
-
