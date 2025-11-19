@@ -244,7 +244,14 @@ body {
     color: #333;
 }
 #city {
-    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: 2px solid #4c4c4c;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #0b0b0b;
+
 }
 
 .register-button {
