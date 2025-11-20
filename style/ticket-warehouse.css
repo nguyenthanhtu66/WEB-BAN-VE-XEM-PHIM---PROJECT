@@ -1,23 +1,23 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #121212;
-    color: #e0e0e0;
-    box-sizing: border-box;
+    margin: 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2e2e2e;
+    color: #fff;
 }
 
 header {
     width: 100%;
-    height: 5vh;
-    background-color: black;
+    height: 64px;
+    background-color: rgb(30, 30, 30);
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: end;
 
 }
 
 header .content-header {
-    margin-right: 100px;
-    text-align: right;
+    margin-right: 130px;
 }
 
 .content-header div {
@@ -75,74 +75,87 @@ header .content-header {
     color: #ff6600;
     margin-bottom: 5px;
 }
-.menu{
+
+.menu {
     width: fit-content;
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr 1fr;
 }
-.menu div{
+
+.menu div {
     margin: 0px;
     padding: 10px;
-    
+
 }
-.menu-items:first-child{    
+
+.menu-items:first-child {
     border-right: 1.5px solid grey;
 }
-.menu-items:first-child span{  
-    padding: 10px;  
-    border-bottom:3px solid grey ;
+
+.menu-items:first-child span {
+    padding: 10px;
+    border-bottom: 3px solid grey;
 }
-.menu-items:nth-child(2){    
+
+.menu-items:nth-child(2) {
     border-left: 1.5px solid grey;
 }
-.menu-items:nth-child(2) span{    
-    padding: 10px;  
-    border-bottom:3px solid grey ;
+
+.menu-items:nth-child(2) span {
+    padding: 10px;
+    border-bottom: 3px solid grey;
 }
-.menu-items:hover:first-child{    
+
+.menu-items:hover:first-child {
     border-right: 1.5px solid grey;
     color: #ff6600;
     cursor: pointer;
 }
-.menu-items:hover:nth-child(2){    
+
+.menu-items:hover:nth-child(2) {
     border-left: 1.5px solid grey;
     color: #ff6600;
     cursor: pointer;
 }
-#active span{
+
+#active span {
     color: #ff6600;
-    border-bottom:3px solid#ff6600;
+    border-bottom: 3px solid#ff6600;
 }
-a{
+
+a {
     text-decoration: none;
     color: white;
 }
 
 
-.user-container .my-ticket-container {
+.my-ticket-container {
     margin-top: 50px;
-    background-color: black;
+    background-color: rgb(30,30,30);
     padding: 20px;
     border-radius: 15px;
 }
+
 .section-title {
     color: #ff6600;
     text-align: center;
     margin-bottom: 25px;
     font-size: 1.8em;
 }
+
 .ticket-item {
-    background-color: #2c2c2c; 
+    background-color: #2c2c2c;
     padding: 15px 20px;
     margin-bottom: 15px;
     border-radius: 6px;
 }
 
 .ticket-item.upcoming {
-    border-left: 5px solid #ff6600; 
+    border-left: 5px solid #ff6600;
 }
+
 .ticket-item.history {
-    border-left: 5px solid #666; 
+    border-left: 5px solid #666;
 }
 
 .ticket-header {
@@ -164,6 +177,7 @@ a{
     margin: 4px 0;
     font-size: 0.95em;
 }
+
 .ticket-status {
     padding: 3px 8px;
     border-radius: 4px;
@@ -172,20 +186,100 @@ a{
 }
 
 .ticket-status.confirmed {
-    background-color: #28a745; 
+    background-color: #28a745;
     color: white;
 }
+
 .ticket-status.expired {
-    background-color: #dc3545; 
+    background-color: #dc3545;
     color: white;
 }
+
 .view-detail-btn {
     background-color: #ff6600;
-    color: #1a1a1a; 
+    color: #1a1a1a;
     border: none;
     padding: 8px 15px;
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
     font-weight: bold;
+}
+
+.footer {
+    background: linear-gradient(135deg, #1e1e1e 0%, #0b0b0b 100%);
+    color: #ccc;
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-top: 80px;
+}
+
+.footer a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ff6600;
+}
+
+.footer-top {
+    border-bottom: 1px solid #4c4c4c;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+}
+
+.footer-menu {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    padding: 0;
+    margin: 0 0 25px 0;
+    font-size: 15px;
+}
+
+.footer-apps {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-apps img {
+    height: 42px;
+    transition: transform 0.3s ease;
+}
+
+.footer-apps img:hover {
+    transform: scale(1.1);
+}
+
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 15px;
+}
+
+.footer-social img {
+    width: 36px;
+    height: 36px;
+    filter: brightness(0.9);
+    transition: all 0.3s ease;
+
+}
+
+.footer-social img:hover {
+    filter: brightness(1.2);
+    transform: scale(1.15);
+}
+
+.footer-bottom {
+    font-size: 14px;
+    color: #999;
 }
