@@ -51,14 +51,14 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" style="text-decoration: none;" href="Gia-Ve.html">GIÁ VÉ</a>
+                    <a class="menu-item" href="Gia-Ve.html">GIÁ VÉ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" style="text-decoration: none;" href="Gioi-Thieu.html">GIỚI THIỆU</a>
+                    <a class="menu-item" href="Gioi-Thieu.html">GIỚI THIỆU</a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" style="text-decoration: none;" href="contact.html">LIÊN HỆ</a>
+                    <a class="menu-item" href="contact.html">LIÊN HỆ</a>
                 </div>
             </nav>
         </div>
@@ -458,7 +458,7 @@
             </div>
 
             <div class="form-buttons">
-                <button class="btn-submit" onclick="submitBooking()">Đặt vé</button>
+                <a href="Thanh-toan.html" class="btn-submit">Đặt vé</a>
                 <button class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
             </div>
         </div>
@@ -494,10 +494,9 @@
 </div>
 </body>
 <script>
-
-    document.getElementById('reset-button').addEventListener('click', function () {
-        window.alert("Bạn đã đặt vé thành công !")
-    })
+    // document.getElementById('reset-button').addEventListener('click', function () {
+    //     window.alert("Bạn đã đặt vé thành công !")
+    // })
     function openBookingModal() {
         document.getElementById('bookingModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
