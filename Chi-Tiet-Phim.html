@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>DTN Ticket Movie Seller</title>
     <link rel="stylesheet" href="style/detail.css">
 </head>
 <body>
@@ -232,7 +232,7 @@
                 </div>
 
                 <div class="form-buttons">
-                    <button class="btn-submit" onclick="submitBooking()">Đặt vé</button>
+                    <a href="Thanh-toan.html" style="text-decoration: none" class="btn-submit">Đặt vé</a>
                     <button class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
                 </div>
             </div>
@@ -280,10 +280,6 @@
         if (event.target == modal) {
             closeBookingModal();
         }
-    }
-    function submitBooking() {
-        alert("Bạn đã đặt vé thành công !");
-        closeBookingModal();
     }
 </script>
 </body>
