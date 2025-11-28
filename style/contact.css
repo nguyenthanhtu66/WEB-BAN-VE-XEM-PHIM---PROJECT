@@ -355,9 +355,13 @@ h1{
 
 .section-title {
     text-align: center;
+<<<<<<< HEAD
+    margin-bottom: 20px;
+=======
     font-size: 26px;
     margin-bottom: 40px;
     color: #ff6600;
+>>>>>>> 44d191b8d57668548bd1084c329a2fdca4e0a60f
 }
 
 .description {
