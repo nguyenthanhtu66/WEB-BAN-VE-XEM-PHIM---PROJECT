@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +30,7 @@
     <div class="header-menu">
         <div class="menu-container">
             <a href="index.html" class="logo">
-                <img src="img/231601886-Photoroom.png" alt="dtn logo">
+                <img src="image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
             <nav class="menu-nav">
