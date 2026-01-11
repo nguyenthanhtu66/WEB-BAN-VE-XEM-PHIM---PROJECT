@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WEB BÁN VÉ XEM PHIM</title>
+    <link rel="stylesheet" href="style/index.css">
+</head>
+
+<body>
+    <div id="app" class="app">
+        <div class="header-label" id="header-label">
+            <div class="header-container">
+                <div class="header-account">
+                    <a href="Trang-Kho-Ve.html" class="header-item">Kho vé</a>
+                    <a href="Trang-Uu-Dai.html" class="header-item">Ưu đãi</a>
+                    <a href="Login.html" class="header-item">Đăng nhập</a>
+                </div>
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="menu-container">
+                <a class="logo" href="#">
+                    <img src="logo.png" alt="dtn logo">
+                </a>
+
+                <nav class="menu-nav">
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">TRANG CHỦ</div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item has-dropdown">PHIM</div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item">Phim Đang Chiếu</div>
+                            <div class="dropdown-item">Phim Sắp Chiếu</div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item has-dropdown">TIN TỨC</div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item">Tin điện ảnh</div>
+                            <div class="dropdown-item">Đánh giá phim</div>
+
+                        </div>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <a href="Trang-Liên-Hệ.html" class="menu-item">LIÊN HỆ</a>
+                    </div>
+
+                    <div class="menu-item-wrapper">
+                        <div class="menu-item">GIỚI THIỆU</div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="main-container" id="main-container">
+            <div class="slideshow-container">
+
+                <div class="slider-container" id="mySlider">
+                    <div class="slider-track">
+                        <div class="slide"> <img
+                                src="https://media.lottecinemavn.com/Media/WebAdmin/90f3d123eed94b9ab16f0755f3617ac0.jpg"
+                                alt=""></div>
+
+                    </div>
+                </div>
+                <button class="slider-btn prev" id="prevBtn">❮</button>
+                <button class="slider-btn next" id="nextBtn">❯</button>
+                <div class="slider-dots" id="sliderDots">
+                </div>
+            </div>
+            <div class="filter-bar">
+                <select id="filter-genre">
+                    <option value="">Chọn Phim</option>
+                </select>
+
+                <select id="filter-cinema">
+                    <option value="">Chọn rạp</option>
+                </select>
+
+                <select id="filter-location">
+                    <option value="">Chọn Thời Gian</option>
+                </select>
+                <button id="reset-button">
+                    Đặt vé nhanh
+                </button>
+            </div>
+            <!-- Movie Tabs -->
+            <div class="movie-selection">
+                <div class="movie-status active">PHIM ĐANG CHIẾU</div>
+                <div class="movie-status">PHIM SẮP CHIẾU</div>
+            </div>
+
+            <!-- Movie Cards (Static HTML) -->
+            <div class="movie-selection-content">
+                <!-- Movie 1 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Avengers: Endgame</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 181 phút</p>
+                        <p class="movie-rating">★ 8.4/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 2 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Spider-Man: No Way Home</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 148 phút</p>
+                        <p class="movie-rating">★ 8.2/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 3 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>The Batman</h3>
+                        <p class="movie-genre">Hành động, Tội phạm</p>
+                        <p class="movie-duration">⏱ 176 phút</p>
+                        <p class="movie-rating">★ 7.8/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 4 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Doctor Strange 2</h3>
+                        <p class="movie-genre">Hành động, Giả tưởng</p>
+                        <p class="movie-duration">⏱ 126 phút</p>
+                        <p class="movie-rating">★ 7.5/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 5 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Top Gun: Maverick</h3>
+                        <p class="movie-genre">Hành động, Chính kịch</p>
+                        <p class="movie-duration">⏱ 131 phút</p>
+                        <p class="movie-rating">★ 8.6/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 6 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Black Panther 2</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 161 phút</p>
+                        <p class="movie-rating">★ 7.9/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 7 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Avatar 2</h3>
+                        <p class="movie-genre">Khoa học viễn tưởng</p>
+                        <p class="movie-duration">⏱ 192 phút</p>
+                        <p class="movie-rating">★ 8.1/10</p>
+                    </div>
+                </div>
+
+                <!-- Movie 8 -->
+                <div class="movie-card">
+                    <div class="movie-info">
+                        <h3>Jurassic World 3</h3>
+                        <p class="movie-genre">Hành động, Phiêu lưu</p>
+                        <p class="movie-duration">⏱ 147 phút</p>
+                        <p class="movie-rating">★ 7.2/10</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="see-more-btn">Xem thêm</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-top">
+                <ul class="footer-menu">
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Phim đang chiếu</a></li>
+                    <li><a href="#">Phim sắp chiếu</a></li>
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Hỏi đáp</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+                <div class="footer-apps">
+                    <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                    <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Đề tài project môn lập trình web của nhóm 33</p>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+</html>
