@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gio hang</title>
+    <link rel="stylesheet" href="style/gio-hang.css">
+</head>
+<body>
+<div id="app" class="app">
+    <!-- Header Label với Search -->
+    <div class="header-label">
+        <div class="header-container">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
+            </div>
+            <div class="header-account">
+                <a href="ticket-warehouse.html" class="header-item">Kho vé</a>
+                <a href="Khuyen-mai.html" class="header-item">Khuyến mãi</a>
+                <a href="gio-hang.html" class="header-item">
+                    Giỏ hàng
+                    <span class="cart-badge">3</span>
+                </a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Menu -->
+    <div class="header-menu">
+        <div class="menu-container">
+            <a href="index.html" class="logo">
+                <img src="image/231601886-Photoroom.png" alt="dtn logo">
+            </a>
+            <nav class="menu-nav">
+                <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                <a href="Phim-Dang-Chieu.html" class="menu-item">PHIM</a>
+                <a href="Tin-dien-anh.html" class="menu-item">TIN TỨC</a>
+                <a href="Gia-Ve.html" class="menu-item">GIÁ VÉ</a>
+                <a href="Gioi-Thieu.html" class="menu-item">GIỚI THIỆU</a>
+                <a href="contact.html" class="menu-item">LIÊN HỆ</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <h1 class="page-title">Giỏ Hàng Của Bạn</h1>
+
+        <div class="cart-container">
+            <!-- Cart Items -->
+            <div class="cart-items">
+                <!-- Item 1 -->
+                <div class="cart-item">
+                    <div class="item-poster">
+                        <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Spider-Man: No Way Home</h3>
+                        <div class="item-info">
+                            <div class="info-row">
+                                <span class="info-label">Phòng chiếu:</span>
+                                <span>Phòng A</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ngày giờ:</span>
+                                <span>11/11/2025 17:30</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Loại vé:</span>
+                                <span>Người lớn</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ghế:</span>
+                                <span class="item-seats">A19, A20</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn">−</button>
+                                <span class="quantity-value">2</span>
+                                <button class="quantity-btn">+</button>
+                            </div>
+                            <span class="item-price">200.000 đ</span>
+                            <div class="action-icons">
+                                <button class="icon-btn edit" title="Chỉnh sửa">✏️</button>
+                                <button class="icon-btn delete" title="Xóa">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="cart-item">
+                    <div class="item-poster">
+                        <img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar: The Way of Water">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">Avatar: The Way of Water</h3>
+                        <div class="item-info">
+                            <div class="info-row">
+                                <span class="info-label">Phòng chiếu:</span>
+                                <span>Phòng B</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ngày giờ:</span>
+                                <span>12/11/2025 20:00</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Loại vé:</span>
+                                <span>Học sinh/Sinh viên</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ghế:</span>
+                                <span class="item-seats">B15</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn">−</button>
+                                <span class="quantity-value">1</span>
+                                <button class="quantity-btn">+</button>
+                            </div>
+                            <span class="item-price">80.000 đ</span>
+                            <div class="action-icons">
+                                <button class="icon-btn edit" title="Chỉnh sửa">✏️</button>
+                                <button class="icon-btn delete" title="Xóa">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="cart-item">
+                    <div class="item-poster">
+                        <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Batman">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">The Batman</h3>
+                        <div class="item-info">
+                            <div class="info-row">
+                                <span class="info-label">Phòng chiếu:</span>
+                                <span>Phòng C</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ngày giờ:</span>
+                                <span>13/11/2025 19:30</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Loại vé:</span>
+                                <span>Người lớn</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Ghế:</span>
+                                <span class="item-seats">C10, C11, C12</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn">−</button>
+                                <span class="quantity-value">3</span>
+                                <button class="quantity-btn">+</button>
+                            </div>
+                            <span class="item-price">300.000 đ</span>
+                            <div class="action-icons">
+                                <button class="icon-btn edit" title="Chỉnh sửa">✏️</button>
+                                <button class="icon-btn delete" title="Xóa">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <h2 class="summary-title">Tổng Đơn Hàng</h2>
+
+                <div class="summary-row">
+                    <span>Tạm tính:</span>
+                    <span>580.000 đ</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Phí dịch vụ:</span>
+                    <span>10.000 đ</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Giảm giá:</span>
+                    <span style="color: #2ecc71;">-50.000 đ</span>
+                </div>
+
+                <div class="promo-code">
+                    <div class="promo-input">
+                        <input type="text" placeholder="Nhập mã khuyến mãi">
+                        <button>Áp dụng</button>
+                    </div>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Tổng cộng:</span>
+                    <span class="amount">540.000 đ</span>
+                </div>
+
+                <button class="checkout-btn">Thanh toán</button>
+                <a href="index.html" class="continue-shopping">← Tiếp tục mua vé</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <ul class="footer-menu">
+            <li><a href="Chinh-sach.html">Chính sách</a></li>
+            <li><a href="Phim-Dang-Chieu.html">Phim đang chiếu</a></li>
+            <li><a href="Phim-Sap-Chieu.html">Phim sắp chiếu</a></li>
+            <li><a href="Tin-dien-anh.html">Tin tức</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+        </ul>
+        <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>

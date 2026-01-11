@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DTN Ticket Movie Seller</title>
+    <link rel="stylesheet" href="style/Tin-tuc-chi-tiet-style.css">
+</head>
+<body>
+<div id="app" class="app">
+    <!-- Header Label với Search -->
+    <div class="header-label">
+        <div class="header-container">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
+            </div>
+            <div class="header-account">
+                <a href="ticket-warehouse.html" class="header-item">Kho vé</a>
+                <a href="Khuyen-mai.html" class="header-item">Khuyến mãi</a>
+                <a href="gio-hang.html" class="header-item">
+                    Giỏ hàng
+                    <span class="cart-badge">3</span>
+                </a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class="header-menu">
+        <div class="menu-container">
+            <a href="index.html" class="logo">
+                <img src="image/231601886-Photoroom.png" alt="dtn logo">
+            </a>
+
+            <nav class="menu-nav">
+                <div class="menu-item-wrapper">
+                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">PHIM</div>
+                    <div class="dropdown-menu">
+                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim đang chiếu</a>
+                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim sắp chiếu</a>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown" style="color: #ff6600;">TIN TỨC</div>
+                    <div class="dropdown-menu">
+                        <a href="Tin-dien-anh.html" style="color: #ff6600;" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" href="Gia-Ve.html">GIÁ VÉ</a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" href="Gioi-Thieu.html">GIỚI THIỆU</a>
+                </div>
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" href="contact.html">LIÊN HỆ</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="main-container" id="main-container">
+        <div class="article">
+
+            <h1 class="article-title">
+                Truy Tìm Long Diên Hương – Kỳ vọng gì ở phim hài hành động của Action C?
+            </h1>
+
+            <div class="article-meta">
+                <a href="Tin-dien-anh.html" class="news-type">Tin điện ảnh</a>
+                <span class="news-date">13/11/2025</span>
+            </div>
+
+            <!-- Nội dung đoạn mở đầu -->
+            <p>
+                Truy Tìm Long Diên Hương là bộ phim hành động hài mới của nhóm Action C, hứa hẹn bùng nổ
+                với câu chuyện, võ thuật và văn hóa Việt.
+            </p>
+
+            <p>
+                Nếu là người mê các clip võ thuật trên mạng, chắc hẳn bạn không lạ gì cái tên Action C –
+                nhóm cascadeur nổi tiếng với những video đánh đấm “chân thực đến từng cú đấm”. Sau nhiều
+                năm hoạt động trong lĩnh vực phim ngắn và hành động kỹ thuật, nhóm quyết định bước lên
+                màn ảnh rộng với dự án điện ảnh đầu tay Truy Tìm Long Diên Hương, do Dương Minh Chiến
+                làm đạo diễn.
+            </p>
+
+            <p>
+                Ngay từ khi tung teaser, phim đã gây chú ý nhờ không khí vừa kịch tính vừa hài hước, cùng
+                phong cách hành động đẹp mắt. Giữa bối cảnh điện ảnh Việt đang chuộng thể loại kinh dị hay
+                tâm lý xã hội, sự xuất hiện của một bộ phim hài – hành động đậm chất Việt khiến khán giả không
+                khỏi tò mò liệu rằng Action C có đủ sức mang lại làn gió mới hay không?
+            </p>
+            <img src="img/phimactionc.jpg" class="article-img" alt="">
+
+
+            <h2 class="section-title">
+                1. Câu chuyện hài hước pha hành động đậm chất Việt
+            </h2>
+
+            <p>
+                Truy Tìm Long Diên Hương kể về hành trình hai anh em Tâm (Quang Tuấn) và Tuấn (Ma Ran Đô) truy tìm
+                báu vật Long Diên Hương – món bảo vật gắn liền với truyền thuyết vùng biển – sau khi bị một băng
+                nhóm xã hội đen đánh cắp. Trên đường truy tìm, họ đối đầu với Cường Liều (Doãn Quốc Đam), một tay
+                trùm nguy hiểm nhưng không kém phần… lầy lội.
+            </p>
+
+            <img src="https://i.imgur.com/iBwtRXH.jpg" class="article-img" alt="">
+
+            <p>
+                Nghe qua, kịch bản tưởng chừng đơn giản, nhưng điểm đáng nói là cách phim chọn kể câu chuyện vừa đậm chất
+                hành động, vừa đời thường, lại chan chứa tình người miền biển. Không phải kiểu hài “tấu hài lố” hay hành
+                động kiểu nghiêm túc, mà là những mảng miếng nhẹ nhàng, tự nhiên và gần gũi.
+            </p>
+
+            <p>
+                Phim hứa hẹn kết hợp chất hài duyên dáng với nhịp phim nhanh, gọn, giàu năng lượng. Nhiều người cho rằng
+                đây có thể là bước tiến gần hơn tới phong cách phim hành động – hài kiểu Thái Lan hay Hong Kong, nhưng
+                mang linh hồn Việt Nam, nơi tiếng cười xuất phát từ tình huống và tính cách nhân vật chứ không phải trò
+                gượng ép.
+            </p>
+
+            <p>
+                Nhà Ma Xó không ngoại lệ. Gia đình Quý bám sông mà sống, chết trên sông, gắn liền thanh
+                xuân với sông nước... đạo diễn kỳ cựu tiếp tục sử dụng nguyên tố mềm mại nhất và triết lý
+                phản chiếu để khắc họa những lát cắt trong gia đình cậu Quý (Quang Tuấn). Bộ phim này sẽ
+                thấm nhuần phong cách trữ tình, chậm rãi và phép ẩn dụ sâu sắc của Trương Dũng.
+            </p>
+
+            <h2 class="section-title">
+                2. Mảng hành động đặc sản – linh hồn của Action C
+            </h2>
+
+            <p>
+                Nhắc đến Action C, người ta nghĩ ngay đến những cảnh đánh tay đôi mướt mắt, cú ngã thật, đòn thế thật,
+                và cảm giác “đau thật” mà ít phim Việt nào làm được. Từ lâu, nhóm đã tạo dựng tên tuổi trong cộng đồng
+                điện ảnh độc lập nhờ các clip hành động cực chất, được đầu tư công phu dù không có kinh phí lớn.
+            </p>
+
+            <img src="https://i.imgur.com/6HZa6ST.jpg" class="article-img" alt="">
+
+            <p>
+                Trong Truy Tìm Long Diên Hương, đạo diễn Dương Minh Chiến – người từng là cascadeur kỳ cựu và sáng lập
+                nhóm hành động Action C, đã mang kinh nghiệm thực chiến của mình lên màn ảnh rộng. Thay vì dựa vào kỹ xảo,
+                anh ưu tiên phong cách hành động chân thật, mạnh mẽ và đậm chất điện ảnh. Mỗi cảnh chiến đấu trong phim
+                đều được dàn dựng công phu, chú trọng cảm xúc và câu chuyện của nhân vật.
+            </p>
+
+            <p>
+                Teaser phim hé lộ nhiều cảnh đấu tay đôi, rượt đuổi bằng xe máy và đâm chém trong không gian làng chài,
+                tất cả đều được thực hiện thủ công, hạn chế CGI. Đó là điều khán giả yêu phim hành động Việt đang mong
+                chờ – những pha võ thuật chân thật và kỹ thuật dàn dựng đậm bản sắc Action C.
+            </p>
+
+            <img src="https://i.imgur.com/AlmkdBW.jpg" class="article-img" alt="">
+
+            <h2 class="section-title">
+                3. Dàn diễn viên thực lực và cá tính
+            </h2>
+
+            <p>
+                Không chỉ trông chờ vào kỹ thuật hành động, Truy Tìm Long Diên Hương còn thu hút với dàn diễn viên giàu
+                kinh nghiệm. Quang Tuấn, người từng ghi dấu ấn trong các phim kinh dị, lần này sẽ thử sức với hình tượng
+                người anh trầm tĩnh nhưng đầy máu lửa lẫn hài hước. Ma Ran Đô lại mang đến năng lượng trẻ trung,
+                duyên dáng. Sự kết hợp của họ hứa hẹn tạo ra một cặp đôi anh em vừa ăn ý vừa đối lập, đem đến nhiều mảng
+                miếng thú vị.
+            </p>
+
+            <img src="https://i.imgur.com/TasaI0P.jpg" class="article-img" alt="">
+
+            <p>
+                Bên cạnh đó, Doãn Quốc Đam trong vai phản diện Cường Liều chắc chắn là tâm điểm. Anh vốn quen thuộc với
+                hình ảnh lạnh lùng, gai góc, nhưng lần này, nhân vật của anh được hé lộ là “ác mà vui”, mang nét dí dỏm
+                khác hẳn mọi vai trước. Chỉ riêng cái tên “Cường Liều” đã đủ khiến khán giả tò mò.
+            </p>
+
+            <p>
+                Phim còn có sự tham gia của Nguyên Thảo, Hoàng Tóc Dài, NSND Thanh Nam, Quốc Nam – những gương mặt tạo
+                nên độ “đời” và hơi thở dân gian cho câu chuyện. Sự kết hợp giữa các thế hệ diễn viên, từ kỳ cựu đến trẻ
+                trung, giúp phim vừa có sự chắc tay về diễn xuất, vừa không mất đi sức sống mới.
+            </p>
+
+            <img src="https://i.imgur.com/i2gEECv.jpg" class="article-img" alt="">
+            <p>
+                Truy Tìm Long Diên Hương không chỉ là câu chuyện về hai anh em đi tìm báu vật bị đánh cắp. Đằng sau đó
+                là hành trình của đạo diễn Dương Minh Chiến và nhóm Action C trong việc khẳng định năng lực làm phim
+                hành động Việt Nam. Trong thời điểm mà khán giả đang mong đợi những sản phẩm giải trí vừa hấp dẫn, vừa
+                mang tinh thần Việt, Truy Tìm Long Diên Hương có lẽ là cái tên đáng để kỳ vọng.
+            </p>
+            <p>
+                Truy Tìm Long Diên Hương dự kiến khởi chiếu tại các rạp trên toàn quốc từ ngày 14.11.2025.
+            </p>
+            <div class="book-btn-container">
+                <a href="Chi-Tiet-Phim.html" class="book-btn" role="button">Đặt vé Truy Tìm Long Diễn</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-top">
+            <ul class="footer-menu">
+                <li><a href="Chinh-sach.html">Chính sách</a></li>
+                <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
+                <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
+                <li><a href="Tin-dien-anh.html">Tin tức</a></li>
+                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+            </ul>
+            <div class="footer-apps">
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
+            <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
+            <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
