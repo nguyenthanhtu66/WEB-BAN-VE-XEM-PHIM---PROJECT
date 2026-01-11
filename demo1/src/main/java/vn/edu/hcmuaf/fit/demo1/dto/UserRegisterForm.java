@@ -1,13 +1,11 @@
 package vn.edu.hcmuaf.fit.demo1.dto;
 
-import java.time.LocalDate;
-
 public class UserRegisterForm {
     private String fullName;
     private String email;
     private String phone;
     private String gender;
-    private String brDate;
+    private String birthDate;
     private String password;
     private String confirmPass;
     private String city;
@@ -28,8 +26,8 @@ public class UserRegisterForm {
         return gender;
     }
 
-    public String getBrDate() {
-        return brDate;
+    public String getBirthDate() {
+        return birthDate;
     }
 
     public String getPassword() {
@@ -60,8 +58,8 @@ public class UserRegisterForm {
         this.gender = gender;
     }
 
-    public void setBrDate(String brDate) {
-        this.brDate = brDate;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public void setPassword(String password) {

@@ -34,6 +34,13 @@ body {
     gap: 20px;
 }
 
+.error {
+    color: red;
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+}
+
 .search-container {
     position: relative;
 }
