@@ -6,16 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b30a81ad-174a-460c-9e72-431c3b251c05" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Khuyen-mai.html" beforeDir="false" afterPath="$PROJECT_DIR$/Khuyen-mai.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Login.html" beforeDir="false" afterPath="$PROJECT_DIR$/Login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Register.html" beforeDir="false" afterPath="$PROJECT_DIR$/Register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tin-dien-anh.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tin-dien-anh.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tin-tuc-chi-tiet-1.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tin-tuc-chi-tiet-1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/Tin-tuc-chi-tiet-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/Tin-tuc-chi-tiet-style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/login-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/login-style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/register-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/register-style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,16 +16,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="TypeScript File" />
         <option value="CSS File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
@@ -46,29 +32,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;disable.download.node.interpreter.editor.notification&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.breadcrumbs&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature/login-register",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.breadcrumbs",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Nhom 33 - Project\img" />
-    </key>
-  </component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -84,12 +64,9 @@
       <option name="presentableId" value="Default" />
       <updated>1761303082834</updated>
       <workItem from="1761303084688" duration="998000" />
-      <workItem from="1762939632828" duration="1920000" />
-      <workItem from="1763031982486" duration="12633000" />
-      <workItem from="1763171356901" duration="2890000" />
-      <workItem from="1763192383115" duration="775000" />
-      <workItem from="1763199221777" duration="2404000" />
-      <workItem from="1763860822246" duration="22539000" />
+      <workItem from="1762258579967" duration="1275000" />
+      <workItem from="1762604343444" duration="2049000" />
+      <workItem from="1762697282430" duration="6838000" />
     </task>
     <servers />
   </component>

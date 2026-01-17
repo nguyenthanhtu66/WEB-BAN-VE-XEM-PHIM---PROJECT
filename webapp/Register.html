@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>DTN Ticket Movie Seller</title>
-    <link rel="stylesheet" href="style/login-style.css">
+    <link rel="stylesheet" href="style/register-style.css">
 </head>
 <body>
 <div id="app" class="app">
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" style="text-decoration: none;" href="Trang-Liên-Hệ.html">GIỚI THIỆU</a>
+                    <a class="menu-item" style="text-decoration: none;" href="Gioi-Thieu.html">GIỚI THIỆU</a>
                 </div>
                 <div class="menu-item-wrapper">
                     <a class="menu-item" style="text-decoration: none;" href="contact.html">LIÊN HỆ</a>
@@ -66,31 +66,91 @@
         </div>
     </div>
     <div class="main-container" id="main-container">
-        <div class ="login">
-            <form action="" class="login-form" method="post">
-                <h2>Đăng Nhập</h2>
+        <div class ="register">
+            <form action="" class="register-form" method="post">
+                <h2>Đăng Ký</h2>
+                <div class = "field-input">
+                    <label for="fullName">Họ và tên</label>
+                    <input type="text" id ="fullName" name="fullName" placeholder="Nhập họ và tên" required>
+                </div>
+
                 <div class = "field-input">
                     <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="Nhập email đăng nhập" required>
+                    <input type="text" id="email" name="email" placeholder="Nhập email" required>
+                </div>
+
+                <div class = "field-input">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="tel" id ="phone" name="phoneNumber" placeholder="Nhập số điện thoại" required>
+                </div>
+
+                <div class = "field-input">
+                    <div class="gender-option">
+                        <label>
+                            <input type="radio" name="gender" value="male" required> Nam
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="female" required> Nữ
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field-input">
+                    <label for="birthDate">Ngày sinh</label>
+                    <input type="date" id="birthDate" name="birthDate" required>
                 </div>
 
                 <div class = "field-input">
                     <label for="password">Mật khẩu</label>
                     <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
-
                 </div>
 
-                <div class ="login-option">
-                    <label>
-                        <input type="checkbox">Ghi nhớ đăng nhập
-                    </label>
-                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                <div class = "field-input">
+                    <label for="confirmPassword">Nhập lại mật khẩu</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Nhập lại mật khẩu" required>
                 </div>
 
-                <button type="submit" class = "login-button">Đăng nhập</button>
+                <div class = "field-input">
+                    <label>Tỉnh/Thành phố</label>
+                    <select id="city" name="city" class ="city">
+                        <option>Chọn tỉnh/thành phố của bạn</option>
+                        <option>Hà Nội</option>
+                        <option>Huế</option>
+                        <option>Quảng Ninh</option>
+                        <option>Cao Bằng</option>
+                        <option>Lạng Sơn</option>
+                        <option>Lai Châu</option>
+                        <option>Điện Biên</option>
+                        <option>Sơn La</option>
+                        <option>Thanh Hoá</option>
+                        <option>Nghệ An</option>
+                        <option>Hà Tĩnh</option>
+                        <option>Tuyên Quang</option>
+                        <option>Lào Cai</option>
+                        <option>Thái Nguyên</option>
+                        <option>Phú Thọ</option>
+                        <option>Bắc Ninh</option>
+                        <option>Hưng Yên</option>
+                        <option>Hải Phòng</option>
+                        <option>Ninh Bình</option>
+                        <option>Quảng Trị</option>
+                        <option>Đà Nẵng</option>
+                        <option>Quảng Ngãi</option>
+                        <option>TP Hồ Chí Minh</option>
+                        <option>Đồng Nai</option>
+                        <option>Cà Mau</option>
 
-                <div class = "login-register">
-                    Bạn chưa có tài khoản? <a href="Register.html">Đăng ký</a>
+
+
+
+
+                    </select>
+                </div>
+
+                <button type="submit" class = "register-button">Đăng ký</button>
+
+                <div class = "register-login">
+                    Bạn đã có tài khoản?<a href="Login.html"> Đăng nhập</a>
 
                 </div>
             </form>
@@ -101,12 +161,21 @@
     <div class="footer">
         <div class="footer-top">
             <ul class="footer-menu">
+<<<<<<< HEAD:Register.html
+                <li><a href="#">Chính sách</a></li>
+                <li><a href="#">Phim đang chiếu</a></li>
+                <li><a href="#">Phim sắp chiếu</a></li>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="#">Hỏi đáp</a></li>
+                <li><a href="Trang-Liên-Hệ.html">Liên hệ</a></li>
+=======
                 <li><a href="Chinh-sach.html">Chính sách</a></li>
                 <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
                 <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
                 <li><a href="Tin-dien-anh.html">Tin tức</a></li>
                 <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
                 <li><a href="contact.html">Liên hệ</a></li>
+>>>>>>> 7381c38e3a0bdea280e6c321152b57e56831be02:webapp/Register.html
             </ul>
             <div class="footer-apps">
                 <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
@@ -126,7 +195,4 @@
     </div>
 </div>
 </body>
-<script>
-
-</script>
 </html>

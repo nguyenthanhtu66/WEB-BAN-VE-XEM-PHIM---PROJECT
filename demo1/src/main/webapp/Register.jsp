@@ -1,9 +1,12 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>DTN Ticket Movie Seller</title>
-    <link rel="stylesheet" href="style/register-style.css">
+    <link rel="stylesheet" href="css/register-style.css">
 </head>
 <body>
 <div id="app" class="app">
@@ -67,16 +70,20 @@
     </div>
     <div class="main-container" id="main-container">
         <div class ="register">
-            <form action="" class="register-form" method="post">
+            <form action="${pageContext.request.contextPath}/Register" class="register-form" method="post">
                 <h2>Đăng Ký</h2>
+                <p style="color:red">DEBUG ERRORS: ${errors}</p>
                 <div class = "field-input">
                     <label for="fullName">Họ và tên</label>
-                    <input type="text" id ="fullName" name="fullName" placeholder="Nhập họ và tên" required>
+                    <input type="text" id ="fullName" name="fullName" placeholder="Nhập họ và tên" value="${form.fullName}"  required>
                 </div>
 
                 <div class = "field-input">
                     <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="Nhập email" required>
+                    <input type="text" id="email" name="email" placeholder="Nhập email. VD: you@example.com" required>
+                    <c:if test="${not empty errors.email}">
+                        <div class="alert alert-danger"> role${errors.email}</div>
+                    </c:if>
                 </div>
 
                 <div class = "field-input">
@@ -112,37 +119,43 @@
 
                 <div class = "field-input">
                     <label>Tỉnh/Thành phố</label>
-                    <select id="city" name="city" class ="city">
-                        <option>Chọn tỉnh/thành phố của bạn</option>
-                        <option>Hà Nội</option>
-                        <option>Huế</option>
-                        <option>Quảng Ninh</option>
-                        <option>Cao Bằng</option>
-                        <option>Lạng Sơn</option>
-                        <option>Lai Châu</option>
-                        <option>Điện Biên</option>
-                        <option>Sơn La</option>
-                        <option>Thanh Hoá</option>
-                        <option>Nghệ An</option>
-                        <option>Hà Tĩnh</option>
-                        <option>Tuyên Quang</option>
-                        <option>Lào Cai</option>
-                        <option>Thái Nguyên</option>
-                        <option>Phú Thọ</option>
-                        <option>Bắc Ninh</option>
-                        <option>Hưng Yên</option>
-                        <option>Hải Phòng</option>
-                        <option>Ninh Bình</option>
-                        <option>Quảng Trị</option>
-                        <option>Đà Nẵng</option>
-                        <option>Quảng Ngãi</option>
-                        <option>TP Hồ Chí Minh</option>
-                        <option>Đồng Nai</option>
-                        <option>Cà Mau</option>
-
-
-
-
+                    <select id="city" name="city" class ="city" required>
+                        <option value="" >Chọn tỉnh/thành phố của bạn</option>
+                        <option value="Hà Nội" >Hà Nội</option>
+                        <option value="TP. Huế">TP. Huế</option>
+                        <option value="Quảng Ninh">Quảng Ninh</option>
+                        <option value="Cao Bằng">Cao Bằng</option>
+                        <option value="Lạng Sơn">Lạng Sơn</option>
+                        <option value="Lai Châu">Lai Châu</option>
+                        <option value="Điện Biên">Điện Biên</option>
+                        <option value="Sơn La">Sơn La</option>
+                        <option value="Thanh Hoá">Thanh Hoá</option>
+                        <option value="Nghệ An">Nghệ An</option>
+                        <option value="Hà Tĩnh">Hà Tĩnh</option>
+                        <option value="Tuyên Quang">Tuyên Quang</option>
+                        <option value="Lào Cai">Lào Cai</option>
+                        <option value="Thái Nguyên">Thái Nguyên</option>
+                        <option value="Phú Thọ">Phú Thọ</option>
+                        <option value="Bắc Ninh">Bắc Ninh</option>
+                        <option value="Hưng Yên">Hưng Yên</option>
+                        <option value="Hải Phòng">Hải Phòng</option>
+                        <option value="Ninh Bình">Ninh Bình</option>
+                        <option value="Quảng Trị">Quảng Trị</option>
+                        <option value="Quảng Ngãi">Quảng Ngãi</option>
+                        <option value="Gia Lai">Gia Lai</option>
+                        <option value="Đắk Lắk">Đắk Lắk</option>
+                        <option value="Khánh Hoà">Khánh Hoà</option>
+                        <option value="TP. Đà Nẵng">TP. Đà Nẵng</option>
+                        <option value="Lâm Đồng">Lâm Đồng</option>
+                        <option value="Tây Ninh">Tây Ninh</option>
+                        <option value="Quảng Ngãi">Quảng Ngãi</option>
+                        <option value="Đồng Tháp">Đồng Tháp</option>
+                        <option value="TP Hồ Chí Minh">TP Hồ Chí Minh</option>
+                        <option value="An Giang">An Giang</option>
+                        <option value="Đồng Nai">Đồng Nai</option>
+                        <option value="Vĩnh Long">Vĩnh Long</option>
+                        <option value="TP. Cần Thơ">TP. Cần Thơ</option>
+                        <option value="Cà Mau">Cà Mau</option>
 
                     </select>
                 </div>
@@ -186,4 +199,24 @@
     </div>
 </div>
 </body>
+<%--<script>--%>
+<%--    document.querySelector(".register-form").addEventListener("submit", function(e) {--%>
+<%--        let email = document.getElementById("email").value.trim();--%>
+<%--        let emailError = document.getElementById("emailError");--%>
+
+<%--        emailError.innerText = "";--%>
+
+<%--        if (email === "") {--%>
+<%--            emailError.innerText = "Email không được để trống";--%>
+<%--            e.preventDefault();--%>
+<%--            return;--%>
+<%--        }--%>
+
+<%--        let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;--%>
+<%--        if (!regex.test(email)) {--%>
+<%--            emailError.innerText = "Email không hợp lệ";--%>
+<%--            e.preventDefault();--%>
+<%--        }--%>
+<%--    });--%>
+<%--</script>--%>
 </html>
