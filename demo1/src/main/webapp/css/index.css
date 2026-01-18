@@ -1058,3 +1058,46 @@ body {
         margin-bottom: 20px;
     }
 }
+/* Thêm style cho tab movie */
+.movie-status {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.movie-status.active {
+    background: rgba(255, 102, 0, 0.1);
+}
+
+.movie-status.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: #ff6600;
+    border-radius: 2px;
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Thông báo filter */
+#filter-notification {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
