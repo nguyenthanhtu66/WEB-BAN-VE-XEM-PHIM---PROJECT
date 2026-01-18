@@ -21,9 +21,15 @@ public class ListProduct extends HttpServlet {
         // Lấy parameter từ URL
         String statusParam = request.getParameter("status");
         String searchKeyword = request.getParameter("search");
+        String genre = request.getParameter("genre");
+        String duration = request.getParameter("duration");
+        String age = request.getParameter("age");
+        String pageStr = request.getParameter("page");
 
         System.out.println("DEBUG: statusParam = " + statusParam);
         System.out.println("DEBUG: searchKeyword = " + searchKeyword);
+        System.out.println("DEBUG: genre = " + genre);
+        System.out.println("DEBUG: duration = " + duration);
 
         List<Movie> movies;
 
@@ -45,9 +51,44 @@ public class ListProduct extends HttpServlet {
             System.out.println("DEBUG: Status to filter = " + status);
             movies = movieService.getMoviesByStatus(status);
             System.out.println("DEBUG: Found " + movies.size() + " movies with status: " + status);
+
+            // Áp dụng filters
+            if (genre != null && !genre.isEmpty()) {
+                movies = filterByGenre(movies, genre);
+                System.out.println("DEBUG: After genre filter: " + movies.size() + " movies");
+            }
+
+            if (duration != null && !duration.isEmpty()) {
+                movies = filterByDuration(movies, duration);
+                System.out.println("DEBUG: After duration filter: " + movies.size() + " movies");
+            }
+        }
+
+        // Phân trang
+        int page = 1;
+        int pageSize = 12; // 12 phim mỗi trang
+        if (pageStr != null && !pageStr.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageStr);
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        int totalMovies = movies.size();
+        int totalPages = (int) Math.ceil((double) totalMovies / pageSize);
+
+        // Lấy sublist cho trang hiện tại
+        int fromIndex = (page - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalMovies);
+        if (fromIndex < totalMovies) {
+            movies = movies.subList(fromIndex, toIndex);
+        } else {
+            movies = List.of();
         }
 
         // Hiển thị trong console để debug
+        System.out.println("DEBUG: Displaying " + movies.size() + " movies on page " + page);
         for (Movie m : movies) {
             System.out.println("Movie: " + m.getName() + " - Status: " + m.getStatus());
         }
@@ -55,6 +96,11 @@ public class ListProduct extends HttpServlet {
         // Đặt attributes
         request.setAttribute("movies", movies);
         request.setAttribute("status", statusParam);
+        request.setAttribute("genre", genre);
+        request.setAttribute("duration", duration);
+        request.setAttribute("age", age);
+        request.setAttribute("page", page);
+        request.setAttribute("totalPages", totalPages);
 
         // Để hiển thị trong JSP
         String displayStatus = "dang_chieu";
@@ -63,6 +109,35 @@ public class ListProduct extends HttpServlet {
         }
         request.setAttribute("currentStatus", displayStatus);
 
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("Phim-chieu.jsp").forward(request, response);
+    }
+
+    // Filter theo thể loại
+    private List<Movie> filterByGenre(List<Movie> movies, String genre) {
+        return movies.stream()
+                .filter(movie -> movie.getCategory() != null &&
+                        movie.getCategory().contains(genre))
+                .toList();
+    }
+
+    // Filter theo thời lượng
+    private List<Movie> filterByDuration(List<Movie> movies, String duration) {
+        return movies.stream()
+                .filter(movie -> {
+                    int movieDuration = movie.getDuration();
+                    switch (duration) {
+                        case "short":
+                            return movieDuration < 90;
+                        case "medium":
+                            return movieDuration >= 90 && movieDuration <= 120;
+                        case "long":
+                            return movieDuration > 120 && movieDuration <= 150;
+                        case "very_long":
+                            return movieDuration > 150;
+                        default:
+                            return true;
+                    }
+                })
+                .toList();
     }
 }

@@ -9,35 +9,40 @@ public class MovieDao {
 
     static {
         movies.add(new Movie(1, "Avatar 2", "images/avatar2.jpg",
-                "Khoa học viễn tưởng", 190, 8.5, "dang_chieu"));
+                "Khoa học viễn tưởng, Phiêu lưu", 190, 8.5, "dang_chieu", "P"));
 
         movies.add(new Movie(2, "Fast & Furious 10", "images/fast10.jpg",
-                "Hành động", 150, 7.9, "dang_chieu"));
+                "Hành động, Tội phạm, Giật gân", 150, 7.9, "dang_chieu", "T13"));
 
         movies.add(new Movie(3, "Dune Part 2", "images/dune2.jpg",
-                "Khoa học viễn tưởng", 165, 8.8, "sap_chieu"));
+                "Khoa học viễn tưởng, Phiêu lưu", 165, 8.8, "sap_chieu", "T13"));
 
         movies.add(new Movie(4, "Deadpool 3", "images/deadpool3.jpg",
-                "Hành động", 130, 8.3, "sap_chieu"));
+                "Hành động, Hài, Khoa học viễn tưởng", 130, 8.3, "sap_chieu", "T18"));
 
         movies.add(new Movie(5, "Kung Fu Panda 4", "images/kungfu4.jpg",
-                "Hoạt hình", 100, 7.6, "dang_chieu"));
+                "Hoạt hình, Gia đình, Phiêu lưu", 100, 7.6, "dang_chieu", "P"));
 
-        // Thêm thêm phim để có đủ 8 phim
         movies.add(new Movie(6, "Spider-Man: No Way Home", "images/spiderman.jpg",
-                "Hành động", 148, 8.4, "dang_chieu"));
+                "Hành động, Phiêu lưu, Khoa học viễn tưởng", 148, 8.4, "dang_chieu", "P"));
 
         movies.add(new Movie(7, "The Batman", "images/batman.jpg",
-                "Hành động", 176, 7.8, "dang_chieu"));
+                "Hành động, Tội phạm, Bí ẩn", 176, 7.8, "dang_chieu", "T13"));
 
         movies.add(new Movie(8, "Top Gun: Maverick", "images/topgun.jpg",
-                "Hành động", 130, 8.2, "dang_chieu"));
+                "Hành động, Chính kịch", 130, 8.2, "dang_chieu", "T13"));
 
         movies.add(new Movie(9, "Black Panther: Wakanda Forever", "images/blackpanther.jpg",
-                "Hành động", 161, 7.2, "sap_chieu"));
+                "Hành động, Phiêu lưu, Khoa học viễn tưởng", 161, 7.2, "sap_chieu", "T13"));
 
         movies.add(new Movie(10, "Avatar 3", "images/avatar3.jpg",
-                "Khoa học viễn tưởng", 180, 0.0, "sap_chieu"));
+                "Khoa học viễn tưởng, Phiêu lưu", 180, 0.0, "sap_chieu", "P"));
+
+        movies.add(new Movie(11, "Oppenheimer", "images/oppenheimer.jpg",
+                "Tiểu sử, Lịch sử, Chính kịch", 180, 8.4, "dang_chieu", "T16"));
+
+        movies.add(new Movie(12, "Barbie", "images/barbie.jpg",
+                "Hài, Phiêu lưu, Giả tưởng", 114, 7.1, "dang_chieu", "P"));
     }
 
     public List<Movie> getAllMovies() {
