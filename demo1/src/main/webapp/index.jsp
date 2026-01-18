@@ -2,6 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%
+    // Kiểm tra nếu trang được truy cập trực tiếp (không qua Servlet)
+    if (request.getAttribute("fromServlet") == null) {
+        // Tạo URL để chuyển hướng đến HomeController
+        String redirectURL = request.getContextPath() + "/home";
+
+        // Giữ lại các tham số từ URL nếu có
+        String queryString = request.getQueryString();
+        if (queryString != null && !queryString.isEmpty()) {
+            redirectURL += "?" + queryString;
+        }
+
+        // Chuyển hướng đến HomeController
+        response.sendRedirect(redirectURL);
+        return; // Dừng xử lý JSP ngay lập tức
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -17,7 +35,6 @@
     <!-- Header Label với Search -->
     <div class="header-label">
         <div class="header-container">
-            <!-- Sửa: Thay đổi action từ /list-product thành /home -->
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-form">
                 <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
                        value="${searchKeyword != null ? searchKeyword : ''}">
@@ -37,14 +54,12 @@
 
     <div class="header-menu">
         <div class="menu-container">
-            <!-- Sửa: Thay đổi link logo từ /list-product thành /home -->
             <a href="${pageContext.request.contextPath}/home" class="logo">
                 <img src="${pageContext.request.contextPath}/image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <!-- Sửa: Link trang chủ từ /list-product thành /home -->
                     <a href="${pageContext.request.contextPath}/home"
                        style="color: #ff6600;" class="menu-item">TRANG CHỦ</a>
                 </div>
@@ -52,10 +67,8 @@
                 <div class="menu-item-wrapper">
                     <div class="menu-item has-dropdown">PHIM</div>
                     <div class="dropdown-menu">
-                        <!-- Sửa: Link phim đang chiếu từ /list-product thành /home?status=Dang+chieu -->
                         <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
                            class="dropdown-item">Phim đang chiếu</a>
-                        <!-- Giữ nguyên link phim sắp chiếu trỏ đến trang phim chi tiết -->
                         <a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"
                            class="dropdown-item">Phim sắp chiếu</a>
                     </div>
@@ -135,7 +148,6 @@
         <!-- Movie Tabs -->
         <div class="movie-selection">
             <c:set var="currentStatus" value="${empty currentStatus ? 'dang_chieu' : currentStatus}" />
-            <!-- Sửa: Sử dụng /home cho các tab trên trang chủ -->
             <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
                class="movie-status ${currentStatus == 'dang_chieu' ? 'active' : ''}">
                 PHIM ĐANG CHIẾU
@@ -173,8 +185,8 @@
                     <c:forEach var="movie" items="${movies}">
                         <div class="movie-card">
                             <div class="movie-poster">
-                                <!-- Sửa: Sửa đường dẫn ảnh, thêm context path -->
-                                <img src="${pageContext.request.contextPath}/${movie.image}"
+                                <!-- Hiển thị ảnh phim -->
+                                <img src="${pageContext.request.contextPath}/images/${movie.image}"
                                      alt="${movie.name}"
                                      onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
                                 <div class="movie-overlay">
@@ -209,9 +221,8 @@
                 </div>
 
                 <!-- Hiển thị nút "Xem thêm" nếu có nhiều phim -->
-                <c:if test="${movies.size() == 8}">
+                <c:if test="${movies.size() >= 8}">
                     <div class="see-more-container">
-                        <!-- Sửa: Link xem thêm trỏ đến trang danh sách phim đầy đủ -->
                         <a href="${pageContext.request.contextPath}/list-product?status=${currentStatus == 'sap_chieu' ? 'Sap+chieu' : 'Dang+chieu'}"
                            class="see-more-btn" role="button">Xem thêm</a>
                     </div>
@@ -313,9 +324,125 @@
         </div>
     </div>
 
-    <!-- Modal Đặt Vé (Giữ nguyên) -->
+    <!-- Modal Đặt Vé -->
     <div id="bookingModal" class="modal">
-        <!-- ... (giữ nguyên nội dung modal) ... -->
+        <div class="modal-content">
+            <h2 class="modal-title">Đặt Vé Xem Phim</h2>
+            <div class="seat-selection">
+                <div class="screen">MÀN HÌNH</div>
+                <div class="seats-container">
+                    <div class="seat-row">
+                        <button class="seat booked" data-seat="A01">A01</button>
+                        <button class="seat booked" data-seat="A02">A02</button>
+                        <button class="seat booked" data-seat="A03">A03</button>
+                        <button class="seat booked" data-seat="A04">A04</button>
+                        <button class="seat booked" data-seat="A05">A05</button>
+                        <button class="seat booked" data-seat="A06">A06</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat booked" data-seat="A07">A07</button>
+                        <button class="seat available" data-seat="A08">A08</button>
+                        <button class="seat available" data-seat="A09">A09</button>
+                        <button class="seat available" data-seat="A10">A10</button>
+                        <button class="seat booked" data-seat="A11">A11</button>
+                        <button class="seat booked" data-seat="A12">A12</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat booked" data-seat="A13">A13</button>
+                        <button class="seat booked" data-seat="A14">A14</button>
+                        <button class="seat booked" data-seat="A15">A15</button>
+                        <button class="seat booked" data-seat="A16">A16</button>
+                        <button class="seat booked" data-seat="A17">A17</button>
+                        <button class="seat booked" data-seat="A18">A18</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat selected" data-seat="A19">A19</button>
+                        <button class="seat booked" data-seat="A20">A20</button>
+                        <button class="seat booked" data-seat="A21">A21</button>
+                        <button class="seat available" data-seat="A22">A22</button>
+                        <button class="seat booked" data-seat="A23">A23</button>
+                        <button class="seat available" data-seat="A24">A24</button>
+                    </div>
+                    <div class="seat-row">
+                        <button class="seat available" data-seat="A25">A25</button>
+                        <button class="seat booked" data-seat="A26">A26</button>
+                        <button class="seat booked" data-seat="A27">A27</button>
+                        <button class="seat booked" data-seat="A28">A28</button>
+                    </div>
+                </div>
+
+                <div class="seat-legend">
+                    <div class="legend-item">
+                        <div class="legend-box booked"></div>
+                        <span>Ghế đã được đặt</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box selected"></div>
+                        <span>Đang chọn</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box available"></div>
+                        <span>Ghế trống</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phim:</label>
+                        <input type="text" id="modalMovieTitle" value="" readonly>
+                        <input type="hidden" id="modalMovieId" value="">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phòng chiếu:</label>
+                        <select id="room">
+                            <option value="A">Phòng A</option>
+                            <option value="B">Phòng B</option>
+                            <option value="C">Phòng C</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày giờ chiếu:</label>
+                        <input type="datetime-local" id="showtime" value="">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loại vé:</label>
+                        <select id="ticketType">
+                            <option value="adult">Người lớn</option>
+                            <option value="student">Học sinh/Sinh viên</option>
+                            <option value="child">Trẻ em</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá vé:</label>
+                        <input type="text" id="ticketPrice" value="100.000 đ" readonly>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Số lượng vé:</label>
+                        <input type="number" id="quantity" value="1" min="1" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Tổng tiền:</label>
+                        <input type="text" id="totalPrice" value="100.000 đ" readonly>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <a href="Thanh-toan.html" class="btn-submit">Đặt vé</a>
+                    <button type="button" class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -323,7 +450,6 @@
         <div class="footer-top">
             <ul class="footer-menu">
                 <li><a href="Chinh-sach.html">Chính sách</a></li>
-                <!-- Sửa: Link trong footer -->
                 <li><a href="${pageContext.request.contextPath}/home?status=Dang+chieu">Phim đang chiếu</a></li>
                 <li><a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu">Phim sắp chiếu</a></li>
                 <li><a href="Tin-dien-anh.html">Tin tức</a></li>

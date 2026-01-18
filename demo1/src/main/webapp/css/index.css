@@ -1058,46 +1058,49 @@ body {
         margin-bottom: 20px;
     }
 }
-/* Thêm style cho tab movie */
 .movie-status {
     position: relative;
+    padding: 16px 60px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #999;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.movie-status:hover {
+    color: #ff6600;
+    background-color: #4c4c4c;
 }
 
 .movie-status.active {
-    background: rgba(255, 102, 0, 0.1);
+    color: #ff6600;
+    border-bottom: 3px solid #ff6600;
 }
 
 .movie-status.active::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
     height: 3px;
     background: #ff6600;
     border-radius: 2px;
 }
 
-/* Loading state */
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-/* Thông báo filter */
-#filter-notification {
-    animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Debug info */
+.debug-info {
+    display: none; /* Ẩn debug khi hoạt động bình thường */
+    background: #2c3e50;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 12px;
 }
