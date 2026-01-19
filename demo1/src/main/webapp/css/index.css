@@ -345,36 +345,54 @@ body {
     box-shadow: 0 6px 16px rgba(255, 102, 0, 0.3);
 }
 
+/* Movie Tabs - SỬA LẠI */
 .movie-selection {
+    max-width: 1160px;
+    margin: 30px auto 10px;
     display: flex;
-    justify-content: center;
-    gap: 0;
-    margin-bottom: 40px;
-    border-bottom: 2px solid #4c4c4c;
-    background: #1e1e1e;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+    padding: 0;
 }
 
 .movie-status {
-    padding: 16px 60px;
-    font-size: 16px;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 600;
     color: #999;
     cursor: pointer;
     border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    position: relative;
+    margin-right: 30px;
     text-decoration: none;
 }
 
-.movie-status:hover {
+.movie-status:first-child {
+    color: #fff;
+    font-weight: 700;
+    padding-left: 20px;
+    border-left: 4px solid #ff6600;
+    margin-right: 40px;
+    font-size: 16px;
+}
+
+.movie-status:hover:not(:first-child) {
     color: #ff6600;
-    background-color: #4c4c4c;
 }
 
 .movie-status.active {
     color: #ff6600;
+    font-weight: bold;
     border-bottom: 3px solid #ff6600;
+}
+
+.movie-status.near-active {
+    color: #999;
+    font-weight: bold;
 }
 .movie-selection-content {
     display: grid;
@@ -1096,7 +1114,7 @@ body {
 
 /* Debug info */
 .debug-info {
-    display: none; /* Ẩn debug khi hoạt động bình thường */
+    display: none;
     background: #2c3e50;
     color: white;
     padding: 10px;

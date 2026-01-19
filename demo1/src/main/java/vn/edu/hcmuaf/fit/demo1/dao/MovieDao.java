@@ -3,6 +3,7 @@ package vn.edu.hcmuaf.fit.demo1.dao;
 import vn.edu.hcmuaf.fit.demo1.model.Movie;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -57,6 +58,7 @@ public class MovieDao extends BaseDao {
             try {
                 movie.setDirector(rs.getString("director"));
                 movie.setCountry(rs.getString("country"));
+                movie.setCast(rs.getString("cast"));
             } catch (SQLException e) {
                 // Không bắt buộc
             }
@@ -80,7 +82,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE status IN ('showing', 'upcoming')
             ORDER BY 
@@ -100,10 +103,8 @@ public class MovieDao extends BaseDao {
         );
     }
 
-    // Lấy phim theo trạng thái (đơn giản)
-    public List<Movie> getMoviesByStatus(String status) {
-        String dbStatus = convertStatus(status);
-
+    // Lấy phim theo trạng thái database (showing, upcoming, ended)
+    public List<Movie> getMoviesByStatus(String dbStatus) {
         String sql = """
             SELECT 
                 movie_id, 
@@ -115,7 +116,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE status = :status
             ORDER BY release_date DESC, movie_id DESC
@@ -130,9 +132,7 @@ public class MovieDao extends BaseDao {
     }
 
     // Lấy phim theo trạng thái với giới hạn số lượng (cho trang chủ)
-    public List<Movie> getMoviesByStatusWithLimit(String status, int limit) {
-        String dbStatus = convertStatus(status);
-
+    public List<Movie> getMoviesByStatusWithLimit(String dbStatus, int limit) {
         String sql = """
             SELECT 
                 movie_id, 
@@ -144,7 +144,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE status = :status
             ORDER BY release_date DESC, movie_id DESC
@@ -173,7 +174,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE (title LIKE :keyword OR director LIKE :keyword OR cast LIKE :keyword OR genre LIKE :keyword)
                 AND status IN ('showing', 'upcoming')
@@ -225,9 +227,7 @@ public class MovieDao extends BaseDao {
     }
 
     // Lấy phim theo thể loại và trạng thái
-    public List<Movie> getMoviesByGenreAndStatus(String genre, String status) {
-        String dbStatus = convertStatus(status);
-
+    public List<Movie> getMoviesByGenreAndStatus(String genre, String dbStatus) {
         String sql = """
             SELECT 
                 movie_id, 
@@ -239,7 +239,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE status = :status
               AND genre LIKE :genre
@@ -256,8 +257,7 @@ public class MovieDao extends BaseDao {
     }
 
     // Phân trang phim
-    public List<Movie> getMoviesWithPagination(String status, int page, int pageSize) {
-        String dbStatus = convertStatus(status);
+    public List<Movie> getMoviesWithPagination(String dbStatus, int page, int pageSize) {
         int offset = (page - 1) * pageSize;
 
         String sql = """
@@ -271,7 +271,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE status = :status
             ORDER BY release_date DESC, movie_id DESC
@@ -289,9 +290,7 @@ public class MovieDao extends BaseDao {
     }
 
     // Đếm tổng số phim theo trạng thái
-    public int countMoviesByStatus(String status) {
-        String dbStatus = convertStatus(status);
-
+    public int countMoviesByStatus(String dbStatus) {
         String sql = "SELECT COUNT(*) FROM movies WHERE status = :status";
 
         return get().withHandle(handle ->
@@ -315,7 +314,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE status IN ('showing', 'upcoming')
             ORDER BY release_date DESC, created_at DESC
@@ -343,7 +343,8 @@ public class MovieDao extends BaseDao {
                 status, 
                 age_rating,
                 director,
-                country
+                country,
+                cast
             FROM movies 
             WHERE status IN ('showing', 'upcoming') AND rating > 0
             ORDER BY rating DESC, release_date DESC
@@ -358,7 +359,7 @@ public class MovieDao extends BaseDao {
         );
     }
 
-    // ==================== QUERIES ADMIN ====================
+    // ==================== ADMIN QUERIES ====================
 
     // Thêm phim mới
     public boolean addMovie(Movie movie) {
@@ -441,31 +442,44 @@ public class MovieDao extends BaseDao {
 
     // ==================== HELPER METHODS ====================
 
-    // Chuyển đổi status từ dạng URL sang database format
-    private String convertStatus(String status) {
-        if (status == null || status.trim().isEmpty()) {
-            return "showing"; // Mặc định là phim đang chiếu
+    // Chuyển đổi status từ URL format sang database format
+    public static String convertUrlStatusToDbStatus(String urlStatus) {
+        if (urlStatus == null || urlStatus.trim().isEmpty()) {
+            return "showing";
         }
 
-        String lowerStatus = status.toLowerCase();
+        String lowerStatus = urlStatus.toLowerCase();
+        if (lowerStatus.contains("sap") || lowerStatus.contains("upcoming") ||
+                lowerStatus.equals("sap+chieu") || lowerStatus.equals("sap_chieu")) {
+            return "upcoming";
+        } else if (lowerStatus.contains("dang") || lowerStatus.contains("showing") ||
+                lowerStatus.equals("dang+chieu") || lowerStatus.equals("dang_chieu")) {
+            return "showing";
+        } else {
+            return "showing";
+        }
+    }
 
-        switch (lowerStatus) {
-            case "dang_chieu":
+    // Chuyển đổi status từ database format sang URL format
+    public static String convertDbStatusToUrlStatus(String dbStatus) {
+        if (dbStatus == null || dbStatus.trim().isEmpty()) {
+            return "Dang+chieu";
+        }
+
+        switch (dbStatus.toLowerCase()) {
             case "showing":
             case "đang chiếu":
-            case "đang_chiếu":
-                return "showing";
-            case "sap_chieu":
+            case "dang_chieu":
+                return "Dang+chieu";
             case "upcoming":
             case "sắp chiếu":
-            case "sắp_chiếu":
-                return "upcoming";
+            case "sap_chieu":
+                return "Sap+chieu";
             case "ended":
             case "đã chiếu":
-            case "đã_chiếu":
-                return "ended";
+                return "Ended";
             default:
-                return "showing";
+                return "Dang+chieu";
         }
     }
 

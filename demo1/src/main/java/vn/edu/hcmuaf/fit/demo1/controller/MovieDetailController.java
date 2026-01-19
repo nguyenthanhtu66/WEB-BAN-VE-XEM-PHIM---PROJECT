@@ -13,11 +13,21 @@ import java.io.IOException;
 @WebServlet(name = "MovieDetailController", urlPatterns = {"/movie-detail"})
 public class MovieDetailController extends HttpServlet {
 
-    private MovieService movieService = new MovieService();
+    private final MovieService movieService = new MovieService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // KIỂM TRA NẾU LÀ REQUEST CHO FILE TĨNH -> KHÔNG XỬ LÝ
+        String servletPath = request.getServletPath();
+        if (servletPath != null &&
+                (servletPath.startsWith("/css/") || servletPath.startsWith("/image/") ||
+                        servletPath.startsWith("/img/") || servletPath.endsWith(".css") ||
+                        servletPath.endsWith(".png") || servletPath.endsWith(".jpg"))) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
         String idParam = request.getParameter("id");
 
@@ -36,10 +46,14 @@ public class MovieDetailController extends HttpServlet {
             }
 
             request.setAttribute("movie", movie);
-            request.getRequestDispatcher("Chi-tiet-phim.jsp").forward(request, response);
+            request.getRequestDispatcher("/Chi-tiet-phim.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
+            e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/home");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi hệ thống: " + e.getMessage());
         }
     }
 }

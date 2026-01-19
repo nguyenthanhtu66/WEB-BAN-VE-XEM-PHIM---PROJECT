@@ -2,11 +2,12 @@ package vn.edu.hcmuaf.fit.demo1.service;
 
 import vn.edu.hcmuaf.fit.demo1.dao.MovieDao;
 import vn.edu.hcmuaf.fit.demo1.model.Movie;
+
 import java.util.List;
 
 public class MovieService {
 
-    private MovieDao movieDao = new MovieDao();
+    private final MovieDao movieDao = new MovieDao();
 
     // ==================== PHƯƠNG THỨC CƠ BẢN ====================
 
@@ -14,32 +15,44 @@ public class MovieService {
         return movieDao.getAllMovies();
     }
 
-    public List<Movie> getMoviesByStatus(String status) {
-        return movieDao.getMoviesByStatus(status);
+    // Lấy phim theo status URL (Dang+chieu, Sap+chieu)
+    public List<Movie> getMoviesByStatus(String urlStatus) {
+        String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
+        return movieDao.getMoviesByStatus(dbStatus);
     }
 
-    public List<Movie> getMoviesByStatusForHome(String status) {
-        return movieDao.getMoviesByStatusWithLimit(status, 8);
+    // Lấy phim theo status URL với giới hạn (cho trang chủ)
+    public List<Movie> getMoviesByStatusForHome(String urlStatus) {
+        String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
+        return movieDao.getMoviesByStatusWithLimit(dbStatus, 8);
     }
 
+    // Tìm kiếm phim
     public List<Movie> searchMovies(String keyword) {
         return movieDao.searchMovies(keyword);
     }
 
+    // Lấy phim theo ID
     public Movie getMovieById(int id) {
         return movieDao.getMovieById(id);
     }
 
-    public List<Movie> getMoviesWithPagination(String status, int page, int pageSize) {
-        return movieDao.getMoviesWithPagination(status, page, pageSize);
+    // Phân trang phim
+    public List<Movie> getMoviesWithPagination(String urlStatus, int page, int pageSize) {
+        String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
+        return movieDao.getMoviesWithPagination(dbStatus, page, pageSize);
     }
 
-    public int countMoviesByStatus(String status) {
-        return movieDao.countMoviesByStatus(status);
+    // Đếm tổng số phim theo status URL
+    public int countMoviesByStatus(String urlStatus) {
+        String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
+        return movieDao.countMoviesByStatus(dbStatus);
     }
 
-    public List<Movie> getMoviesByGenreAndStatus(String genre, String status) {
-        return movieDao.getMoviesByGenreAndStatus(genre, status);
+    // Lấy phim theo thể loại và status
+    public List<Movie> getMoviesByGenreAndStatus(String genre, String urlStatus) {
+        String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
+        return movieDao.getMoviesByGenreAndStatus(genre, dbStatus);
     }
 
     // ==================== PHƯƠNG THỨC NÂNG CAO ====================
@@ -72,5 +85,17 @@ public class MovieService {
 
     public boolean deleteMovie(int id) {
         return movieDao.deleteMovie(id);
+    }
+
+    // ==================== HELPER METHODS ====================
+
+    // Chuyển đổi URL status sang database status
+    public String convertToDbStatus(String urlStatus) {
+        return MovieDao.convertUrlStatusToDbStatus(urlStatus);
+    }
+
+    // Chuyển đổi database status sang URL status
+    public String convertToUrlStatus(String dbStatus) {
+        return MovieDao.convertDbStatusToUrlStatus(dbStatus);
     }
 }

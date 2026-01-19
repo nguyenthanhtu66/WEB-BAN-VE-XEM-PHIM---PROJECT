@@ -79,21 +79,23 @@
         <div class="movie-selection">
             <div class="movie-status-container">PHIM</div>
 
-            <c:set var="currentStatus" value="${empty status ? 'Dang+chieu' : status}" />
+            <c:set var="currentStatus" value="${empty currentStatus ? 'dang_chieu' : currentStatus}" />
+            <c:set var="statusParam" value="${empty statusParam ? 'Dang+chieu' : statusParam}" />
 
             <a href="${pageContext.request.contextPath}/list-product?status=Dang+chieu"
-               class="movie-status ${currentStatus == 'Dang+chieu' ? 'active' : ''}">
+               class="movie-status ${currentStatus == 'dang_chieu' ? 'active' : ''}">
                 PHIM ĐANG CHIẾU
             </a>
             <a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"
-               class="movie-status ${currentStatus == 'Sap+chieu' ? 'active' : ''}">
+               class="movie-status ${currentStatus == 'sap_chieu' ? 'active' : ''}">
                 PHIM SẮP CHIẾU
             </a>
         </div>
 
         <!-- Filter Bar -->
         <form id="filterForm" action="${pageContext.request.contextPath}/list-product" method="get" class="filter-bar">
-            <input type="hidden" name="status" value="${currentStatus}">
+            <!-- QUAN TRỌNG: Thêm hidden field để giữ status khi filter -->
+            <input type="hidden" name="status" value="${statusParam}">
 
             <select id="filter-genre" name="genre" onchange="submitFilter()">
                 <option value="">Thể Loại</option>
@@ -137,14 +139,6 @@
                 Xóa Filter
             </button>
         </form>
-
-        <!-- Hiển thị thông báo tìm kiếm -->
-        <c:if test="${not empty searchKeyword}">
-            <div style="text-align: center; padding: 15px; background: #1e1e1e; border-radius: 8px; margin-bottom: 20px;">
-                <h3 style="color: #ff6600; margin-bottom: 5px;">Kết quả tìm kiếm cho: "${searchKeyword}"</h3>
-                <p style="color: #fff;">Tìm thấy ${movies != null ? movies.size() : 0} phim</p>
-            </div>
-        </c:if>
 
         <!-- Hiển thị filter đang áp dụng -->
         <c:if test="${not empty genre or not empty duration or not empty age}">
@@ -247,7 +241,7 @@
             </c:otherwise>
         </c:choose>
 
-        <!-- Pagination -->
+        <!-- Pagination - CHỈ GIỮ LẠI PHẦN NÀY Ở CUỐI -->
         <c:if test="${not empty movies and movies.size() > 0}">
             <div class="pagination">
                 <a href="?page=1&status=${currentStatus}&genre=${genre}&duration=${duration}&age=${age}"
@@ -428,19 +422,49 @@
 </div>
 
 <script>
-    // Hàm submit filter form
+    // Hàm submit filter form - SỬA ĐỂ GIỮ LẠI STATUS
     function submitFilter() {
+        // Lấy giá trị status từ URL nếu có, nếu không dùng mặc định
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status') || 'Dang+chieu';
+
+        // Thêm status vào form nếu chưa có
+        const statusInput = document.querySelector('input[name="status"]');
+        if (!statusInput) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'status';
+            input.value = status;
+            document.getElementById('filterForm').appendChild(input);
+        }
+
         document.getElementById('filterForm').submit();
     }
 
-    // Hàm reset filters
+    // Hàm reset filters - SỬA ĐỂ GIỮ LẠI STATUS
     function resetFilters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status') || 'Dang+chieu';
+
+        // Reset form nhưng giữ status
+        document.getElementById('filterForm').reset();
+
+        // Đảm bảo status được giữ lại
+        const statusInput = document.querySelector('input[name="status"]');
+        if (statusInput) {
+            statusInput.value = status;
+        }
+
         document.getElementById('filterForm').submit();
     }
 
-    // Hàm clear all filters
+    // Hàm clear all filters - SỬA ĐỂ GIỮ LẠI STATUS
     function clearAllFilters() {
-        window.location.href = '${pageContext.request.contextPath}/list-product?status=${currentStatus}';
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status') || 'Dang+chieu';
+
+        // Chuyển hướng với chỉ status
+        window.location.href = '${pageContext.request.contextPath}/list-product?status=' + status;
     }
 
     // Hàm mở modal đặt vé
@@ -542,6 +566,23 @@
         .see-more-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
+        }
+
+        .movie-status.active {
+            color: #ff6600;
+            border-bottom: 3px solid #ff6600;
+            position: relative;
+        }
+
+        .movie-status.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #ff6600;
+            border-radius: 2px;
         }
     `;
     document.head.appendChild(style);

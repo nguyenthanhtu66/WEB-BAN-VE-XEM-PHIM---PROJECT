@@ -180,23 +180,23 @@ public class Movie implements Serializable {
 
     // Helper methods để tương thích với code hiện tại
     public String getName() {
-        return title; // Tương thích với code JSP cũ
+        return title;
     }
 
     public String getImage() {
-        return posterUrl; // Tương thích với code JSP cũ
+        return posterUrl;
     }
 
     public String getCategory() {
-        return genre; // Tương thích với code JSP cũ
+        return genre;
     }
 
     public String getCountryName() {
-        return country; // Tương thích với Chi-tiet-phim.jsp
+        return country;
     }
 
     public String getFormattedRating() {
-        return String.format("%.1f", rating); // Tương thích với Chi-tiet-phim.jsp
+        return rating > 0 ? String.format("%.1f", rating) : "Chưa có";
     }
 
     // Phương thức để lấy rating dạng chuỗi
@@ -220,5 +220,23 @@ public class Movie implements Serializable {
             return description.length() > 150 ? description.substring(0, 147) + "..." : description;
         }
         return "";
+    }
+
+    // Phương thức để chuyển đổi status từ database sang URL format
+    public String getUrlStatus() {
+        if (status == null) return "Dang+chieu";
+
+        switch (status.toLowerCase()) {
+            case "showing":
+            case "đang chiếu":
+            case "dang_chieu":
+                return "Dang+chieu";
+            case "upcoming":
+            case "sắp chiếu":
+            case "sap_chieu":
+                return "Sap+chieu";
+            default:
+                return "Dang+chieu";
+        }
     }
 }

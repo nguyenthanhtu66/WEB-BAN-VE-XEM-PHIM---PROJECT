@@ -69,7 +69,7 @@
                     <div class="dropdown-menu">
                         <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
                            class="dropdown-item">Phim đang chiếu</a>
-                        <a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"
+                        <a href="${pageContext.request.contextPath}/home?status=Sap+chieu"
                            class="dropdown-item">Phim sắp chiếu</a>
                     </div>
                 </div>
@@ -145,9 +145,11 @@
             </div>
         </c:if>
 
-        <!-- Movie Tabs -->
+        <!-- Movie Tabs - ĐÃ SỬA: THÊM GẠCH CAM CHO CẢ 2 TAB -->
         <div class="movie-selection">
             <c:set var="currentStatus" value="${empty currentStatus ? 'dang_chieu' : currentStatus}" />
+            <c:set var="statusParam" value="${empty statusParam ? 'Dang+chieu' : statusParam}" />
+
             <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
                class="movie-status ${currentStatus == 'dang_chieu' ? 'active' : ''}">
                 PHIM ĐANG CHIẾU
@@ -455,7 +457,7 @@
             <ul class="footer-menu">
                 <li><a href="Chinh-sach.html">Chính sách</a></li>
                 <li><a href="${pageContext.request.contextPath}/home?status=Dang+chieu">Phim đang chiếu</a></li>
-                <li><a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu">Phim sắp chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/home?status=Sap+chieu">Phim sắp chiếu</a></li>
                 <li><a href="Tin-dien-anh.html">Tin tức</a></li>
                 <li><a href="Hoi-Dap.jsp">Hỏi đáp</a></li>
                 <li><a href="contact.html">Liên hệ</a></li>
@@ -638,23 +640,6 @@
         if (visibleCount === 0) {
             alert('Không có phim nào thuộc thể loại ' + selectedGenre);
         }
-    });
-
-    // Xử lý active tab khi load trang
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const status = urlParams.get('status');
-
-        // Cập nhật các tab
-        const tabs = document.querySelectorAll('.movie-status');
-        tabs.forEach(tab => {
-            const tabStatus = tab.getAttribute('href').includes('Sap+chieu') ? 'sap_chieu' : 'dang_chieu';
-            tab.classList.toggle('active',
-                (status === 'Sap+chieu' && tabStatus === 'sap_chieu') ||
-                (!status && tabStatus === 'dang_chieu') ||
-                (status === 'Dang+chieu' && tabStatus === 'dang_chieu')
-            );
-        });
     });
 </script>
 </body>
