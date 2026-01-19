@@ -185,33 +185,37 @@
                     <c:forEach var="movie" items="${movies}">
                         <div class="movie-card">
                             <div class="movie-poster">
-                                <!-- Hiển thị ảnh phim -->
-                                <img src="${pageContext.request.contextPath}/images/${movie.image}"
-                                     alt="${movie.name}"
+                                <!-- Hiển thị ảnh phim từ database -->
+                                <img src="${movie.posterUrl}"
+                                     alt="${movie.title}"
                                      onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
                                 <div class="movie-overlay">
-                                    <a href="${pageContext.request.contextPath}/Chi-tiet-phim.jsp?id=${movie.id}"
+                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.id}"
                                        class="movie-btn btn-detail">Chi Tiết</a>
                                     <button class="movie-btn btn-booking"
-                                            onclick="openBookingModal('${movie.name}', ${movie.id})">
+                                            onclick="openBookingModal('${movie.title}', ${movie.id})">
                                         Đặt Vé
                                     </button>
                                 </div>
                             </div>
                             <div class="movie-info">
-                                <h3>${movie.name}</h3>
-                                <p class="movie-genre">${movie.category}</p>
-                                <p class="movie-duration">⏱
-                                    <c:set var="hours" value="${movie.duration div 60}"/>
-                                    <c:set var="minutes" value="${movie.duration mod 60}"/>
-                                    <fmt:formatNumber value="${hours}" maxFractionDigits="0" /> giờ
-                                        ${minutes} phút
+                                <h3>${movie.title}</h3>
+                                <p class="movie-genre">${movie.genre}</p>
+                                <p class="movie-duration">⏱ ${movie.formattedDuration}</p>
+                                <p class="movie-rating">★
+                                    <c:choose>
+                                        <c:when test="${movie.rating > 0}">
+                                            ${movie.rating}/10
+                                        </c:when>
+                                        <c:otherwise>
+                                            Chưa có đánh giá
+                                        </c:otherwise>
+                                    </c:choose>
                                 </p>
-                                <p class="movie-rating">★ ${movie.rating}/10</p>
                                 <p style="color: #ff6600; font-size: 13px; margin-top: 5px; font-weight: 600;">
                                     <c:choose>
-                                        <c:when test="${movie.status == 'dang_chieu'}">Đang chiếu</c:when>
-                                        <c:when test="${movie.status == 'sap_chieu'}">Sắp chiếu</c:when>
+                                        <c:when test="${movie.status == 'showing'}">Đang chiếu</c:when>
+                                        <c:when test="${movie.status == 'upcoming'}">Sắp chiếu</c:when>
                                         <c:otherwise>${movie.status}</c:otherwise>
                                     </c:choose>
                                 </p>
@@ -519,7 +523,7 @@
         const firstMovie = document.querySelector('.movie-card');
         if (firstMovie) {
             const movieTitle = firstMovie.querySelector('h3').textContent;
-            const movieId = 1; // Cần lấy ID thực tế từ data attribute
+            const movieId = firstMovie.querySelector('.btn-booking').getAttribute('onclick').match(/\d+/)[0];
             openBookingModal(movieTitle, movieId);
         } else {
             alert('Hiện không có phim nào để đặt vé!');

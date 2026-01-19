@@ -11,7 +11,7 @@ import vn.edu.hcmuaf.fit.demo1.service.MovieService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "HomeController", urlPatterns = {"/home", "/"})
+@WebServlet(name = "HomeController", urlPatterns = {"/home"}) // CHỈ CÓ /home, KHÔNG CÓ /
 public class HomeController extends HttpServlet {
 
     private MovieService movieService = new MovieService();
@@ -23,6 +23,19 @@ public class HomeController extends HttpServlet {
         System.out.println("====== TRANG CHỦ ĐƯỢC GỌI ======");
         System.out.println("URL: " + request.getRequestURL());
         System.out.println("Servlet Path: " + request.getServletPath());
+
+        // KIỂM TRA NẾU LÀ REQUEST CHO FILE TĨNH (CSS, IMAGE, JS) -> KHÔNG XỬ LÝ
+        String path = request.getServletPath();
+        if (path.startsWith("/css/") || path.startsWith("/image/") || path.startsWith("/img/") ||
+                path.startsWith("/js/") || path.endsWith(".css") || path.endsWith(".js") ||
+                path.endsWith(".png") || path.endsWith(".jpg") || path.endsWith(".jpeg")) {
+
+            System.out.println("Bỏ qua file tĩnh: " + path);
+            // Cho phép container xử lý file tĩnh
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         System.out.println("Query String: " + request.getQueryString());
 
         // Đánh dấu request đã qua Servlet để tránh vòng lặp
@@ -45,19 +58,15 @@ public class HomeController extends HttpServlet {
             if (statusParam == null || statusParam.trim().isEmpty()) {
                 status = "dang_chieu"; // Mặc định hiển thị phim đang chiếu
             } else {
-                status = statusParam.replace("+", "_").toLowerCase();
+                status = statusParam;
             }
 
             System.out.println("Lấy phim với status: " + status);
-            movies = movieService.getMoviesByStatus(status);
+            // Lấy 8 phim cho trang chủ
+            movies = movieService.getMoviesByStatusForHome(status);
         }
 
-        // Giới hạn 8 phim cho trang chủ
-        if (movies.size() > 8) {
-            movies = movies.subList(0, 8);
-        }
-
-        System.out.println("Số phim hiển thị: " + movies.size());
+        System.out.println("Số phim hiển thị: " + (movies != null ? movies.size() : 0));
 
         // Gửi dữ liệu đến JSP
         request.setAttribute("movies", movies);
@@ -72,6 +81,8 @@ public class HomeController extends HttpServlet {
         request.setAttribute("currentStatus", currentStatus);
 
         // Forward đến index.jsp
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        System.out.println("Forwarding to index.jsp...");
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        System.out.println("Forward completed.");
     }
 }

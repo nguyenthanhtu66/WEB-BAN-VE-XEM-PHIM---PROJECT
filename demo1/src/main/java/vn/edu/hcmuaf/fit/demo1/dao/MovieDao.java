@@ -1,89 +1,501 @@
 package vn.edu.hcmuaf.fit.demo1.dao;
 
 import vn.edu.hcmuaf.fit.demo1.model.Movie;
-import java.util.*;
+import org.jdbi.v3.core.mapper.RowMapper;
+import org.jdbi.v3.core.statement.StatementContext;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
-public class MovieDao {
+public class MovieDao extends BaseDao {
 
-    private static final List<Movie> movies = new ArrayList<>();
+    // RowMapper để map từ ResultSet sang Movie object (đầy đủ)
+    private static class FullMovieMapper implements RowMapper<Movie> {
+        @Override
+        public Movie map(ResultSet rs, StatementContext ctx) throws SQLException {
+            Movie movie = new Movie();
+            movie.setId(rs.getInt("movie_id"));
+            movie.setTitle(rs.getString("title"));
+            movie.setPosterUrl(rs.getString("poster_url"));
+            movie.setSynopsis(rs.getString("synopsis"));
+            movie.setDescription(rs.getString("description"));
+            movie.setDirector(rs.getString("director"));
+            movie.setCast(rs.getString("cast"));
+            movie.setGenre(rs.getString("genre"));
+            movie.setDuration(rs.getInt("duration"));
+            movie.setCountry(rs.getString("country"));
+            movie.setAgeRating(rs.getString("age_rating"));
+            movie.setRating(rs.getDouble("rating"));
 
-    static {
-        // PHIM ĐANG CHIẾU
-        movies.add(new Movie(1, "Avatar 2", "images/avatar2.jpg",
-                "Khoa học viễn tưởng, Phiêu lưu", 190, 8.5, "dang_chieu", "P"));
+            // Xử lý release_date có thể null
+            java.sql.Date releaseDate = rs.getDate("release_date");
+            if (releaseDate != null) {
+                movie.setReleaseDate(releaseDate.toLocalDate());
+            }
 
-        movies.add(new Movie(2, "Fast & Furious 10", "images/fast10.jpg",
-                "Hành động, Tội phạm, Giật gân", 150, 7.9, "dang_chieu", "T13"));
-
-        movies.add(new Movie(3, "Kung Fu Panda 4", "images/kungfu4.jpg",
-                "Hoạt hình, Gia đình, Phiêu lưu", 100, 7.6, "dang_chieu", "P"));
-
-        movies.add(new Movie(4, "Spider-Man: No Way Home", "images/spiderman.jpg",
-                "Hành động, Phiêu lưu, Khoa học viễn tưởng", 148, 8.4, "dang_chieu", "P"));
-
-        movies.add(new Movie(5, "The Batman", "images/batman.jpg",
-                "Hành động, Tội phạm, Bí ẩn", 176, 7.8, "dang_chieu", "T13"));
-
-        movies.add(new Movie(6, "Top Gun: Maverick", "images/topgun.jpg",
-                "Hành động, Chính kịch", 130, 8.2, "dang_chieu", "T13"));
-
-        movies.add(new Movie(7, "Oppenheimer", "images/oppenheimer.jpg",
-                "Tiểu sử, Lịch sử, Chính kịch", 180, 8.4, "dang_chieu", "T16"));
-
-        movies.add(new Movie(8, "Barbie", "images/barbie.jpg",
-                "Hài, Phiêu lưu, Giả tưởng", 114, 7.1, "dang_chieu", "P"));
-
-        // PHIM SẮP CHIẾU (THÊM MỚI ĐỂ TEST)
-        movies.add(new Movie(9, "Dune Part 2", "images/dune2.jpg",
-                "Khoa học viễn tưởng, Phiêu lưu", 165, 8.8, "sap_chieu", "T13"));
-
-        movies.add(new Movie(10, "Deadpool 3", "images/deadpool3.jpg",
-                "Hành động, Hài, Khoa học viễn tưởng", 130, 8.3, "sap_chieu", "T18"));
-
-        movies.add(new Movie(11, "Black Panther: Wakanda Forever", "images/blackpanther.jpg",
-                "Hành động, Phiêu lưu, Khoa học viễn tưởng", 161, 7.2, "sap_chieu", "T13"));
-
-        movies.add(new Movie(12, "Avatar 3", "images/avatar3.jpg",
-                "Khoa học viễn tưởng, Phiêu lưu", 180, 0.0, "sap_chieu", "P"));
-
-        movies.add(new Movie(13, "Transformers: Rise of the Beasts", "images/transformers.jpg",
-                "Hành động, Khoa học viễn tưởng", 127, 0.0, "sap_chieu", "T13"));
-
-        movies.add(new Movie(14, "The Little Mermaid", "images/mermaid.jpg",
-                "Hoạt hình, Gia đình, Phiêu lưu", 135, 0.0, "sap_chieu", "P"));
-
-        movies.add(new Movie(15, "Mission: Impossible 8", "images/mission8.jpg",
-                "Hành động, Giật gân", 155, 0.0, "sap_chieu", "T13"));
-
-        movies.add(new Movie(16, "Indiana Jones 5", "images/indiana.jpg",
-                "Phiêu lưu, Hành động", 142, 0.0, "sap_chieu", "T13"));
+            movie.setStatus(rs.getString("status"));
+            return movie;
+        }
     }
 
+    // RowMapper cho các query đơn giản (chỉ lấy thông tin cơ bản)
+    private static class BasicMovieMapper implements RowMapper<Movie> {
+        @Override
+        public Movie map(ResultSet rs, StatementContext ctx) throws SQLException {
+            Movie movie = new Movie();
+            movie.setId(rs.getInt("movie_id"));
+            movie.setTitle(rs.getString("title"));
+            movie.setPosterUrl(rs.getString("poster_url"));
+            movie.setGenre(rs.getString("genre"));
+            movie.setDuration(rs.getInt("duration"));
+            movie.setRating(rs.getDouble("rating"));
+            movie.setStatus(rs.getString("status"));
+            movie.setAgeRating(rs.getString("age_rating"));
+
+            // Thêm các trường cơ bản khác nếu có trong query
+            try {
+                movie.setDirector(rs.getString("director"));
+                movie.setCountry(rs.getString("country"));
+            } catch (SQLException e) {
+                // Không bắt buộc
+            }
+
+            return movie;
+        }
+    }
+
+    // ==================== QUERIES CƠ BẢN ====================
+
+    // Lấy tất cả phim (đơn giản)
     public List<Movie> getAllMovies() {
-        return movies;
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE status IN ('showing', 'upcoming')
+            ORDER BY 
+                CASE status 
+                    WHEN 'showing' THEN 1 
+                    WHEN 'upcoming' THEN 2 
+                    ELSE 3 
+                END,
+                release_date DESC,
+                movie_id DESC
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
     }
 
+    // Lấy phim theo trạng thái (đơn giản)
     public List<Movie> getMoviesByStatus(String status) {
-        List<Movie> result = new ArrayList<>();
-        for (Movie movie : movies) {
-            if (movie.getStatus().equalsIgnoreCase(status)) {
-                result.add(movie);
-            }
-        }
-        return result;
+        String dbStatus = convertStatus(status);
+
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE status = :status
+            ORDER BY release_date DESC, movie_id DESC
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("status", dbStatus)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
     }
 
-    // Phương thức tìm kiếm theo tên phim
+    // Lấy phim theo trạng thái với giới hạn số lượng (cho trang chủ)
+    public List<Movie> getMoviesByStatusWithLimit(String status, int limit) {
+        String dbStatus = convertStatus(status);
+
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE status = :status
+            ORDER BY release_date DESC, movie_id DESC
+            LIMIT :limit
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("status", dbStatus)
+                        .bind("limit", limit)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+    // Tìm kiếm phim theo từ khóa
     public List<Movie> searchMovies(String keyword) {
-        List<Movie> result = new ArrayList<>();
-        String searchLower = keyword.toLowerCase();
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE (title LIKE :keyword OR director LIKE :keyword OR cast LIKE :keyword OR genre LIKE :keyword)
+                AND status IN ('showing', 'upcoming')
+            ORDER BY 
+                CASE WHEN status = 'showing' THEN 1 ELSE 2 END,
+                release_date DESC,
+                movie_id DESC
+            """;
 
-        for (Movie movie : movies) {
-            if (movie.getName().toLowerCase().contains(searchLower)) {
-                result.add(movie);
-            }
-        }
-        return result;
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("keyword", "%" + keyword + "%")
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
     }
 
+    // ==================== QUERIES CHI TIẾT ====================
+
+    // Lấy phim theo ID (đầy đủ thông tin)
+    public Movie getMovieById(int id) {
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                synopsis,
+                description,
+                director,
+                cast,
+                genre, 
+                duration,
+                country,
+                age_rating, 
+                rating,
+                release_date,
+                status
+            FROM movies 
+            WHERE movie_id = :id
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("id", id)
+                        .map(new FullMovieMapper())
+                        .findOne()
+                        .orElse(null)
+        );
+    }
+
+    // Lấy phim theo thể loại và trạng thái
+    public List<Movie> getMoviesByGenreAndStatus(String genre, String status) {
+        String dbStatus = convertStatus(status);
+
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE status = :status
+              AND genre LIKE :genre
+            ORDER BY release_date DESC, movie_id DESC
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("status", dbStatus)
+                        .bind("genre", "%" + genre + "%")
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+    // Phân trang phim
+    public List<Movie> getMoviesWithPagination(String status, int page, int pageSize) {
+        String dbStatus = convertStatus(status);
+        int offset = (page - 1) * pageSize;
+
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE status = :status
+            ORDER BY release_date DESC, movie_id DESC
+            LIMIT :pageSize OFFSET :offset
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("status", dbStatus)
+                        .bind("pageSize", pageSize)
+                        .bind("offset", offset)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+    // Đếm tổng số phim theo trạng thái
+    public int countMoviesByStatus(String status) {
+        String dbStatus = convertStatus(status);
+
+        String sql = "SELECT COUNT(*) FROM movies WHERE status = :status";
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("status", dbStatus)
+                        .mapTo(Integer.class)
+                        .one()
+        );
+    }
+
+    // Lấy phim mới nhất
+    public List<Movie> getLatestMovies(int limit) {
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE status IN ('showing', 'upcoming')
+            ORDER BY release_date DESC, created_at DESC
+            LIMIT :limit
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("limit", limit)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+    // Lấy phim có rating cao nhất
+    public List<Movie> getTopRatedMovies(int limit) {
+        String sql = """
+            SELECT 
+                movie_id, 
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country
+            FROM movies 
+            WHERE status IN ('showing', 'upcoming') AND rating > 0
+            ORDER BY rating DESC, release_date DESC
+            LIMIT :limit
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("limit", limit)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+    // ==================== QUERIES ADMIN ====================
+
+    // Thêm phim mới
+    public boolean addMovie(Movie movie) {
+        String sql = """
+            INSERT INTO movies (
+                title, poster_url, synopsis, description, 
+                director, cast, genre, duration, country, 
+                age_rating, rating, release_date, status, created_by
+            ) VALUES (
+                :title, :posterUrl, :synopsis, :description,
+                :director, :cast, :genre, :duration, :country,
+                :ageRating, :rating, :releaseDate, :status, :createdBy
+            )
+            """;
+
+        try {
+            int rows = get().withHandle(handle ->
+                    handle.createUpdate(sql)
+                            .bindBean(movie)
+                            .execute()
+            );
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Cập nhật phim
+    public boolean updateMovie(Movie movie) {
+        String sql = """
+            UPDATE movies SET
+                title = :title,
+                poster_url = :posterUrl,
+                synopsis = :synopsis,
+                description = :description,
+                director = :director,
+                cast = :cast,
+                genre = :genre,
+                duration = :duration,
+                country = :country,
+                age_rating = :ageRating,
+                rating = :rating,
+                release_date = :releaseDate,
+                status = :status,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE movie_id = :id
+            """;
+
+        try {
+            int rows = get().withHandle(handle ->
+                    handle.createUpdate(sql)
+                            .bindBean(movie)
+                            .bind("id", movie.getId())
+                            .execute()
+            );
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Xóa phim (soft delete - cập nhật status)
+    public boolean deleteMovie(int id) {
+        String sql = "UPDATE movies SET status = 'ended' WHERE movie_id = :id";
+
+        try {
+            int rows = get().withHandle(handle ->
+                    handle.createUpdate(sql)
+                            .bind("id", id)
+                            .execute()
+            );
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ==================== HELPER METHODS ====================
+
+    // Chuyển đổi status từ dạng URL sang database format
+    private String convertStatus(String status) {
+        if (status == null || status.trim().isEmpty()) {
+            return "showing"; // Mặc định là phim đang chiếu
+        }
+
+        String lowerStatus = status.toLowerCase();
+
+        switch (lowerStatus) {
+            case "dang_chieu":
+            case "showing":
+            case "đang chiếu":
+            case "đang_chiếu":
+                return "showing";
+            case "sap_chieu":
+            case "upcoming":
+            case "sắp chiếu":
+            case "sắp_chiếu":
+                return "upcoming";
+            case "ended":
+            case "đã chiếu":
+            case "đã_chiếu":
+                return "ended";
+            default:
+                return "showing";
+        }
+    }
+
+    // Lấy danh sách thể loại duy nhất
+    public List<String> getAllGenres() {
+        String sql = """
+            SELECT DISTINCT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(genre, ',', numbers.n), ',', -1)) as genre
+            FROM movies
+            CROSS JOIN (
+                SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+            ) numbers
+            WHERE CHAR_LENGTH(genre) - CHAR_LENGTH(REPLACE(genre, ',', '')) >= numbers.n - 1
+            ORDER BY genre
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .mapTo(String.class)
+                        .list()
+        );
+    }
+
+    // Đếm tổng số phim
+    public int getTotalMovieCount() {
+        String sql = "SELECT COUNT(*) FROM movies WHERE status IN ('showing', 'upcoming')";
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .mapTo(Integer.class)
+                        .one()
+        );
+    }
 }
