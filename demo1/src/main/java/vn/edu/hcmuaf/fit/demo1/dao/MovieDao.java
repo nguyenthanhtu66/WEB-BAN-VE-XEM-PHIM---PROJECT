@@ -16,7 +16,7 @@ public class MovieDao extends BaseDao {
         @Override
         public Movie map(ResultSet rs, StatementContext ctx) throws SQLException {
             Movie movie = new Movie();
-            movie.setId(rs.getInt("movie_id"));
+            movie.setId(rs.getInt("id"));
             movie.setTitle(rs.getString("title"));
             movie.setPosterUrl(rs.getString("poster_url"));
             movie.setSynopsis(rs.getString("synopsis"));
@@ -45,7 +45,7 @@ public class MovieDao extends BaseDao {
         @Override
         public Movie map(ResultSet rs, StatementContext ctx) throws SQLException {
             Movie movie = new Movie();
-            movie.setId(rs.getInt("movie_id"));
+            movie.setId(rs.getInt("id"));  // SỬA: "movie_id" -> "id"
             movie.setTitle(rs.getString("title"));
             movie.setPosterUrl(rs.getString("poster_url"));
             movie.setGenre(rs.getString("genre"));
@@ -73,7 +73,7 @@ public class MovieDao extends BaseDao {
     public List<Movie> getAllMovies() {
         String sql = """
             SELECT 
-                movie_id, 
+                id,           -- SỬA: movie_id -> id
                 title, 
                 poster_url, 
                 genre, 
@@ -93,7 +93,7 @@ public class MovieDao extends BaseDao {
                     ELSE 3 
                 END,
                 release_date DESC,
-                movie_id DESC
+                id DESC
             """;
 
         return get().withHandle(handle ->
@@ -107,7 +107,7 @@ public class MovieDao extends BaseDao {
     public List<Movie> getMoviesByStatus(String dbStatus) {
         String sql = """
             SELECT 
-                movie_id, 
+                id,           -- SỬA: movie_id -> id
                 title, 
                 poster_url, 
                 genre, 
@@ -120,7 +120,7 @@ public class MovieDao extends BaseDao {
                 cast
             FROM movies 
             WHERE status = :status
-            ORDER BY release_date DESC, movie_id DESC
+            ORDER BY release_date DESC, id DESC
             """;
 
         return get().withHandle(handle ->
@@ -135,7 +135,7 @@ public class MovieDao extends BaseDao {
     public List<Movie> getMoviesByStatusWithLimit(String dbStatus, int limit) {
         String sql = """
             SELECT 
-                movie_id, 
+                id,           -- SỬA: movie_id -> id
                 title, 
                 poster_url, 
                 genre, 
@@ -148,7 +148,7 @@ public class MovieDao extends BaseDao {
                 cast
             FROM movies 
             WHERE status = :status
-            ORDER BY release_date DESC, movie_id DESC
+            ORDER BY release_date DESC, id DESC
             LIMIT :limit
             """;
 
@@ -165,7 +165,7 @@ public class MovieDao extends BaseDao {
     public List<Movie> searchMovies(String keyword) {
         String sql = """
             SELECT 
-                movie_id, 
+                id,           -- SỬA: movie_id -> id
                 title, 
                 poster_url, 
                 genre, 
@@ -182,7 +182,7 @@ public class MovieDao extends BaseDao {
             ORDER BY 
                 CASE WHEN status = 'showing' THEN 1 ELSE 2 END,
                 release_date DESC,
-                movie_id DESC
+                id DESC
             """;
 
         return get().withHandle(handle ->
@@ -199,7 +199,7 @@ public class MovieDao extends BaseDao {
     public Movie getMovieById(int id) {
         String sql = """
             SELECT 
-                movie_id, 
+                id,           
                 title, 
                 poster_url, 
                 synopsis,
@@ -214,7 +214,7 @@ public class MovieDao extends BaseDao {
                 release_date,
                 status
             FROM movies 
-            WHERE movie_id = :id
+            WHERE id = :id
             """;
 
         return get().withHandle(handle ->
@@ -230,7 +230,7 @@ public class MovieDao extends BaseDao {
     public List<Movie> getMoviesByGenreAndStatus(String genre, String dbStatus) {
         String sql = """
             SELECT 
-                movie_id, 
+                id,           
                 title, 
                 poster_url, 
                 genre, 
@@ -244,7 +244,7 @@ public class MovieDao extends BaseDao {
             FROM movies 
             WHERE status = :status
               AND genre LIKE :genre
-            ORDER BY release_date DESC, movie_id DESC
+            ORDER BY release_date DESC, id DESC
             """;
 
         return get().withHandle(handle ->
@@ -262,7 +262,7 @@ public class MovieDao extends BaseDao {
 
         String sql = """
             SELECT 
-                movie_id, 
+                id,           
                 title, 
                 poster_url, 
                 genre, 
@@ -275,7 +275,7 @@ public class MovieDao extends BaseDao {
                 cast
             FROM movies 
             WHERE status = :status
-            ORDER BY release_date DESC, movie_id DESC
+            ORDER BY release_date DESC, id DESC
             LIMIT :pageSize OFFSET :offset
             """;
 
@@ -305,7 +305,7 @@ public class MovieDao extends BaseDao {
     public List<Movie> getLatestMovies(int limit) {
         String sql = """
             SELECT 
-                movie_id, 
+                id,           
                 title, 
                 poster_url, 
                 genre, 
@@ -334,7 +334,7 @@ public class MovieDao extends BaseDao {
     public List<Movie> getTopRatedMovies(int limit) {
         String sql = """
             SELECT 
-                movie_id, 
+                id,          
                 title, 
                 poster_url, 
                 genre, 
@@ -406,7 +406,7 @@ public class MovieDao extends BaseDao {
                 release_date = :releaseDate,
                 status = :status,
                 updated_at = CURRENT_TIMESTAMP
-            WHERE movie_id = :id
+            WHERE id = :id
             """;
 
         try {
@@ -425,7 +425,7 @@ public class MovieDao extends BaseDao {
 
     // Xóa phim (soft delete - cập nhật status)
     public boolean deleteMovie(int id) {
-        String sql = "UPDATE movies SET status = 'ended' WHERE movie_id = :id";
+        String sql = "UPDATE movies SET status = 'ended' WHERE id = :id";
 
         try {
             int rows = get().withHandle(handle ->
@@ -511,5 +511,10 @@ public class MovieDao extends BaseDao {
                         .mapTo(Integer.class)
                         .one()
         );
+    }
+
+    @Override
+    public String toString() {
+        return "MovieDao - Total movies in DB: " + getTotalMovieCount();
     }
 }
