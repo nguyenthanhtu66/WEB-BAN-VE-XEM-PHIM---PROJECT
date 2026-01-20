@@ -1,48 +1,76 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%
+    // Kiểm tra nếu trang được truy cập trực tiếp (không qua Servlet)
+    if (request.getAttribute("fromServlet") == null) {
+        // Tạo URL để chuyển hướng đến HomeController
+        String redirectURL = request.getContextPath() + "/home";
+
+        // Giữ lại các tham số từ URL nếu có
+        String queryString = request.getQueryString();
+        if (queryString != null && !queryString.isEmpty()) {
+            redirectURL += "?" + queryString;
+        }
+
+        // Chuyển hướng đến HomeController
+        response.sendRedirect(redirectURL);
+        return; // Dừng xử lý JSP ngay lập tức
+    }
+%>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DTN Ticket Movie Seller</title>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
 </head>
+
 <body>
 <div id="app" class="app">
     <!-- Header Label với Search -->
     <div class="header-label">
         <div class="header-container">
-            <div class="search-container">
-                <input type="text" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
-            </div>
+            <form action="${pageContext.request.contextPath}/home" method="get" class="search-form">
+                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
+                       value="${searchKeyword != null ? searchKeyword : ''}">
+                <button type="submit" style="display:none;">Search</button>
+            </form>
             <div class="header-account">
                 <a href="ticket-warehouse.html" class="header-item">Kho vé</a>
-                <a href="Khuyen-mai.html" class="header-item">Khuyến mãi</a>
+                <a href="Khuyen-mai.jsp" class="header-item">Khuyến mãi</a>
                 <a href="gio-hang.html" class="header-item">
                     Giỏ hàng
                     <span class="cart-badge">3</span>
                 </a>
-                <a href="Login.html" class="header-item">Đăng nhập</a>
+                <a href="login.jsp" class="header-item">Đăng nhập</a>
             </div>
         </div>
     </div>
 
     <div class="header-menu">
         <div class="menu-container">
-            <a href="index.html" class="logo">
-                <img src="image/231601886-Photoroom.png" alt="dtn logo">
+            <a href="${pageContext.request.contextPath}/home" class="logo">
+                <img src="${pageContext.request.contextPath}/image/231601886-Photoroom.png" alt="dtn logo">
             </a>
 
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="index.html" style="color: #ff6600;" class="menu-item">TRANG CHỦ</a>
+                    <a href="${pageContext.request.contextPath}/home"
+                       style="color: #ff6600;" class="menu-item">TRANG CHỦ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
                     <div class="menu-item has-dropdown">PHIM</div>
                     <div class="dropdown-menu">
-                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim đang chiếu</a>
-                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim sắp chiếu</a>
+                        <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
+                           class="dropdown-item">Phim đang chiếu</a>
+                        <a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"
+                           class="dropdown-item">Phim sắp chiếu</a>
                     </div>
                 </div>
 
@@ -51,16 +79,15 @@
                     <div class="dropdown-menu">
                         <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
                         <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
-
                     </div>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.html">GIÁ VÉ</a>
+                    <a class="menu-item" href="Gia-Ve.html">GIÁ VÉ</a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.html">GIỚI THIỆU</a>
+                    <a class="menu-item" href="Gioi-Thieu.html">GIỚI THIỆU</a>
                 </div>
                 <div class="menu-item-wrapper">
                     <a class="menu-item" href="contact.html">LIÊN HỆ</a>
@@ -68,218 +95,178 @@
             </nav>
         </div>
     </div>
+
     <div class="main-container" id="main-container">
         <div class="slideshow-container">
-
             <div class="slider-container" id="mySlider">
                 <div class="slider-track">
-                    <div class="slide"> <img
-                            src="image/anh-slideshow-3.jpg"
-                            alt=""></div>
-
+                    <div class="slide">
+                        <img src="${pageContext.request.contextPath}/image/anh-slideshow-3.jpg" alt="Slide 1">
+                    </div>
                 </div>
             </div>
             <button class="slider-btn prev" id="prevBtn">❮</button>
             <button class="slider-btn next" id="nextBtn">❯</button>
-            <div class="slider-dots" id="sliderDots">
-            </div>
+            <div class="slider-dots" id="sliderDots"></div>
         </div>
+
         <div class="filter-bar">
             <select id="filter-genre">
-                <option value="">Chọn Phim</option>
+                <option value="">Chọn thể loại</option>
+                <option value="Hành động">Hành động</option>
+                <option value="Phiêu lưu">Phiêu lưu</option>
+                <option value="Khoa học viễn tưởng">Khoa học viễn tưởng</option>
+                <option value="Hài">Hài</option>
+                <option value="Chính kịch">Chính kịch</option>
             </select>
 
             <select id="filter-cinema">
-                <option value="">Chọn rạp</option>
+                <option value="">Chọn rạp</option>
+                <option value="CGV">CGV</option>
+                <option value="Lotte">Lotte Cinema</option>
+                <option value="BHD">BHD Star</option>
+                <option value="Galaxy">Galaxy Cinema</option>
             </select>
 
             <select id="filter-location">
-                <option value="">Chọn Thời Gian</option>
+                <option value="">Chọn Thời Gian</option>
+                <option value="today">Hôm nay</option>
+                <option value="tomorrow">Ngày mai</option>
+                <option value="weekend">Cuối tuần</option>
             </select>
-            <button id="reset-button">
-                Đặt vé nhanh
-            </button>
+            <button id="reset-button">Đặt vé nhanh</button>
         </div>
+
+        <!-- Hiển thị thông báo tìm kiếm nếu có -->
+        <c:if test="${not empty searchKeyword}">
+            <div style="text-align: center; padding: 20px; background: #1e1e1e; border-radius: 12px; margin-bottom: 30px;">
+                <h3 style="color: #ff6600; margin-bottom: 10px;">Kết quả tìm kiếm cho: "${searchKeyword}"</h3>
+                <p style="color: #fff;">Tìm thấy ${movies != null ? movies.size() : 0} phim</p>
+            </div>
+        </c:if>
+
         <!-- Movie Tabs -->
         <div class="movie-selection">
-            <a href="index.html" class="movie-status active">PHIM ĐANG CHIẾU</a>
-            <a href="index2.html" class="movie-status near-active">PHIM SẮP CHIẾU</a>
-        </div>
-        <!-- Movie Cards (Static HTML) -->
-        <div class="movie-selection-content">
-            <!-- Movie 1 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
-                    <div class="movie-overlay">
-                        <a href="Chi-tiet-phim.html" class="movie-btn btn-detail">Chi Tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Spider-Man: No Way Home</h3>
-                    <p class="movie-genre">Hành động, Phiêu lưu</p>
-                    <p class="movie-duration">⏱ 149 phút</p>
-                    <p class="movie-rating">★ 8.2/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 2 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar: The Way of Water">
-                    <div class="movie-overlay">
-                        <a class="movie-btn btn-detail">Chi Tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Avatar: The Way of Water</h3>
-                    <p class="movie-genre">Khoa học viễn tưởng, Phiêu lưu</p>
-                    <p class="movie-duration">⏱ 192 phút</p>
-                    <p class="movie-rating">★ 7.6/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 3 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Batman">
-                    <div class="movie-overlay">
-                        <a class="movie-btn btn-detail">Chi Tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>The Batman</h3>
-                    <p class="movie-genre">Hành động, Tội phạm, Bí ẩn</p>
-                    <p class="movie-duration">⏱ 176 phút</p>
-                    <p class="movie-rating">★ 7.8/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 4 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://upload.wikimedia.org/wikipedia/vi/1/1c/Top_Gun_Maverick_Poster_VN.jpg" alt="Top Gun: Maverick">
-                    <div class="movie-overlay">
-                        <a class="movie-btn btn-detail">Chi Tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Top Gun: Maverick</h3>
-                    <p class="movie-genre">Hành động, Chính kịch</p>
-                    <p class="movie-duration">⏱ 131 phút</p>
-                    <p class="movie-rating">★ 8.3/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 5 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer">
-                    <div class="movie-overlay">
-                        <a class="movie-btn btn-detail">Chi Tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Oppenheimer</h3>
-                    <p class="movie-genre">Tiểu sử, Lịch sử, Chính kịch</p>
-                    <p class="movie-duration">⏱ 180 phút</p>
-                    <p class="movie-rating">★ 8.4/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 6 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg" alt="Barbie">
-                    <div class="movie-overlay">
-                        <a class="movie-btn btn-detail">Chi Tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Barbie</h3>
-                    <p class="movie-genre">Hài, Phiêu lưu, Giả tưởng</p>
-                    <p class="movie-duration">⏱ 114 phút</p>
-                    <p class="movie-rating">★ 7.1/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 7 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg" alt="Guardians of the Galaxy Vol. 3">
-                    <div class="movie-overlay">
-                        <a class="movie-btn btn-detail">Chi Tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Guardians of the Galaxy Vol. 3</h3>
-                    <p class="movie-genre">Hành động, Khoa học viễn tưởng</p>
-                    <p class="movie-duration">⏱ 150 phút</p>
-                    <p class="movie-rating">★ 8.0/10</p>
-                </div>
-            </div>
-
-            <!-- Movie 8 -->
-            <div class="movie-card">
-                <div class="movie-poster">
-
-                    <img src="https://image.tmdb.org/t/p/original/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune">
-                    <div class="movie-overlay">
-                        <a class="movie-btn btn-detail">Chi tiết</a>
-                    </div>
-                </div>
-                <div class="movie-info">
-                    <h3>Dune</h3>
-                    <p class="movie-genre">Khoa học viễn tưởng, Phiêu lưu</p>
-                    <p class="movie-duration">⏱ 155 phút</p>
-                    <p class="movie-rating">★ 8.0/10</p>
-                </div>
-            </div>
-        </div>
-        <div class="see-more-container">
-            <a href="Phim-Dang-Chieu.html" class="see-more-btn" role="button">Xem thêm</a>
+            <c:set var="currentStatus" value="${empty currentStatus ? 'dang_chieu' : currentStatus}" />
+            <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
+               class="movie-status ${currentStatus == 'dang_chieu' ? 'active' : ''}">
+                PHIM ĐANG CHIẾU
+            </a>
+            <a href="${pageContext.request.contextPath}/home?status=Sap+chieu"
+               class="movie-status ${currentStatus == 'sap_chieu' ? 'active' : ''}">
+                PHIM SẮP CHIẾU
+            </a>
         </div>
 
-        <!-- Tin Tức-->
+        <!-- Movie Cards -->
+        <c:choose>
+            <c:when test="${empty movies || movies.size() == 0}">
+                <div class="no-movies" style="text-align: center; padding: 50px; color: #fff; background: #1e1e1e; border-radius: 12px;">
+                    <p style="font-size: 18px; margin-bottom: 20px;">
+                        <c:choose>
+                            <c:when test="${not empty searchKeyword}">
+                                Không tìm thấy phim nào cho từ khóa: "${searchKeyword}"
+                            </c:when>
+                            <c:when test="${currentStatus == 'sap_chieu'}">
+                                Hiện chưa có phim sắp chiếu nào.
+                            </c:when>
+                            <c:otherwise>
+                                Hiện chưa có phim đang chiếu nào.
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                    <a href="${pageContext.request.contextPath}/home" class="see-more-btn" style="display: inline-block;">
+                        Xem tất cả phim
+                    </a>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="movie-selection-content">
+                    <c:forEach var="movie" items="${movies}">
+                        <div class="movie-card">
+                            <div class="movie-poster">
+                                <!-- Hiển thị ảnh phim -->
+                                <img src="${pageContext.request.contextPath}/images/${movie.image}"
+                                     alt="${movie.name}"
+                                     onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                                <div class="movie-overlay">
+                                    <a href="${pageContext.request.contextPath}/Chi-tiet-phim.jsp?id=${movie.id}"
+                                       class="movie-btn btn-detail">Chi Tiết</a>
+                                    <button class="movie-btn btn-booking"
+                                            onclick="openBookingModal('${movie.name}', ${movie.id})">
+                                        Đặt Vé
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="movie-info">
+                                <h3>${movie.name}</h3>
+                                <p class="movie-genre">${movie.category}</p>
+                                <p class="movie-duration">⏱
+                                    <c:set var="hours" value="${movie.duration div 60}"/>
+                                    <c:set var="minutes" value="${movie.duration mod 60}"/>
+                                    <fmt:formatNumber value="${hours}" maxFractionDigits="0" /> giờ
+                                        ${minutes} phút
+                                </p>
+                                <p class="movie-rating">★ ${movie.rating}/10</p>
+                                <p style="color: #ff6600; font-size: 13px; margin-top: 5px; font-weight: 600;">
+                                    <c:choose>
+                                        <c:when test="${movie.status == 'dang_chieu'}">Đang chiếu</c:when>
+                                        <c:when test="${movie.status == 'sap_chieu'}">Sắp chiếu</c:when>
+                                        <c:otherwise>${movie.status}</c:otherwise>
+                                    </c:choose>
+                                </p>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <!-- Hiển thị nút "Xem thêm" nếu có nhiều phim -->
+                <c:if test="${movies.size() >= 8}">
+                    <div class="see-more-container">
+                        <a href="${pageContext.request.contextPath}/list-product?status=${currentStatus == 'sap_chieu' ? 'Sap+chieu' : 'Dang+chieu'}"
+                           class="see-more-btn" role="button">Xem thêm</a>
+                    </div>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+
+        <!-- Tin Tức -->
         <div class="news-selection-content">
-            <div class ="container">
-                <div class = "sec-heading">
-                    <h2 class = "heading">TIN TỨC</h2>
+            <div class="container">
+                <div class="sec-heading">
+                    <h2 class="heading">TIN TỨC</h2>
                 </div>
                 <div class="news-grid">
-                    <!-- News 1 -->
                     <a href="Tin-tuc-chi-tiet-1.html" class="news-link">
-                        <div class = "news-card">
+                        <div class="news-card">
                             <div class="news-poster">
-                                <img src="https://i.imgur.com/MCHyJQX.jpeg" alt ="Quái Thú Vô Hình: Vùng Đất Chết Chóc">
+                                <img src="https://i.imgur.com/MCHyJQX.jpeg" alt="Quái Thú Vô Hình">
                             </div>
-                            <div class = "news-info">
+                            <div class="news-info">
                                 <p class="news-type">Bình luận phim</p>
-                                <h3 class="news-title">Review Quái Thú Vô Hình: Vùng Đất Chết Chóc – Phần phim hoàn toàn không có con người</h3>
+                                <h3 class="news-title">Review Quái Thú Vô Hình: Vùng Đất Chết Chóc</h3>
                             </div>
                         </div>
                     </a>
-                    <!-- News 2 -->
                     <a href="#" class="news-link">
-                        <div class = "news-card">
+                        <div class="news-card">
                             <div class="news-poster">
-                                <img src="https://i.imgur.com/HqIIkCx.jpeg" alt ="Top 5 phim đáng xem nhất tháng 11 – Có siêu phẩm nào góp mặt?">
+                                <img src="https://i.imgur.com/HqIIkCx.jpeg" alt="Top 5 phim">
                             </div>
-                            <div class = "news-info">
+                            <div class="news-info">
                                 <p class="news-type">Tin điện ảnh</p>
-                                <h3 class="news-title">Top 5 phim đáng xem nhất tháng 11 – Có siêu phẩm nào góp mặt?</h3>
+                                <h3 class="news-title">Top 5 phim đáng xem nhất tháng 11</h3>
                             </div>
                         </div>
                     </a>
-                    <!-- News 3 -->
                     <a href="#" class="news-link">
-                        <div class = "news-card">
+                        <div class="news-card">
                             <div class="news-poster">
-                                <img src="https://cdn.galaxycine.vn/media/2025/9/15/tran-chien-sau-tran-chien-500_1757909554042.jpg" alt ="Review Trận Chiến Sau Trận Chiến">
+                                <img src="https://cdn.galaxycine.vn/media/2025/9/15/tran-chien-sau-tran-chien-500_1757909554042.jpg" alt="Trận Chiến">
                             </div>
-                            <div class = "news-info">
-                                <p class="news-type">Bình luận phim </p>
-                                <h3 class="news-title">Review Trận Chiến Sau Trận Chiến – Nghệ thuật khung hình của PTA và cơn địa chấn từ DiCaprio</h3>
+                            <div class="news-info">
+                                <p class="news-type">Bình luận phim</p>
+                                <h3 class="news-title">Review Trận Chiến Sau Trận Chiến</h3>
                             </div>
                         </div>
                     </a>
@@ -291,59 +278,56 @@
             </div>
         </div>
 
-        <!-- Khuyến mãi-->
+        <!-- Khuyến mãi -->
         <div class="promotion-selection-content">
-            <div class ="container">
-                <div class = "sec-heading">
-                    <h2 class = "heading">KHUYẾN MÃI</h2>
+            <div class="container">
+                <div class="sec-heading">
+                    <h2 class="heading">KHUYẾN MÃI</h2>
                 </div>
                 <div class="promotion-grid">
-                    <!-- Promotion 1 -->
-                    <a href="Khuyen-mai-chi-tiet.html" class="promotion-link">
-                        <div class = "promotion-card">
+                    <a href="Khuyen-mai-chi-tiet.jsp" class="promotion-link">
+                        <div class="promotion-card">
                             <div class="promotion-poster">
-                                <img src="img/khuyenmai-1.png" alt ="ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22">
+                                <img src="${pageContext.request.contextPath}/img/khuyenmai-1.png" alt="Ưu đãi U22">
                             </div>
-                            <div class = "promotion-info">
+                            <div class="promotion-info">
                                 <h3 class="promotion-title">ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22</h3>
                             </div>
                         </div>
                     </a>
-                    <!-- Promotion 2 -->
                     <a href="#" class="promotion-link">
-                        <div class = "promotion-card">
+                        <div class="promotion-card">
                             <div class="promotion-poster">
-                                <img src="img/khuyenmai-2.png" alt ="SPECIAL MONDAY - ĐỒNG GIÁ 50.000Đ/VÉ 2D THỨ 2 CUỐI THÁNG (TỪ 01/01/2025)">
+                                <img src="${pageContext.request.contextPath}/img/khuyenmai-2.png" alt="Special Monday">
                             </div>
-                            <div class = "promotion-info">
-                                <h3 class="promotion-title">SPECIAL MONDAY - ĐỒNG GIÁ 50.000Đ/VÉ 2D THỨ 2 CUỐI THÁNG (TỪ 01/01/2025)</h3>
+                            <div class="promotion-info">
+                                <h3 class="promotion-title">SPECIAL MONDAY - ĐỒNG GIÁ 50.000Đ/VÉ 2D</h3>
                             </div>
                         </div>
                     </a>
-                    <!-- Promotion 3 -->
                     <a href="#" class="promotion-link">
-                        <div class = "promotion-card">
+                        <div class="promotion-card">
                             <div class="promotion-poster">
-                                <img src="img/khuyenmai-3.jpg" alt ="GÀ RÁN SIÊU MÊ LY ĐỒNG GIÁ CHỈ 79K CÁC SET GÀ RÁN">
+                                <img src="${pageContext.request.contextPath}/img/khuyenmai-3.jpg" alt="Gà rán">
                             </div>
-                            <div class = "promotion-info">
-                                <h3 class="promotion-title">GÀ RÁN SIÊU MÊ LY ĐỒNG GIÁ CHỈ 79K CÁC SET GÀ RÁN</h3>
+                            <div class="promotion-info">
+                                <h3 class="promotion-title">GÀ RÁN SIÊU MÊ LY ĐỒNG GIÁ CHỈ 79K</h3>
                             </div>
                         </div>
                     </a>
                 </div>
 
                 <div class="see-more-container">
-                    <a href="Khuyen-mai.html" class="see-more-btn" role="button">Xem thêm</a>
+                    <a href="Khuyen-mai.jsp" class="see-more-btn" role="button">Xem thêm</a>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Modal Đặt Vé -->
     <div id="bookingModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Đặt Vé Xem Phim</h2>
-            <!-- Sơ đồ chọn ghế -->
             <div class="seat-selection">
                 <div class="screen">MÀN HÌNH</div>
                 <div class="seats-container">
@@ -387,29 +371,28 @@
                     </div>
                 </div>
 
-
                 <div class="seat-legend">
                     <div class="legend-item">
                         <div class="legend-box booked"></div>
-                        <span>Ghế đã được đặt</span>
+                        <span>Ghế đã được đặt</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-box selected"></div>
-                        <span>Đang chọn</span>
+                        <span>Đang chọn</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-box reserved"></div>
-                        <span>Ghế trống</span>
+                        <div class="legend-box available"></div>
+                        <span>Ghế trống</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Form thông tin đặt vé -->
             <div class="booking-form">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Phim:</label>
-                        <input type="text" value="Spider-Man: No Way Home" readonly>
+                        <input type="text" id="modalMovieTitle" value="" readonly>
+                        <input type="hidden" id="modalMovieId" value="">
                     </div>
                 </div>
 
@@ -424,7 +407,7 @@
                     </div>
                     <div class="form-group">
                         <label>Ngày giờ chiếu:</label>
-                        <input type="text" value="11/11/2025 17:30" readonly>
+                        <input type="datetime-local" id="showtime" value="">
                     </div>
                 </div>
 
@@ -456,20 +439,21 @@
 
                 <div class="form-buttons">
                     <a href="Thanh-toan.html" class="btn-submit">Đặt vé</a>
-                    <button class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
+                    <button type="button" class="btn-cancel" onclick="closeBookingModal()">Hủy</button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Footer -->
     <div class="footer">
         <div class="footer-top">
             <ul class="footer-menu">
                 <li><a href="Chinh-sach.html">Chính sách</a></li>
-                <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
-                <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/home?status=Dang+chieu">Phim đang chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu">Phim sắp chiếu</a></li>
                 <li><a href="Tin-dien-anh.html">Tin tức</a></li>
-                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
+                <li><a href="Hoi-Dap.jsp">Hỏi đáp</a></li>
                 <li><a href="contact.html">Liên hệ</a></li>
             </ul>
             <div class="footer-apps">
@@ -483,34 +467,191 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
-            <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
+            <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim.</p>
             <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
         </div>
     </div>
 </div>
-</body>
+
 <script>
-    // document.getElementById('reset-button').addEventListener('click', function () {
-    //     window.alert("Bạn đã đặt vé thành công !")
-    // })
-    function openBookingModal() {
+    // Xử lý form tìm kiếm
+    document.querySelector('.search-form').addEventListener('submit', function(e) {
+        const searchInput = this.querySelector('.search-bar');
+        if (searchInput.value.trim() === '') {
+            e.preventDefault();
+            alert('Vui lòng nhập từ khóa tìm kiếm!');
+        }
+    });
+
+    let selectedMovieTitle = '';
+    let selectedMovieId = 0;
+
+    function openBookingModal(movieTitle, movieId) {
+        selectedMovieTitle = movieTitle;
+        selectedMovieId = movieId;
+        document.getElementById('modalMovieTitle').value = movieTitle;
+        document.getElementById('modalMovieId').value = movieId;
+
+        // Set thời gian mặc định (2 giờ sau)
+        const now = new Date();
+        now.setHours(now.getHours() + 2);
+        const formattedDate = now.toISOString().slice(0, 16);
+        document.getElementById('showtime').value = formattedDate;
+
         document.getElementById('bookingModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
+
     function closeBookingModal() {
         document.getElementById('bookingModal').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
+
     window.onclick = function(event) {
         const modal = document.getElementById('bookingModal');
         if (event.target == modal) {
             closeBookingModal();
         }
     }
-    function submitBooking() {
-        alert("Bạn đã đặt vé thành công !");
-        closeBookingModal();
+
+    // Xử lý nút "Đặt vé nhanh"
+    document.getElementById('reset-button').addEventListener('click', function() {
+        const firstMovie = document.querySelector('.movie-card');
+        if (firstMovie) {
+            const movieTitle = firstMovie.querySelector('h3').textContent;
+            const movieId = 1; // Cần lấy ID thực tế từ data attribute
+            openBookingModal(movieTitle, movieId);
+        } else {
+            alert('Hiện không có phim nào để đặt vé!');
+        }
+    });
+
+    // Xử lý chọn ghế
+    document.querySelectorAll('.seat.available').forEach(seat => {
+        seat.addEventListener('click', function() {
+            // Xóa selected từ tất cả ghế
+            document.querySelectorAll('.seat.selected').forEach(s => {
+                s.classList.remove('selected');
+                s.classList.add('available');
+            });
+
+            // Chọn ghế hiện tại
+            this.classList.remove('available');
+            this.classList.add('selected');
+        });
+    });
+
+    // Xử lý tính toán giá vé
+    document.getElementById('quantity').addEventListener('input', updateTotalPrice);
+    document.getElementById('ticketType').addEventListener('change', updateTotalPrice);
+
+    function updateTotalPrice() {
+        let pricePerTicket = 100000; // Mặc định
+
+        switch(document.getElementById('ticketType').value) {
+            case 'student':
+                pricePerTicket = 80000;
+                break;
+            case 'child':
+                pricePerTicket = 60000;
+                break;
+        }
+
+        document.getElementById('ticketPrice').value = pricePerTicket.toLocaleString('vi-VN') + ' đ';
+
+        const quantity = parseInt(document.getElementById('quantity').value) || 1;
+        const total = pricePerTicket * quantity;
+        document.getElementById('totalPrice').value = total.toLocaleString('vi-VN') + ' đ';
     }
+
+    // Slider
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('sliderDots');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Tạo dots cho slider
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+    });
+
+    let currentSlide = 0;
+
+    function goToSlide(slideIndex) {
+        currentSlide = slideIndex;
+        updateSlider();
+    }
+
+    function updateSlider() {
+        const sliderTrack = document.querySelector('.slider-track');
+        sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+        document.querySelectorAll('.dot').forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    prevBtn.addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        updateSlider();
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlider();
+    });
+
+    // Auto slide
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlider();
+    }, 5000);
+
+    // Xử lý filter (client-side)
+    document.getElementById('filter-genre').addEventListener('change', function() {
+        const selectedGenre = this.value;
+        if (!selectedGenre) return;
+
+        // Lọc phim theo thể loại
+        const movieCards = document.querySelectorAll('.movie-card');
+        let visibleCount = 0;
+
+        movieCards.forEach(card => {
+            const genre = card.querySelector('.movie-genre').textContent;
+            if (genre.includes(selectedGenre)) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Hiển thị thông báo nếu không có phim
+        if (visibleCount === 0) {
+            alert('Không có phim nào thuộc thể loại ' + selectedGenre);
+        }
+    });
+
+    // Xử lý active tab khi load trang
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+
+        // Cập nhật các tab
+        const tabs = document.querySelectorAll('.movie-status');
+        tabs.forEach(tab => {
+            const tabStatus = tab.getAttribute('href').includes('Sap+chieu') ? 'sap_chieu' : 'dang_chieu';
+            tab.classList.toggle('active',
+                (status === 'Sap+chieu' && tabStatus === 'sap_chieu') ||
+                (!status && tabStatus === 'dang_chieu') ||
+                (status === 'Dang+chieu' && tabStatus === 'dang_chieu')
+            );
+        });
+    });
 </script>
+</body>
 </html>
