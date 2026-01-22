@@ -2,20 +2,19 @@ package vn.edu.hcmuaf.fit.demo1.model;
 
 public class Contact {
     private String hoTen;
-    private String sdt;
+    private String soDienThoai;
     private String email;
     private String dichVu;
-    private String noiDung;
-
-    public Contact() {
-    }
-
-    public Contact(String hoTen, String sdt, String email, String dichVu, String noiDung) {
+    private String chiTiet;
+    private String dy;
+  
+    public Contact(String hoTen, String soDienThoai, String email, String dichVu, String chiTiet, String dy) {
         this.hoTen = hoTen;
-        this.sdt = sdt;
+        this.soDienThoai = soDienThoai;
         this.email = email;
         this.dichVu = dichVu;
-        this.noiDung = noiDung;
+        this.chiTiet = chiTiet;
+        this.dy = dy;
     }
 
     public String getHoTen() {
@@ -26,12 +25,12 @@ public class Contact {
         this.hoTen = hoTen;
     }
 
-    public String getSdt() {
-        return sdt;
+    public String getSoDienThoai() {
+        return soDienThoai;
     }
 
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
     }
 
     public String getEmail() {
@@ -50,11 +49,23 @@ public class Contact {
         this.dichVu = dichVu;
     }
 
-    public String getNoiDung() {
-        return noiDung;
+    public String getChiTiet() {
+        return chiTiet;
     }
 
-    public void setNoiDung(String noiDung) {
-        this.noiDung = noiDung;
+    public void setChiTiet(String chiTiet) {
+        this.chiTiet = chiTiet;
     }
+
+    public String getDy() {
+        return dy;
+    }
+
+    public void setDy(String dy) {
+        this.dy = dy;
+    }
+   
+
+    
+    
 }

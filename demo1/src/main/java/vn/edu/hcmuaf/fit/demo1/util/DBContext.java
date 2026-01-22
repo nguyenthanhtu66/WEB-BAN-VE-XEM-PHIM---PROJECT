@@ -11,4 +11,6 @@ public class DBContext {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         return DriverManager.getConnection(url, user, pass);
     }
+
+ 
 }
