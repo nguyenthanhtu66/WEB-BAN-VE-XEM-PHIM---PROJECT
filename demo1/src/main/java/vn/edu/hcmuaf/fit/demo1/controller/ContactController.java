@@ -1,24 +1,42 @@
 package vn.edu.hcmuaf.fit.demo1.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
 import vn.edu.hcmuaf.fit.demo1.model.Contact;
+import vn.edu.hcmuaf.fit.demo1.service.ContactService;
 
-@WebServlet(name = "ContactController", urlPatterns = { "/xu-ly-lien-he" })
+@WebServlet("/contact")
 public class ContactController extends HttpServlet {
-    private static List<Contact> danhsachgia = new ArrayList<>();
 
+    private final ContactService contactService = new ContactService();
+
+    // GET: hiển thị form
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-System.out.println("---- DA GOI DUOC VAO SERVLET ROI NE! ----");
-        resp.getWriter().println("Servlet da hoat dong!");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        // Hiển thị thông báo thành công sau redirect (PRG)
+        String success = req.getParameter("success");
+        if ("1".equals(success)) {
+            req.setAttribute("success",
+                    "Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.");
+        }
+
+        req.getRequestDispatcher("/WEB-INF/views/contact.jsp")
+           .forward(req, resp);
+    }
+
+    // POST: xử lý submit
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         req.setCharacterEncoding("UTF-8");
 
         String hoTen = req.getParameter("hoTen");
@@ -26,23 +44,46 @@ System.out.println("---- DA GOI DUOC VAO SERVLET ROI NE! ----");
         String email = req.getParameter("email");
         String dichVu = req.getParameter("dichVu");
         String chiTiet = req.getParameter("chiTiet");
-        String dy = req.getParameter("dy");
+        String dongY = req.getParameter("dy");
 
-        // Nếu check bị null nghĩa là khách hàng chưa tích (hoặc cố tình lách luật)
-        if (dy == null) {
-            req.setAttribute("thongBao", "Lỗi: Bạn phải tích vào ô đồng ý!");
-            req.getRequestDispatcher("contact.jsp").forward(req, resp);
-            return; // Dừng chương trình tại đây, không chạy xuống phần lưu dữ liệu bên dưới
+        // ===== VALIDATE SERVER-SIDE =====
+        if (hoTen == null || hoTen.isBlank()
+                || soDienThoai == null || soDienThoai.isBlank()
+                || email == null || email.isBlank()
+                || dichVu == null || dichVu.isBlank()) {
+
+            req.setAttribute("error", "Vui lòng nhập đầy đủ các trường bắt buộc.");
+            forward(req, resp);
+            return;
         }
 
-        Contact ngươimoi = new Contact(hoTen, soDienThoai, email, dichVu, chiTiet, dy);
-        danhsachgia.add(ngươimoi);
+        if (dongY == null) {
+            req.setAttribute("error", "Bạn phải đồng ý với điều khoản để tiếp tục.");
+            forward(req, resp);
+            return;
+        }
 
-        req.setAttribute("thongbao", "Cảm ơn" + hoTen + "Chúng tôi đã nhận tin");
-        req.setAttribute("listTuServlet", danhsachgia);
+        // ===== TẠO MODEL =====
+        Contact contact = new Contact(
+                hoTen,
+                soDienThoai,
+                email,
+                dichVu,
+                chiTiet,
+                dongY
+        );
 
-        req.getRequestDispatcher("Contact.jsp").forward(req, resp);
+        // ===== GỌI SERVICE (CHUẨN MVC) =====
+        contactService.save(contact);
 
+        // ===== PRG PATTERN =====
+        resp.sendRedirect(req.getContextPath() + "/contact?success=1");
     }
 
+    private void forward(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.getRequestDispatcher("/WEB-INF/views/contact.jsp")
+           .forward(req, resp);
+    }
 }

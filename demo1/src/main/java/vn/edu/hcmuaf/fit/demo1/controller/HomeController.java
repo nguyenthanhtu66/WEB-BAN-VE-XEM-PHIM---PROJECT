@@ -11,7 +11,7 @@ import vn.edu.hcmuaf.fit.demo1.service.MovieService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "HomeController", urlPatterns = {"/home", "/"})
+@WebServlet(name = "HomeController", urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
 
     private MovieService movieService = new MovieService();
