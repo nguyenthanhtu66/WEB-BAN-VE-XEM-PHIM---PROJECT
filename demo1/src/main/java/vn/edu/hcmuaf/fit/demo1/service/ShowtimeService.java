@@ -1,143 +1,51 @@
 package vn.edu.hcmuaf.fit.demo1.service;
 
-import vn.edu.hcmuaf.fit.demo1.dao.*;
-import vn.edu.hcmuaf.fit.demo1.model.*;
+import vn.edu.hcmuaf.fit.demo1.dao.ShowtimeDao;
+import vn.edu.hcmuaf.fit.demo1.model.Showtime;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class ShowtimeService {
 
     private final ShowtimeDao showtimeDao = new ShowtimeDao();
-    private final MovieDao movieDao = new MovieDao();
-    private final RoomDao roomDao = new RoomDao();
 
-    // Lấy suất chiếu theo ID
-    public Showtime getShowtimeById(int showtimeId) {
-        return showtimeDao.getShowtimeById(showtimeId);
+    public Showtime getShowtimeById(int id) {
+        return showtimeDao.getShowtimeById(id);
     }
 
-    // Lấy suất chiếu theo phim
     public List<Showtime> getShowtimesByMovie(int movieId) {
         return showtimeDao.getShowtimesByMovie(movieId);
     }
 
-    // Lấy suất chiếu theo ngày
-    public List<Showtime> getShowtimesByDate(LocalDate date) {
-        return showtimeDao.getShowtimesByDate(date);
-    }
+    public Showtime findOrCreateShowtime(int movieId, int roomId, String showtimeStr) {
+        // Phân tích chuỗi thời gian
+        LocalDateTime showDateTime = parseShowtimeString(showtimeStr);
 
-    // Lấy suất chiếu theo phim và ngày
-    public List<Showtime> getShowtimesByMovieAndDate(int movieId, LocalDate date) {
-        return showtimeDao.getShowtimesByMovieAndDate(movieId, date);
-    }
-
-    // Lấy thông tin chi tiết suất chiếu
-    public Map<String, Object> getShowtimeDetails(int showtimeId) {
-        Showtime showtime = showtimeDao.getShowtimeById(showtimeId);
-        if (showtime == null) {
-            return null;
+        // Tìm suất chiếu hiện có
+        Showtime existing = showtimeDao.findShowtime(movieId, roomId, showDateTime);
+        if (existing != null) {
+            return existing;
         }
 
-        Movie movie = movieDao.getMovieById(showtime.getMovieId());
-        Room room = roomDao.getRoomById(showtime.getRoomId());
+        // Tạo suất chiếu mới
+        Showtime newShowtime = new Showtime();
+        newShowtime.setMovieId(movieId);
+        newShowtime.setRoomId(roomId);
+        newShowtime.setShowDate(showDateTime.toLocalDate());
+        newShowtime.setShowTime(showDateTime.toLocalTime());
+        newShowtime.setActive(true);
 
-        Map<String, Object> details = new HashMap<>();
-        details.put("showtime", showtime);
-        details.put("movie", movie);
-        details.put("room", room);
-
-        // Tính toán thời gian còn lại
-        if (showtime.getShowDate() != null && showtime.getShowTime() != null) {
-            LocalDate showDate = showtime.getShowDate();
-            LocalTime showTime = showtime.getShowTime();
-            // ... tính toán thời gian còn lại ...
+        if (showtimeDao.createShowtime(newShowtime)) {
+            return showtimeDao.findShowtime(movieId, roomId, showDateTime);
         }
 
-        return details;
+        return null;
     }
 
-    // Lấy tên phòng
-    public String getRoomName(int roomId) {
-        Room room = roomDao.getRoomById(roomId);
-        return room != null ? room.getRoomName() : "Unknown";
-    }
-
-    // Lấy thông tin phòng
-    public Room getRoomInfo(int roomId) {
-        return roomDao.getRoomById(roomId);
-    }
-
-    // Kiểm tra suất chiếu có hợp lệ không
-    public boolean isValidShowtime(int showtimeId) {
-        Showtime showtime = showtimeDao.getShowtimeById(showtimeId);
-        if (showtime == null || !showtime.isActive()) {
-            return false;
-        }
-
-        // Kiểm tra thời gian (không cho đặt vé quá muộn)
-        LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
-
-        if (showtime.getShowDate().isBefore(today)) {
-            return false;
-        }
-
-        if (showtime.getShowDate().equals(today)) {
-            // Không cho đặt vé trước giờ chiếu 30 phút
-            if (showtime.getShowTime().minusMinutes(30).isBefore(now)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // Lấy suất chiếu sắp tới
-    public List<Map<String, Object>> getUpcomingShowtimes(int limit) {
-        List<Showtime> showtimes = showtimeDao.getUpcomingShowtimes(limit);
-        List<Map<String, Object>> result = new ArrayList<>();
-
-        for (Showtime showtime : showtimes) {
-            Map<String, Object> info = new HashMap<>();
-            info.put("showtime", showtime);
-
-            Movie movie = movieDao.getMovieById(showtime.getMovieId());
-            info.put("movie", movie);
-
-            Room room = roomDao.getRoomById(showtime.getRoomId());
-            info.put("room", room);
-
-            result.add(info);
-        }
-
-        return result;
-    }
-
-    // Lấy suất chiếu theo rạp
-    public List<Showtime> getShowtimesByCinema(String cinemaCode) {
-        // Giả sử room có thuộc tính cinema
-        List<Room> rooms = roomDao.getRoomsByCinema(cinemaCode);
-        List<Showtime> allShowtimes = new ArrayList<>();
-
-        for (Room room : rooms) {
-            List<Showtime> roomShowtimes = showtimeDao.getShowtimesByRoom(room.getId());
-            allShowtimes.addAll(roomShowtimes);
-        }
-
-        // Sắp xếp theo thời gian
-        allShowtimes.sort((s1, s2) -> {
-            int dateCompare = s1.getShowDate().compareTo(s2.getShowDate());
-            if (dateCompare != 0) return dateCompare;
-            return s1.getShowTime().compareTo(s2.getShowTime());
-        });
-
-        return allShowtimes;
-    }
-
-    // Kiểm tra xem có suất chiếu nào trùng không
-    public boolean hasTimeConflict(int roomId, LocalDate date, LocalTime time, int duration) {
-        return showtimeDao.hasTimeConflict(roomId, date, time, duration);
+    private LocalDateTime parseShowtimeString(String showtimeStr) {
+        // Có thể cần cài đặt parsing cụ thể
+        // Tạm thời trả về thời gian hiện tại + 2 giờ
+        return LocalDateTime.now().plusHours(2);
     }
 }

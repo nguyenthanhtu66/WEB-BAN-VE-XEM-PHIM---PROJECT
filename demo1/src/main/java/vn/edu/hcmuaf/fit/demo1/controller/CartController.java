@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.edu.hcmuaf.fit.demo1.model.*;
 import vn.edu.hcmuaf.fit.demo1.service.*;
-import vn.edu.hcmuaf.fit.demo1.util.JsonUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +18,8 @@ import java.util.*;
         "/cart/add",
         "/cart/update",
         "/cart/remove",
-        "/cart/clear"
+        "/cart/clear",
+        "/cart/apply-promo"
 })
 public class CartController extends HttpServlet {
 
@@ -51,6 +51,8 @@ public class CartController extends HttpServlet {
             addToCart(request, response);
         } else if ("/cart/update".equals(path)) {
             updateCartItem(request, response);
+        } else if ("/cart/apply-promo".equals(path)) {
+            applyPromoCode(request, response);
         }
     }
 
@@ -67,7 +69,7 @@ public class CartController extends HttpServlet {
         request.getRequestDispatcher("/Gio-hang.jsp").forward(request, response);
     }
 
-    // Thêm vào giỏ hàng
+    // Thêm vào giỏ hàng với giữ ghế
     private void addToCart(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
@@ -100,7 +102,57 @@ public class CartController extends HttpServlet {
                 return;
             }
 
-            // Tạo cart item
+            // Kiểm tra ghế có còn trống không
+            String[] seatArray = seats.split(", ");
+            List<String> seatCodes = new ArrayList<>();
+            for (String seatCode : seatArray) {
+                if (!seatCode.trim().isEmpty()) {
+                    seatCodes.add(seatCode.trim());
+                }
+            }
+
+            // Validate ghế còn trống
+            boolean seatsAvailable = bookingService.validateSeatsAvailable(
+                    showtimeId, roomId, seatCodes);
+
+            if (!seatsAvailable) {
+                sendErrorResponse(out, "Một số ghế đã được đặt. Vui lòng chọn ghế khác.");
+                return;
+            }
+
+            // Lấy userId nếu đã đăng nhập
+            Integer userId = null;
+            User user = (User) session.getAttribute("user");
+            if (user != null) {
+                userId = user.getId();
+
+                // Kiểm tra số ghế tối đa
+                if (!bookingService.validateMaxSeats(showtimeId, userId, seatCodes.size())) {
+                    sendErrorResponse(out, "Bạn đã giữ quá nhiều ghế. Tối đa 10 ghế mỗi người.");
+                    return;
+                }
+            }
+
+            // Giữ ghế tạm thời trước khi thêm vào giỏ hàng
+            Map<String, Object> reservationResult = bookingService.reserveSeats(
+                    showtimeId, roomId, seatCodes, userId);
+
+            if (!(Boolean) reservationResult.get("success")) {
+                sendErrorResponse(out, (String) reservationResult.get("message"));
+                return;
+            }
+
+            String reservationId = (String) reservationResult.get("reservationId");
+
+            // Lưu reservationId vào session để có thể hủy sau
+            List<String> reservations = (List<String>) session.getAttribute("reservations");
+            if (reservations == null) {
+                reservations = new ArrayList<>();
+                session.setAttribute("reservations", reservations);
+            }
+            reservations.add(reservationId);
+
+            // Tạo cart item với reservationId
             CartItem cartItem = new CartItem();
             cartItem.setId(UUID.randomUUID().toString());
             cartItem.setMovieId(movieId);
@@ -115,6 +167,7 @@ public class CartController extends HttpServlet {
             cartItem.setSeats(seats);
             cartItem.setUnitPrice(cartService.calculateTicketPrice(ticketType));
             cartItem.setTotal(cartItem.getUnitPrice() * quantity);
+            cartItem.setReservationId(reservationId);
 
             // Thêm vào giỏ hàng
             boolean success = cartService.addToCart(session, cartItem);
@@ -122,15 +175,22 @@ public class CartController extends HttpServlet {
             if (success) {
                 ShoppingCart cart = cartService.getOrCreateCart(session);
 
-                Map<String, Object> result = new HashMap<>();
-                result.put("success", true);
-                result.put("message", "Đã thêm vào giỏ hàng");
-                result.put("cartItemCount", cart.getTotalItems());
-                result.put("cartTotal", cart.getGrandTotal());
+                // Tạo JSON response thủ công
+                StringBuilder json = new StringBuilder();
+                json.append("{");
+                json.append("\"success\": true,");
+                json.append("\"message\": \"Đã thêm vào giỏ hàng\",");
+                json.append("\"cartItemCount\": ").append(cart.getTotalItems()).append(",");
+                json.append("\"cartTotal\": ").append(cart.getGrandTotal()).append(",");
+                json.append("\"reservationId\": \"").append(reservationId).append("\",");
+                json.append("\"reservationTime\": ").append(reservationResult.get("reservationTime"));
+                json.append("}");
 
-                out.print(JsonUtils.toJson(result));
+                out.print(json.toString());
             } else {
-                sendErrorResponse(out, "Không thể thêm vào giỏ hàng. Ghế có thể đã được đặt.");
+                // Nếu thêm vào giỏ hàng thất bại, hủy giữ ghế
+                bookingService.releaseSeats(reservationId);
+                sendErrorResponse(out, "Không thể thêm vào giỏ hàng");
             }
 
         } catch (NumberFormatException e) {
@@ -154,10 +214,45 @@ public class CartController extends HttpServlet {
             String itemId = request.getParameter("itemId");
             int newQuantity = Integer.parseInt(request.getParameter("quantity"));
 
+            // Lấy cart item hiện tại
+            ShoppingCart cart = cartService.getOrCreateCart(session);
+            CartItem currentItem = null;
+            for (CartItem item : cart.getItems()) {
+                if (item.getId().equals(itemId)) {
+                    currentItem = item;
+                    break;
+                }
+            }
+
+            if (currentItem == null) {
+                sendErrorResponse(out, "Không tìm thấy vé");
+                return;
+            }
+
+            // Kiểm tra nếu số lượng ghế thay đổi
+            if (newQuantity != currentItem.getQuantity()) {
+                String[] currentSeats = currentItem.getSeats().split(", ");
+
+                if (newQuantity > currentSeats.length) {
+                    sendErrorResponse(out, "Không thể tăng số lượng vượt quá số ghế đã chọn");
+                    return;
+                }
+
+                if (newQuantity < currentSeats.length) {
+                    // Giảm số lượng ghế
+                    String[] newSeatsArray = Arrays.copyOf(currentSeats, newQuantity);
+                    String newSeats = String.join(", ", newSeatsArray);
+
+                    // Cập nhật ghế trong cart item
+                    currentItem.setSeats(newSeats);
+                }
+            }
+
+            // Cập nhật số lượng
             boolean success = cartService.updateQuantity(session, itemId, newQuantity);
 
             if (success) {
-                ShoppingCart cart = cartService.getOrCreateCart(session);
+                cart = cartService.getOrCreateCart(session);
 
                 // Tìm item để lấy tổng tiền của item
                 double itemTotal = 0;
@@ -168,16 +263,19 @@ public class CartController extends HttpServlet {
                     }
                 }
 
-                Map<String, Object> result = new HashMap<>();
-                result.put("success", true);
-                result.put("cartItemCount", cart.getTotalItems());
-                result.put("cartTotal", cart.getGrandTotal());
-                result.put("itemTotal", itemTotal);
-                result.put("subtotal", cart.getSubtotal());
-                result.put("serviceFee", cart.getServiceFee());
-                result.put("grandTotal", cart.getGrandTotal());
+                // Tạo JSON response thủ công
+                StringBuilder json = new StringBuilder();
+                json.append("{");
+                json.append("\"success\": true,");
+                json.append("\"cartItemCount\": ").append(cart.getTotalItems()).append(",");
+                json.append("\"cartTotal\": ").append(cart.getGrandTotal()).append(",");
+                json.append("\"itemTotal\": ").append(itemTotal).append(",");
+                json.append("\"subtotal\": ").append(cart.getSubtotal()).append(",");
+                json.append("\"serviceFee\": ").append(cart.getServiceFee()).append(",");
+                json.append("\"grandTotal\": ").append(cart.getGrandTotal());
+                json.append("}");
 
-                out.print(JsonUtils.toJson(result));
+                out.print(json.toString());
             } else {
                 sendErrorResponse(out, "Không thể cập nhật số lượng");
             }
@@ -188,7 +286,7 @@ public class CartController extends HttpServlet {
         }
     }
 
-    // Xóa item khỏi giỏ hàng
+    // Xóa item khỏi giỏ hàng (hủy giữ ghế)
     private void removeCartItem(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
@@ -196,46 +294,155 @@ public class CartController extends HttpServlet {
         String itemId = request.getParameter("id");
 
         if (itemId != null) {
-            boolean success = cartService.removeItem(session, itemId);
-
-            if (success) {
-                // Nếu là AJAX request
-                if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-
-                    ShoppingCart cart = cartService.getOrCreateCart(session);
-
-                    Map<String, Object> result = new HashMap<>();
-                    result.put("success", true);
-                    result.put("cartItemCount", cart.getTotalItems());
-                    result.put("cartTotal", cart.getGrandTotal());
-
-                    response.getWriter().print(JsonUtils.toJson(result));
-                } else {
-                    // Redirect về trang giỏ hàng
-                    response.sendRedirect(request.getContextPath() + "/cart");
+            // Lấy thông tin item trước khi xóa
+            ShoppingCart cart = cartService.getOrCreateCart(session);
+            CartItem itemToRemove = null;
+            for (CartItem item : cart.getItems()) {
+                if (item.getId().equals(itemId)) {
+                    itemToRemove = item;
+                    break;
                 }
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Không tìm thấy vé");
+            }
+
+            if (itemToRemove != null) {
+                // Hủy giữ ghế nếu có reservationId
+                if (itemToRemove.getReservationId() != null) {
+                    bookingService.releaseSeats(itemToRemove.getReservationId());
+
+                    // Xóa reservationId khỏi session
+                    List<String> reservations = (List<String>) session.getAttribute("reservations");
+                    if (reservations != null) {
+                        reservations.remove(itemToRemove.getReservationId());
+                    }
+                }
+
+                // Xóa khỏi giỏ hàng
+                boolean success = cartService.removeItem(session, itemId);
+
+                if (success) {
+                    // Nếu là AJAX request
+                    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+
+                        cart = cartService.getOrCreateCart(session);
+
+                        // Tạo JSON response thủ công
+                        StringBuilder json = new StringBuilder();
+                        json.append("{");
+                        json.append("\"success\": true,");
+                        json.append("\"cartItemCount\": ").append(cart.getTotalItems()).append(",");
+                        json.append("\"cartTotal\": ").append(cart.getGrandTotal());
+                        json.append("}");
+
+                        response.getWriter().print(json.toString());
+                    } else {
+                        // Redirect về trang giỏ hàng
+                        response.sendRedirect(request.getContextPath() + "/cart");
+                    }
+                } else {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Không tìm thấy vé");
+                }
             }
         }
     }
 
-    // Xóa toàn bộ giỏ hàng
+    // Xóa toàn bộ giỏ hàng (hủy tất cả giữ ghế)
     private void clearCart(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         HttpSession session = request.getSession();
+        ShoppingCart cart = cartService.getOrCreateCart(session);
+
+        // Hủy tất cả reservations
+        List<String> reservations = (List<String>) session.getAttribute("reservations");
+        if (reservations != null) {
+            for (String reservationId : reservations) {
+                bookingService.releaseSeats(reservationId);
+            }
+            reservations.clear();
+        }
+
+        // Xóa tất cả reservations trong cart items
+        for (CartItem item : cart.getItems()) {
+            if (item.getReservationId() != null) {
+                bookingService.releaseSeats(item.getReservationId());
+            }
+        }
+
+        // Xóa giỏ hàng
         cartService.clearCart(session);
 
         response.sendRedirect(request.getContextPath() + "/cart");
     }
 
+    // Áp dụng mã khuyến mãi
+    private void applyPromoCode(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+            String promoCode = request.getParameter("promoCode");
+            HttpSession session = request.getSession();
+
+            if (promoCode == null || promoCode.trim().isEmpty()) {
+                sendErrorResponse(out, "Vui lòng nhập mã khuyến mãi");
+                return;
+            }
+
+            // Áp dụng mã khuyến mãi
+            Map<String, Object> result = cartService.applyPromoCode(session, promoCode.trim());
+
+            // Chuyển Map thành JSON string
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+            boolean first = true;
+            for (Map.Entry<String, Object> entry : result.entrySet()) {
+                if (!first) {
+                    json.append(",");
+                }
+                first = false;
+
+                json.append("\"").append(entry.getKey()).append("\": ");
+
+                Object value = entry.getValue();
+                if (value instanceof String) {
+                    json.append("\"").append(escapeJsonString(value.toString())).append("\"");
+                } else if (value instanceof Boolean) {
+                    json.append(value);
+                } else {
+                    json.append(value);
+                }
+            }
+            json.append("}");
+
+            out.print(json.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendErrorResponse(out, "Có lỗi xảy ra");
+        }
+    }
+
     private void sendErrorResponse(PrintWriter out, String message) {
-        Map<String, Object> error = new HashMap<>();
-        error.put("success", false);
-        error.put("message", message);
-        out.print(JsonUtils.toJson(error));
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"success\": false,");
+        json.append("\"message\": \"").append(escapeJsonString(message)).append("\"");
+        json.append("}");
+        out.print(json.toString());
+    }
+
+    // Helper method để escape JSON string
+    private String escapeJsonString(String input) {
+        if (input == null) return "";
+        return input.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
     }
 }

@@ -1,15 +1,14 @@
 package vn.edu.hcmuaf.fit.demo1.dao;
 
-import org.jdbi.v3.core.Jdbi;
+import vn.edu.hcmuaf.fit.demo1.model.BookedSeat;
+import vn.edu.hcmuaf.fit.demo1.model.SeatStatus;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
-import vn.edu.hcmuaf.fit.demo1.model.BookedSeat;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 
 public class BookedSeatDao extends BaseDao {
 
@@ -20,447 +19,219 @@ public class BookedSeatDao extends BaseDao {
             bookedSeat.setId(rs.getInt("id"));
             bookedSeat.setShowtimeId(rs.getInt("showtime_id"));
             bookedSeat.setSeatId(rs.getInt("seat_id"));
+            bookedSeat.setOrderId(rs.getObject("order_id") != null ? rs.getInt("order_id") : null);
+            bookedSeat.setUserId(rs.getObject("user_id") != null ? rs.getInt("user_id") : null);
 
-            Integer orderId = rs.getObject("order_id", Integer.class);
-            bookedSeat.setOrderId(orderId);
-
-            Integer userId = rs.getObject("user_id", Integer.class);
-            bookedSeat.setUserId(userId);
-
-            bookedSeat.setStatus(rs.getString("status"));
-
-            Timestamp reservedUntil = rs.getTimestamp("reserved_until");
-            if (reservedUntil != null) {
-                bookedSeat.setReservedUntil(reservedUntil.toLocalDateTime());
+            // SỬA LỖI: Chuyển đổi String sang SeatStatus enum
+            String statusStr = rs.getString("status");
+            try {
+                bookedSeat.setStatus(SeatStatus.valueOf(statusStr.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                bookedSeat.setStatus(SeatStatus.AVAILABLE); // Mặc định nếu không hợp lệ
             }
 
-            Timestamp createdAt = rs.getTimestamp("created_at");
-            if (createdAt != null) {
-                bookedSeat.setCreatedAt(createdAt.toLocalDateTime());
+            bookedSeat.setReservationId(rs.getString("reservation_id"));
+
+            if (rs.getTimestamp("reserved_until") != null) {
+                bookedSeat.setReservedUntil(rs.getTimestamp("reserved_until").toLocalDateTime());
+            }
+
+            if (rs.getTimestamp("created_at") != null) {
+                bookedSeat.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
             }
 
             return bookedSeat;
         }
     }
 
-    // Giữ ghế tạm thời (tính bằng phút)
-    public boolean reserveSeatsTemporarily(int showtimeId, int roomId,
-                                           String[] seatCodes, int userId,
-                                           int minutes) {
+    // Giữ ghế tạm thời
+    public boolean reserveSeat(BookedSeat bookedSeat) {
         String sql = """
-            INSERT INTO booked_seats (showtime_id, seat_id, user_id, status, reserved_until) 
-            SELECT :showtimeId, s.id, :userId, 'reserved', 
-                   DATE_ADD(NOW(), INTERVAL :minutes MINUTE)
-            FROM seats s
-            WHERE s.room_id = :roomId 
-              AND s.seat_code IN (<seatCodes>)
-              AND s.is_active = true
-              AND s.id NOT IN (
-                  SELECT bs.seat_id 
-                  FROM booked_seats bs
-                  WHERE bs.showtime_id = :showtimeId 
-                    AND bs.status IN ('reserved', 'booked')
-                    AND (bs.reserved_until IS NULL OR bs.reserved_until > NOW())
-              )
+            INSERT INTO booked_seats (
+                showtime_id, seat_id, order_id, user_id, 
+                status, reservation_id, reserved_until
+            ) VALUES (
+                :showtimeId, :seatId, :orderId, :userId,
+                :status, :reservationId, :reservedUntil
+            )
+            ON DUPLICATE KEY UPDATE
+                status = VALUES(status),
+                reservation_id = VALUES(reservation_id),
+                reserved_until = VALUES(reserved_until),
+                user_id = VALUES(user_id)
             """;
 
-        try {
-            return get().withHandle(handle -> {
-                // Tạo query với danh sách seat codes
-                var query = handle.createUpdate(sql)
-                        .bind("showtimeId", showtimeId)
-                        .bind("roomId", roomId)
-                        .bind("userId", userId)
-                        .bind("minutes", minutes)
-                        .bindList("seatCodes", Arrays.asList(seatCodes));
-
-                int rows = query.execute();
-                return rows > 0;
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return get().withHandle(handle -> {
+            int rows = handle.createUpdate(sql)
+                    .bind("showtimeId", bookedSeat.getShowtimeId())
+                    .bind("seatId", bookedSeat.getSeatId())
+                    .bind("orderId", bookedSeat.getOrderId())
+                    .bind("userId", bookedSeat.getUserId())
+                    .bind("status", bookedSeat.getStatus().name()) // SỬA: .name() để lấy String từ enum
+                    .bind("reservationId", bookedSeat.getReservationId())
+                    .bind("reservedUntil", bookedSeat.getReservedUntil())
+                    .execute();
+            return rows > 0;
+        });
     }
 
-    // Kiểm tra ghế có được giữ không
-    public boolean isSeatReserved(int showtimeId, String seatCode) {
+    // Hủy giữ ghế theo reservationId
+    public boolean releaseSeats(String reservationId) {
         String sql = """
-            SELECT COUNT(*) > 0
-            FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code = :seatCode
-              AND bs.status = 'reserved'
-              AND bs.reserved_until > NOW()
+            UPDATE booked_seats 
+            SET status = 'RELEASED', reserved_until = NULL 
+            WHERE reservation_id = :reservationId 
+            AND status IN ('RESERVED', 'BOOKED')
             """;
 
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .bind("seatCode", seatCode)
-                            .mapTo(Boolean.class)
-                            .one()
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return get().withHandle(handle -> {
+            int rows = handle.createUpdate(sql)
+                    .bind("reservationId", reservationId)
+                    .execute();
+            return rows > 0;
+        });
     }
 
-    // Kiểm tra ghế có được giữ bởi user cụ thể không
-    public boolean isSeatReservedByUser(int showtimeId, String seatCode, int userId) {
+    // Hủy giữ ghế theo showtime và seat
+    public boolean releaseSeat(int showtimeId, int seatId) {
         String sql = """
-            SELECT COUNT(*) > 0
-            FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code = :seatCode
-              AND bs.user_id = :userId
-              AND bs.status = 'reserved'
-              AND bs.reserved_until > NOW()
+            UPDATE booked_seats 
+            SET status = 'RELEASED', reserved_until = NULL 
+            WHERE showtime_id = :showtimeId 
+            AND seat_id = :seatId 
+            AND status IN ('RESERVED', 'BOOKED')
             """;
 
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .bind("seatCode", seatCode)
-                            .bind("userId", userId)
-                            .mapTo(Boolean.class)
-                            .one()
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return get().withHandle(handle -> {
+            int rows = handle.createUpdate(sql)
+                    .bind("showtimeId", showtimeId)
+                    .bind("seatId", seatId)
+                    .execute();
+            return rows > 0;
+        });
     }
 
-    // Hủy giữ ghế
-    public boolean releaseSeats(int showtimeId, String[] seatCodes) {
+    // Kiểm tra trạng thái ghế
+    public SeatStatus checkSeatStatus(int showtimeId, int seatId) {
         String sql = """
-            DELETE bs FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code IN (<seatCodes>)
-              AND bs.status = 'reserved'
-            """;
-
-        try {
-            return get().withHandle(handle -> {
-                var query = handle.createUpdate(sql)
-                        .bind("showtimeId", showtimeId)
-                        .bindList("seatCodes", Arrays.asList(seatCodes));
-
-                int rows = query.execute();
-                return rows > 0;
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Cập nhật trạng thái từ "reserved" sang "booked" khi thanh toán thành công
-    public boolean updateToBooked(int showtimeId, String[] seatCodes, int orderId, int userId) {
-        String sql = """
-            UPDATE booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            SET bs.status = 'booked',
-                bs.order_id = :orderId,
-                bs.reserved_until = NULL
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code IN (<seatCodes>)
-              AND bs.user_id = :userId
-              AND bs.status = 'reserved'
-            """;
-
-        try {
-            return get().withHandle(handle -> {
-                var query = handle.createUpdate(sql)
-                        .bind("showtimeId", showtimeId)
-                        .bind("orderId", orderId)
-                        .bind("userId", userId)
-                        .bindList("seatCodes", Arrays.asList(seatCodes));
-
-                int rows = query.execute();
-                return rows > 0;
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Gia hạn thời gian giữ ghế
-    public boolean extendReservation(int showtimeId, String[] seatCodes, int additionalMinutes) {
-        String sql = """
-            UPDATE booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            SET bs.reserved_until = DATE_ADD(bs.reserved_until, INTERVAL :minutes MINUTE)
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code IN (<seatCodes>)
-              AND bs.status = 'reserved'
-              AND bs.reserved_until > NOW()
-            """;
-
-        try {
-            return get().withHandle(handle -> {
-                var query = handle.createUpdate(sql)
-                        .bind("showtimeId", showtimeId)
-                        .bind("minutes", additionalMinutes)
-                        .bindList("seatCodes", Arrays.asList(seatCodes));
-
-                int rows = query.execute();
-                return rows > 0;
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Lấy trạng thái ghế
-    public String getSeatStatus(int showtimeId, String seatCode) {
-        String sql = """
-            SELECT 
-                CASE 
-                    WHEN bs.status = 'booked' THEN 'booked'
-                    WHEN bs.status = 'reserved' AND bs.reserved_until > NOW() THEN 'reserved'
-                    ELSE 'available'
-                END as status
-            FROM seats s
-            LEFT JOIN booked_seats bs ON s.id = bs.seat_id 
-                AND bs.showtime_id = :showtimeId
-                AND (bs.status = 'booked' OR (bs.status = 'reserved' AND bs.reserved_until > NOW()))
-            WHERE s.seat_code = :seatCode
-              AND s.is_active = true
-            ORDER BY bs.reserved_until DESC
+            SELECT status 
+            FROM booked_seats 
+            WHERE showtime_id = :showtimeId 
+            AND seat_id = :seatId 
+            AND status IN ('RESERVED', 'BOOKED')
+            AND (reserved_until IS NULL OR reserved_until > NOW())
             LIMIT 1
             """;
 
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .bind("seatCode", seatCode)
-                            .mapTo(String.class)
-                            .findOne()
-                            .orElse("available")
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "available";
-        }
-    }
-
-    // Dọn dẹp ghế hết hạn giữ
-    public int cleanupExpiredReservations() {
-        String sql = """
-            DELETE FROM booked_seats 
-            WHERE status = 'reserved' 
-              AND reserved_until <= NOW()
-            """;
-
-        try {
-            return get().withHandle(handle ->
-                    handle.createUpdate(sql).execute()
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    // Lấy thông tin ghế đã đặt/giữ
-    public List<Map<String, Object>> getBookedSeatsInfo(int showtimeId) {
-        String sql = """
-            SELECT 
-                s.seat_code,
-                bs.status,
-                bs.user_id,
-                bs.reserved_until,
-                bs.created_at,
-                u.full_name as reserved_by
-            FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            LEFT JOIN users u ON bs.user_id = u.id
-            WHERE bs.showtime_id = :showtimeId
-              AND (bs.status = 'booked' OR (bs.status = 'reserved' AND bs.reserved_until > NOW()))
-            ORDER BY s.seat_code
-            """;
-
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .map((rs, ctx) -> {
-                                Map<String, Object> map = new HashMap<>();
-                                map.put("seatCode", rs.getString("seat_code"));
-                                map.put("status", rs.getString("status"));
-                                map.put("userId", rs.getInt("user_id"));
-                                map.put("reservedUntil", rs.getTimestamp("reserved_until"));
-                                map.put("createdAt", rs.getTimestamp("created_at"));
-                                map.put("reservedBy", rs.getString("reserved_by"));
-                                return map;
-                            })
-                            .list()
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
-
-    // Kiểm tra xem tất cả ghế có được giữ bởi cùng một user không
-    public boolean areAllSeatsReservedBySameUser(int showtimeId, String[] seatCodes, int userId) {
-        if (seatCodes == null || seatCodes.length == 0) {
-            return false;
-        }
-
-        String sql = """
-            SELECT COUNT(DISTINCT bs.user_id) = 1 AND MIN(bs.user_id) = :userId
-            FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code IN (<seatCodes>)
-              AND bs.status = 'reserved'
-              AND bs.reserved_until > NOW()
-            """;
-
-        try {
-            return get().withHandle(handle -> {
-                var query = handle.createQuery(sql)
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
                         .bind("showtimeId", showtimeId)
+                        .bind("seatId", seatId)
+                        .mapTo(String.class)
+                        .findOne()
+                        .map(statusStr -> {
+                            try {
+                                return SeatStatus.valueOf(statusStr.toUpperCase());
+                            } catch (IllegalArgumentException e) {
+                                return SeatStatus.AVAILABLE;
+                            }
+                        })
+                        .orElse(SeatStatus.AVAILABLE)
+        );
+    }
+
+    // Lấy danh sách ghế đã đặt/giữ cho suất chiếu
+    public List<BookedSeat> getBookedSeatsForShowtime(int showtimeId) {
+        String sql = """
+            SELECT * FROM booked_seats 
+            WHERE showtime_id = :showtimeId 
+            AND status IN ('RESERVED', 'BOOKED')
+            AND (reserved_until IS NULL OR reserved_until > NOW())
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("showtimeId", showtimeId)
+                        .map(new BookedSeatMapper())
+                        .list()
+        );
+    }
+
+    // Dọn dẹp ghế giữ quá hạn
+    public int cleanupExpiredReservations(LocalDateTime now) {
+        String sql = """
+            UPDATE booked_seats 
+            SET status = 'RELEASED' 
+            WHERE status = 'RESERVED' 
+            AND reserved_until IS NOT NULL 
+            AND reserved_until < :now
+            """;
+
+        return get().withHandle(handle ->
+                handle.createUpdate(sql)
+                        .bind("now", now)
+                        .execute()
+        );
+    }
+
+    // Kiểm tra xem ghế có đang được giữ bởi user không
+    public boolean isSeatReservedByUser(int showtimeId, int seatId, int userId) {
+        String sql = """
+            SELECT COUNT(*) 
+            FROM booked_seats 
+            WHERE showtime_id = :showtimeId 
+            AND seat_id = :seatId 
+            AND user_id = :userId 
+            AND status = 'RESERVED'
+            AND (reserved_until IS NULL OR reserved_until > NOW())
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("showtimeId", showtimeId)
+                        .bind("seatId", seatId)
                         .bind("userId", userId)
-                        .bindList("seatCodes", Arrays.asList(seatCodes));
-
-                return query.mapTo(Boolean.class).one();
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+                        .mapTo(Integer.class)
+                        .one() > 0
+        );
     }
 
-    // Lấy tất cả ghế đã đặt/giữ cho suất chiếu
-    public List<String> getAllBookedSeatsForShowtime(int showtimeId) {
+    // Lấy reservationId theo showtime và seat
+    public String getReservationId(int showtimeId, int seatId) {
         String sql = """
-            SELECT DISTINCT s.seat_code
-            FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            WHERE bs.showtime_id = :showtimeId
-              AND (bs.status = 'booked' OR (bs.status = 'reserved' AND bs.reserved_until > NOW()))
-            ORDER BY s.seat_code
+            SELECT reservation_id 
+            FROM booked_seats 
+            WHERE showtime_id = :showtimeId 
+            AND seat_id = :seatId 
+            AND status = 'RESERVED'
+            AND (reserved_until IS NULL OR reserved_until > NOW())
+            LIMIT 1
             """;
 
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .mapTo(String.class)
-                            .list()
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("showtimeId", showtimeId)
+                        .bind("seatId", seatId)
+                        .mapTo(String.class)
+                        .findOne()
+                        .orElse(null)
+        );
     }
 
-    // Đếm số ghế đã đặt/giữ
-    public int countBookedSeatsForShowtime(int showtimeId) {
+    // Đếm số ghế đang giữ theo reservationId
+    public int countSeatsByReservation(String reservationId) {
         String sql = """
-            SELECT COUNT(*)
-            FROM booked_seats bs
-            WHERE bs.showtime_id = :showtimeId
-              AND (bs.status = 'booked' OR (bs.status = 'reserved' AND bs.reserved_until > NOW()))
+            SELECT COUNT(*) 
+            FROM booked_seats 
+            WHERE reservation_id = :reservationId 
+            AND status = 'RESERVED'
             """;
 
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .mapTo(Integer.class)
-                            .one()
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    // Kiểm tra xem ghế có đang được giữ bởi bất kỳ ai không
-    public boolean isSeatCurrentlyReserved(int showtimeId, String seatCode) {
-        String sql = """
-            SELECT COUNT(*) > 0
-            FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code = :seatCode
-              AND bs.status = 'reserved'
-              AND bs.reserved_until > NOW()
-            """;
-
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .bind("seatCode", seatCode)
-                            .mapTo(Boolean.class)
-                            .one()
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Xóa tất cả ghế giữ của user
-    public boolean releaseAllUserReservations(int userId) {
-        String sql = """
-            DELETE FROM booked_seats 
-            WHERE user_id = :userId 
-              AND status = 'reserved'
-            """;
-
-        try {
-            int rows = get().withHandle(handle ->
-                    handle.createUpdate(sql)
-                            .bind("userId", userId)
-                            .execute()
-            );
-            return rows > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Lấy thời gian còn lại giữ ghế
-    public int getRemainingReservationTime(int showtimeId, String seatCode) {
-        String sql = """
-            SELECT TIMESTAMPDIFF(SECOND, NOW(), bs.reserved_until) as seconds_left
-            FROM booked_seats bs
-            JOIN seats s ON bs.seat_id = s.id
-            WHERE bs.showtime_id = :showtimeId
-              AND s.seat_code = :seatCode
-              AND bs.status = 'reserved'
-              AND bs.reserved_until > NOW()
-            """;
-
-        try {
-            return get().withHandle(handle ->
-                    handle.createQuery(sql)
-                            .bind("showtimeId", showtimeId)
-                            .bind("seatCode", seatCode)
-                            .mapTo(Integer.class)
-                            .findOne()
-                            .orElse(0)
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("reservationId", reservationId)
+                        .mapTo(Integer.class)
+                        .one()
+        );
     }
 }

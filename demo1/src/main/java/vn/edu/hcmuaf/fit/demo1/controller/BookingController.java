@@ -8,35 +8,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.edu.hcmuaf.fit.demo1.model.*;
 import vn.edu.hcmuaf.fit.demo1.service.*;
-import vn.edu.hcmuaf.fit.demo1.util.JsonUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
 @WebServlet(name = "BookingController", urlPatterns = {
-        "/booking/check-seats",
         "/booking/reserve-seats",
         "/booking/release-seats",
-        "/booking/get-seat-map"
+        "/booking/check-seat-status",
+        "/booking/quick-booking"
 })
 public class BookingController extends HttpServlet {
 
     private final BookingService bookingService = new BookingService();
-    private final CartService cartService = new CartService();
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String path = request.getServletPath();
-
-        if ("/booking/check-seats".equals(path)) {
-            checkSeatAvailability(request, response);
-        } else if ("/booking/get-seat-map".equals(path)) {
-            getSeatMap(request, response);
-        }
-    }
+    private final SeatService seatService = new SeatService();
+    private final ShowtimeService showtimeService = new ShowtimeService();
+    private final RoomService roomService = new RoomService();
+    private final MovieService movieService = new MovieService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -48,123 +37,94 @@ public class BookingController extends HttpServlet {
             reserveSeats(request, response);
         } else if ("/booking/release-seats".equals(path)) {
             releaseSeats(request, response);
+        } else if ("/booking/quick-booking".equals(path)) {
+            handleQuickBooking(request, response);
         }
     }
 
-    // Kiểm tra ghế có sẵn không
-    private void checkSeatAvailability(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
+        String path = request.getServletPath();
 
-        try {
-            int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
-            int roomId = Integer.parseInt(request.getParameter("roomId"));
-            String seatCode = request.getParameter("seatCode");
-
-            boolean isAvailable = bookingService.checkSeatAvailability(showtimeId, roomId, seatCode);
-
-            Map<String, Object> result = new HashMap<>();
-            result.put("available", isAvailable);
-            result.put("seatCode", seatCode);
-
-            out.print(JsonUtils.toJson(result));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            sendErrorResponse(out, "Có lỗi xảy ra");
+        if ("/booking/check-seat-status".equals(path)) {
+            checkSeatStatus(request, response);
         }
     }
 
-    // Lấy sơ đồ ghế
-    private void getSeatMap(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-
-        try {
-            int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
-            int roomId = Integer.parseInt(request.getParameter("roomId"));
-
-            Map<String, Object> seatMap = bookingService.getSeatMap(showtimeId, roomId);
-
-            if (seatMap != null) {
-                Map<String, Object> result = new HashMap<>();
-                result.put("success", true);
-                result.put("seatMap", seatMap);
-                out.print(JsonUtils.toJson(result));
-            } else {
-                sendErrorResponse(out, "Không tìm thấy thông tin phòng");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            sendErrorResponse(out, "Có lỗi xảy ra");
-        }
-    }
-
-    // Giữ ghế tạm thời (khi mở modal đặt vé)
+    // Giữ ghế tạm thời (5 phút)
     private void reserveSeats(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
 
         try {
+            // Lấy thông tin từ request
             int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
             int roomId = Integer.parseInt(request.getParameter("roomId"));
-            String seatCodesParam = request.getParameter("seatCodes");
+            String seatCodesStr = request.getParameter("seatCodes");
 
-            if (seatCodesParam == null || seatCodesParam.trim().isEmpty()) {
+            if (seatCodesStr == null || seatCodesStr.trim().isEmpty()) {
                 sendErrorResponse(out, "Vui lòng chọn ghế");
                 return;
             }
 
-            String[] seatCodes = seatCodesParam.split(",");
-
-            // Lấy userId từ session
-            User user = (User) session.getAttribute("user");
-            int userId = user != null ? user.getId() : 0;
-
-            // Giữ ghế trong 5 phút
-            boolean success = bookingService.reserveSeatsTemporarily(
-                    showtimeId, roomId, seatCodes, userId);
-
-            if (success) {
-                // Lưu thông tin giữ ghế vào session
-                @SuppressWarnings("unchecked")
-                List<Map<String, Object>> reservations =
-                        (List<Map<String, Object>>) session.getAttribute("seatReservations");
-
-                if (reservations == null) {
-                    reservations = new ArrayList<>();
+            String[] seatCodesArray = seatCodesStr.split(",");
+            List<String> seatCodes = new ArrayList<>();
+            for (String code : seatCodesArray) {
+                if (!code.trim().isEmpty()) {
+                    seatCodes.add(code.trim());
                 }
-
-                Map<String, Object> reservation = new HashMap<>();
-                reservation.put("showtimeId", showtimeId);
-                reservation.put("roomId", roomId);
-                reservation.put("seatCodes", Arrays.asList(seatCodes));
-                reservation.put("reservedAt", System.currentTimeMillis());
-
-                reservations.add(reservation);
-                session.setAttribute("seatReservations", reservations);
-
-                Map<String, Object> result = new HashMap<>();
-                result.put("success", true);
-                result.put("message", "Đã giữ ghế thành công. Bạn có 5 phút để hoàn tất đặt vé.");
-                result.put("reservationTime", 5 * 60); // 5 phút tính bằng giây
-
-                out.print(JsonUtils.toJson(result));
-            } else {
-                sendErrorResponse(out, "Không thể giữ ghế. Vui lòng chọn ghế khác.");
             }
 
+            if (seatCodes.isEmpty()) {
+                sendErrorResponse(out, "Vui lòng chọn ghế");
+                return;
+            }
+
+            HttpSession session = request.getSession();
+            Integer userId = null;
+
+            // Lấy userId nếu đã đăng nhập
+            User user = (User) session.getAttribute("user");
+            if (user != null) {
+                userId = user.getId();
+            }
+
+            // Gọi service để giữ ghế
+            Map<String, Object> reservationResult = bookingService.reserveSeats(
+                    showtimeId, roomId, seatCodes, userId);
+
+            if ((Boolean) reservationResult.get("success")) {
+                // Lưu reservationId vào session
+                String reservationId = (String) reservationResult.get("reservationId");
+                List<String> reservations = (List<String>) session.getAttribute("reservations");
+                if (reservations == null) {
+                    reservations = new ArrayList<>();
+                    session.setAttribute("reservations", reservations);
+                }
+                reservations.add(reservationId);
+
+                // Tạo JSON response thủ công
+                StringBuilder json = new StringBuilder();
+                json.append("{");
+                json.append("\"success\": true,");
+                json.append("\"reservationId\": \"").append(reservationId).append("\",");
+                json.append("\"seatCount\": ").append(reservationResult.get("seatCount")).append(",");
+                json.append("\"reservedUntil\": \"").append(reservationResult.get("reservedUntil")).append("\",");
+                json.append("\"reservationTime\": ").append(reservationResult.get("reservationTime"));
+                json.append("}");
+
+                out.print(json.toString());
+            } else {
+                sendErrorResponse(out, (String) reservationResult.get("message"));
+            }
+
+        } catch (NumberFormatException e) {
+            sendErrorResponse(out, "Dữ liệu không hợp lệ");
         } catch (Exception e) {
             e.printStackTrace();
             sendErrorResponse(out, "Có lỗi xảy ra: " + e.getMessage());
@@ -178,35 +138,24 @@ public class BookingController extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
 
         try {
-            int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
-            String seatCodesParam = request.getParameter("seatCodes");
+            String reservationId = request.getParameter("reservationId");
 
-            if (seatCodesParam != null) {
-                String[] seatCodes = seatCodesParam.split(",");
-                bookingService.releaseSeats(showtimeId, seatCodes);
+            if (reservationId != null && !reservationId.isEmpty()) {
+                boolean success = bookingService.releaseSeats(reservationId);
+
+                // Tạo JSON response thủ công
+                StringBuilder json = new StringBuilder();
+                json.append("{");
+                json.append("\"success\": ").append(success).append(",");
+                json.append("\"message\": \"").append(success ? "Đã hủy giữ ghế" : "Không tìm thấy đặt chỗ").append("\"");
+                json.append("}");
+
+                out.print(json.toString());
+            } else {
+                sendErrorResponse(out, "Thiếu thông tin đặt chỗ");
             }
-
-            // Xóa khỏi session
-            @SuppressWarnings("unchecked")
-            List<Map<String, Object>> reservations =
-                    (List<Map<String, Object>>) session.getAttribute("seatReservations");
-
-            if (reservations != null) {
-                reservations.removeIf(res -> {
-                    Integer storedShowtimeId = (Integer) res.get("showtimeId");
-                    return storedShowtimeId != null && storedShowtimeId == showtimeId;
-                });
-                session.setAttribute("seatReservations", reservations);
-            }
-
-            Map<String, Object> result = new HashMap<>();
-            result.put("success", true);
-            result.put("message", "Đã hủy giữ ghế");
-
-            out.print(JsonUtils.toJson(result));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,10 +163,123 @@ public class BookingController extends HttpServlet {
         }
     }
 
+    // Kiểm tra trạng thái ghế
+    private void checkSeatStatus(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+            int showtimeId = Integer.parseInt(request.getParameter("showtimeId"));
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+
+            // Lấy trạng thái của tất cả ghế
+            Map<String, String> seatStatusMap = bookingService.getAllSeatStatus(showtimeId, roomId);
+
+            // Tạo JSON response thủ công
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+            json.append("\"success\": true,");
+            json.append("\"seatStatus\": {");
+
+            boolean first = true;
+            for (Map.Entry<String, String> entry : seatStatusMap.entrySet()) {
+                if (!first) {
+                    json.append(",");
+                }
+                first = false;
+
+                json.append("\"").append(entry.getKey()).append("\": ");
+                json.append("\"").append(entry.getValue()).append("\"");
+            }
+
+            json.append("}}");
+
+            out.print(json.toString());
+
+        } catch (NumberFormatException e) {
+            sendErrorResponse(out, "Dữ liệu không hợp lệ");
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendErrorResponse(out, "Có lỗi xảy ra");
+        }
+    }
+
+    // Xử lý đặt vé nhanh
+    private void handleQuickBooking(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+            int movieId = Integer.parseInt(request.getParameter("movieId"));
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            String showtimeParam = request.getParameter("showtime");
+
+            // Lấy thông tin phim
+            Movie movie = movieService.getMovieById(movieId);
+            if (movie == null) {
+                sendErrorResponse(out, "Phim không tồn tại");
+                return;
+            }
+
+            // Lấy thông tin phòng
+            Room room = roomService.getRoomById(roomId);
+            if (room == null) {
+                sendErrorResponse(out, "Phòng không tồn tại");
+                return;
+            }
+
+            // Tìm hoặc tạo suất chiếu dựa trên thời gian
+            Showtime showtime = showtimeService.findOrCreateShowtime(movieId, roomId, showtimeParam);
+            if (showtime == null) {
+                sendErrorResponse(out, "Không thể tạo suất chiếu");
+                return;
+            }
+
+            // Tạo JSON response thủ công
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+            json.append("\"success\": true,");
+            json.append("\"movieId\": ").append(movieId).append(",");
+            json.append("\"movieTitle\": \"").append(escapeJsonString(movie.getTitle())).append("\",");
+            json.append("\"moviePoster\": \"").append(escapeJsonString(movie.getPosterUrl())).append("\",");
+            json.append("\"roomId\": ").append(roomId).append(",");
+            json.append("\"roomName\": \"").append(escapeJsonString(room.getRoomName())).append("\",");
+            json.append("\"showtimeId\": ").append(showtime.getId()).append(",");
+            json.append("\"showtime\": \"").append(escapeJsonString(showtime.getFormattedDateTime())).append("\"");
+            json.append("}");
+
+            out.print(json.toString());
+
+        } catch (NumberFormatException e) {
+            sendErrorResponse(out, "Dữ liệu không hợp lệ");
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendErrorResponse(out, "Có lỗi xảy ra: " + e.getMessage());
+        }
+    }
+
     private void sendErrorResponse(PrintWriter out, String message) {
-        Map<String, Object> error = new HashMap<>();
-        error.put("success", false);
-        error.put("message", message);
-        out.print(JsonUtils.toJson(error));
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"success\": false,");
+        json.append("\"message\": \"").append(escapeJsonString(message)).append("\"");
+        json.append("}");
+        out.print(json.toString());
+    }
+
+    // Helper method để escape JSON string
+    private String escapeJsonString(String input) {
+        if (input == null) return "";
+        return input.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
     }
 }

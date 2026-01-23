@@ -7,6 +7,17 @@ public class Room {
     private String roomType; // 2D, 3D, VIP
     private boolean isActive;
 
+    // Constructors
+    public Room() {}
+
+    public Room(int id, String roomName, int totalSeats, String roomType, boolean isActive) {
+        this.id = id;
+        this.roomName = roomName;
+        this.totalSeats = totalSeats;
+        this.roomType = roomType;
+        this.isActive = isActive;
+    }
+
     // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

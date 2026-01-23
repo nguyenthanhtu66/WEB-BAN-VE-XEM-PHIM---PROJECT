@@ -8,7 +8,8 @@ public class BookedSeat {
     private int seatId;
     private Integer orderId;
     private Integer userId;
-    private String status; // reserved, booked, released
+    private SeatStatus status;
+    private String reservationId;
     private LocalDateTime reservedUntil;
     private LocalDateTime createdAt;
 
@@ -28,8 +29,11 @@ public class BookedSeat {
     public Integer getUserId() { return userId; }
     public void setUserId(Integer userId) { this.userId = userId; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public SeatStatus getStatus() { return status; }
+    public void setStatus(SeatStatus status) { this.status = status; }
+
+    public String getReservationId() { return reservationId; }
+    public void setReservationId(String reservationId) { this.reservationId = reservationId; }
 
     public LocalDateTime getReservedUntil() { return reservedUntil; }
     public void setReservedUntil(LocalDateTime reservedUntil) { this.reservedUntil = reservedUntil; }

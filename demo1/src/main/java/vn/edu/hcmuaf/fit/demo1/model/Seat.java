@@ -3,12 +3,24 @@ package vn.edu.hcmuaf.fit.demo1.model;
 public class Seat {
     private int id;
     private int roomId;
-    private String seatCode;
-    private String rowNumber;
-    private int seatNumber;
+    private String seatCode; // A01, A02, B01
+    private String rowNumber; // A, B, C
+    private int seatNumber; // 1, 2, 3
     private String seatType; // normal, vip
     private boolean isActive;
-    private String seatStatus; // available, reserved, booked (tính toán, không lưu DB)
+
+    // Constructors
+    public Seat() {}
+
+    public Seat(int id, int roomId, String seatCode, String rowNumber, int seatNumber, String seatType, boolean isActive) {
+        this.id = id;
+        this.roomId = roomId;
+        this.seatCode = seatCode;
+        this.rowNumber = rowNumber;
+        this.seatNumber = seatNumber;
+        this.seatType = seatType;
+        this.isActive = isActive;
+    }
 
     // Getters and Setters
     public int getId() { return id; }
@@ -31,7 +43,4 @@ public class Seat {
 
     public boolean isActive() { return isActive; }
     public void setActive(boolean active) { isActive = active; }
-
-    public String getSeatStatus() { return seatStatus; }
-    public void setSeatStatus(String seatStatus) { this.seatStatus = seatStatus; }
 }

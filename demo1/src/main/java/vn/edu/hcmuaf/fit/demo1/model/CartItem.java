@@ -1,8 +1,8 @@
 package vn.edu.hcmuaf.fit.demo1.model;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class CartItem {
+public class CartItem implements Serializable {
     private String id;
     private int movieId;
     private String movieTitle;
@@ -11,72 +11,163 @@ public class CartItem {
     private String showtime;
     private int roomId;
     private String room;
-    private String ticketType; // adult, student, child
+    private String ticketType;
     private int quantity;
-    private String seats; // "A01, A02, A03"
+    private String seats;
     private double unitPrice;
     private double total;
+    private String reservationId; // Thêm reservationId
 
-    // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    // Constructors
+    public CartItem() {}
 
-    public int getMovieId() { return movieId; }
-    public void setMovieId(int movieId) { this.movieId = movieId; }
+    public CartItem(String id, int movieId, String movieTitle, String posterUrl,
+                    int showtimeId, String showtime, int roomId, String room,
+                    String ticketType, int quantity, String seats,
+                    double unitPrice, double total) {
+        this.id = id;
+        this.movieId = movieId;
+        this.movieTitle = movieTitle;
+        this.posterUrl = posterUrl;
+        this.showtimeId = showtimeId;
+        this.showtime = showtime;
+        this.roomId = roomId;
+        this.room = room;
+        this.ticketType = ticketType;
+        this.quantity = quantity;
+        this.seats = seats;
+        this.unitPrice = unitPrice;
+        this.total = total;
+    }
 
-    public String getMovieTitle() { return movieTitle; }
-    public void setMovieTitle(String movieTitle) { this.movieTitle = movieTitle; }
+    // Getters và Setters
+    public String getId() {
+        return id;
+    }
 
-    public String getPosterUrl() { return posterUrl; }
-    public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public int getShowtimeId() { return showtimeId; }
-    public void setShowtimeId(int showtimeId) { this.showtimeId = showtimeId; }
+    public int getMovieId() {
+        return movieId;
+    }
 
-    public String getShowtime() { return showtime; }
-    public void setShowtime(String showtime) { this.showtime = showtime; }
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
 
-    public int getRoomId() { return roomId; }
-    public void setRoomId(int roomId) { this.roomId = roomId; }
+    public String getMovieTitle() {
+        return movieTitle;
+    }
 
-    public String getRoom() { return room; }
-    public void setRoom(String room) { this.room = room; }
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
 
-    public String getTicketType() { return ticketType; }
-    public void setTicketType(String ticketType) { this.ticketType = ticketType; }
+    public String getPosterUrl() {
+        return posterUrl;
+    }
 
-    public int getQuantity() { return quantity; }
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public int getShowtimeId() {
+        return showtimeId;
+    }
+
+    public void setShowtimeId(int showtimeId) {
+        this.showtimeId = showtimeId;
+    }
+
+    public String getShowtime() {
+        return showtime;
+    }
+
+    public void setShowtime(String showtime) {
+        this.showtime = showtime;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(String ticketType) {
+        this.ticketType = ticketType;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        this.total = this.unitPrice * quantity;
     }
 
-    public String getSeats() { return seats; }
-    public void setSeats(String seats) { this.seats = seats; }
+    public String getSeats() {
+        return seats;
+    }
 
-    public double getUnitPrice() { return unitPrice; }
+    public void setSeats(String seats) {
+        this.seats = seats;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
-        this.total = unitPrice * quantity;
     }
 
-    public double getTotal() { return total; }
-    public void setTotal(double total) { this.total = total; }
-
-    // Override equals và hashCode để kiểm tra trùng lặp
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CartItem cartItem = (CartItem) o;
-        return movieId == cartItem.movieId &&
-                showtimeId == cartItem.showtimeId &&
-                roomId == cartItem.roomId &&
-                Objects.equals(ticketType, cartItem.ticketType);
+    public double getTotal() {
+        return total;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(movieId, showtimeId, roomId, ticketType);
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public String getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(String reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    // Helper methods
+    public String getTicketTypeDisplay() {
+        switch(ticketType) {
+            case "adult": return "Người lớn";
+            case "student": return "Học sinh/Sinh viên";
+            case "child": return "Trẻ em";
+            default: return ticketType;
+        }
+    }
+
+    // Format seat display
+    public String getSeatsDisplay() {
+        if (seats == null || seats.isEmpty()) {
+            return "";
+        }
+        return seats.replace(", ", ", ");
     }
 }
