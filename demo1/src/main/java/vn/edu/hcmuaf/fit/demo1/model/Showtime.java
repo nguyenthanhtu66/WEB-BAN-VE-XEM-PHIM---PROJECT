@@ -1,10 +1,11 @@
 package vn.edu.hcmuaf.fit.demo1.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 
-public class Showtime {
+public class Showtime implements Serializable {
     private int id;
     private int movieId;
     private int roomId;
@@ -13,14 +14,15 @@ public class Showtime {
     private boolean isActive;
     private LocalDateTime createdAt;
 
-    // Thông tin thêm (không lưu trong DB, chỉ để hiển thị)
+    // Thông tin bổ sung từ JOIN
     private String movieTitle;
     private String roomName;
+    private String roomType;
 
-    // Constructors
     public Showtime() {}
 
-    public Showtime(int id, int movieId, int roomId, LocalDate showDate, LocalTime showTime, boolean isActive) {
+    public Showtime(int id, int movieId, int roomId, LocalDate showDate,
+                    LocalTime showTime, boolean isActive) {
         this.id = id;
         this.movieId = movieId;
         this.roomId = roomId;
@@ -45,8 +47,8 @@ public class Showtime {
     public LocalTime getShowTime() { return showTime; }
     public void setShowTime(LocalTime showTime) { this.showTime = showTime; }
 
-    public boolean isActive() { return isActive; }
-    public void setActive(boolean active) { isActive = active; }
+    public boolean getIsActive() { return isActive; }
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
@@ -57,44 +59,29 @@ public class Showtime {
     public String getRoomName() { return roomName; }
     public void setRoomName(String roomName) { this.roomName = roomName; }
 
+    public String getRoomType() { return roomType; }
+    public void setRoomType(String roomType) { this.roomType = roomType; }
+
     // Helper methods
-    public LocalDateTime getShowDateTime() {
-        if (showDate != null && showTime != null) {
-            return LocalDateTime.of(showDate, showTime);
-        }
-        return null;
-    }
-
-    public String getFormattedDateTime() {
-        if (showDate != null && showTime != null) {
-            return showDate.toString() + " " + showTime.toString();
-        }
-        return "";
-    }
-
     public String getFormattedDate() {
-        if (showDate != null) {
-            return showDate.toString();
-        }
-        return "";
+        return showDate != null ? showDate.toString() : "";
     }
 
     public String getFormattedTime() {
-        if (showTime != null) {
-            return showTime.toString();
+        return showTime != null ? showTime.toString() : "";
+    }
+
+    public String getFullDateTime() {
+        if (showDate != null && showTime != null) {
+            return showDate + " " + showTime;
         }
         return "";
     }
 
-    public boolean isPast() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime showDateTime = getShowDateTime();
-        return showDateTime != null && showDateTime.isBefore(now);
-    }
+    public boolean isInPast() {
+        if (showDate == null || showTime == null) return false;
 
-    public boolean isUpcoming() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime showDateTime = getShowDateTime();
-        return showDateTime != null && showDateTime.isAfter(now);
+        LocalDateTime showDateTime = LocalDateTime.of(showDate, showTime);
+        return showDateTime.isBefore(LocalDateTime.now());
     }
 }

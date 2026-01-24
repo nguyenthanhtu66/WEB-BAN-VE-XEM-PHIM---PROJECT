@@ -1,8 +1,8 @@
 package vn.edu.hcmuaf.fit.demo1.dao;
 
-import vn.edu.hcmuaf.fit.demo1.model.Room;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
+import vn.edu.hcmuaf.fit.demo1.model.Room;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,13 +18,18 @@ public class RoomDao extends BaseDao {
             room.setRoomName(rs.getString("room_name"));
             room.setTotalSeats(rs.getInt("total_seats"));
             room.setRoomType(rs.getString("room_type"));
-            room.setActive(rs.getBoolean("is_active"));
+            room.setIsActive(rs.getBoolean("is_active"));
             return room;
         }
     }
 
-    public List<Room> getAllRooms() {
-        String sql = "SELECT * FROM rooms ORDER BY room_name";
+    // Lấy tất cả phòng đang hoạt động
+    public List<Room> getAllActiveRooms() {
+        String sql = """
+            SELECT * FROM rooms 
+            WHERE is_active = TRUE 
+            ORDER BY room_name
+            """;
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
@@ -33,37 +38,51 @@ public class RoomDao extends BaseDao {
         );
     }
 
-    public Room getRoomById(int id) {
-        String sql = "SELECT * FROM rooms WHERE id = :id";
+    // Lấy phòng theo ID
+    public Room getRoomById(int roomId) {
+        String sql = "SELECT * FROM rooms WHERE id = :roomId";
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
-                        .bind("id", id)
+                        .bind("roomId", roomId)
                         .map(new RoomMapper())
                         .findOne()
                         .orElse(null)
         );
     }
 
-    public Room getRoomByName(String name) {
-        String sql = "SELECT * FROM rooms WHERE room_name = :name";
+    // Lấy phòng theo tên
+    public Room getRoomByName(String roomName) {
+        String sql = "SELECT * FROM rooms WHERE room_name = :roomName AND is_active = TRUE";
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
-                        .bind("name", name)
+                        .bind("roomName", roomName)
                         .map(new RoomMapper())
                         .findOne()
                         .orElse(null)
         );
     }
 
-    public List<Room> getActiveRooms() {
-        String sql = "SELECT * FROM rooms WHERE is_active = TRUE ORDER BY room_name";
+    // Kiểm tra phòng có sẵn sàng cho suất chiếu
+    public boolean isRoomAvailable(int roomId, String date, String time) {
+        String sql = """
+            SELECT COUNT(*) FROM showtimes 
+            WHERE room_id = :roomId 
+            AND show_date = :date 
+            AND show_time = :time
+            AND is_active = TRUE
+            """;
 
-        return get().withHandle(handle ->
+        int count = get().withHandle(handle ->
                 handle.createQuery(sql)
-                        .map(new RoomMapper())
-                        .list()
+                        .bind("roomId", roomId)
+                        .bind("date", date)
+                        .bind("time", time)
+                        .mapTo(Integer.class)
+                        .one()
         );
+
+        return count == 0;
     }
 }

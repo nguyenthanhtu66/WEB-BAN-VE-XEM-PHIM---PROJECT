@@ -1,8 +1,8 @@
 package vn.edu.hcmuaf.fit.demo1.dao;
 
-import vn.edu.hcmuaf.fit.demo1.model.Seat;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
+import vn.edu.hcmuaf.fit.demo1.model.Seat;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,16 +20,17 @@ public class SeatDao extends BaseDao {
             seat.setRowNumber(rs.getString("row_number"));
             seat.setSeatNumber(rs.getInt("seat_number"));
             seat.setSeatType(rs.getString("seat_type"));
-            seat.setActive(rs.getBoolean("is_active"));
+            seat.setIsActive(rs.getBoolean("is_active"));
             return seat;
         }
     }
 
+    // Lấy tất cả ghế của một phòng
     public List<Seat> getSeatsByRoom(int roomId) {
         String sql = """
             SELECT * FROM seats 
             WHERE room_id = :roomId 
-            AND is_active = TRUE 
+            AND is_active = TRUE
             ORDER BY row_number, seat_number
             """;
 
@@ -41,8 +42,9 @@ public class SeatDao extends BaseDao {
         );
     }
 
+    // Lấy ghế theo ID
     public Seat getSeatById(int seatId) {
-        String sql = "SELECT * FROM seats WHERE id = :seatId AND is_active = TRUE";
+        String sql = "SELECT * FROM seats WHERE id = :seatId";
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
@@ -53,13 +55,9 @@ public class SeatDao extends BaseDao {
         );
     }
 
+    // Lấy ghế theo mã ghế và phòng
     public Seat getSeatByCode(int roomId, String seatCode) {
-        String sql = """
-            SELECT * FROM seats 
-            WHERE room_id = :roomId 
-            AND seat_code = :seatCode
-            AND is_active = TRUE
-            """;
+        String sql = "SELECT * FROM seats WHERE room_id = :roomId AND seat_code = :seatCode";
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
@@ -71,12 +69,42 @@ public class SeatDao extends BaseDao {
         );
     }
 
-    public List<Seat> getAllSeats() {
-        String sql = "SELECT * FROM seats WHERE is_active = TRUE ORDER BY room_id, row_number, seat_number";
+    // Kiểm tra ghế có bị đặt/giữ chưa cho một suất chiếu
+    public boolean isSeatAvailable(int showtimeId, int seatId) {
+        String sql = """
+            SELECT COUNT(*) FROM booked_seats 
+            WHERE showtime_id = :showtimeId 
+            AND seat_id = :seatId 
+            AND status IN ('reserved', 'booked')
+            """;
+
+        int count = get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("showtimeId", showtimeId)
+                        .bind("seatId", seatId)
+                        .mapTo(Integer.class)
+                        .one()
+        );
+
+        return count == 0;
+    }
+
+    // Kiểm tra trạng thái nhiều ghế cùng lúc
+    public List<String> getUnavailableSeatCodes(int showtimeId, List<Integer> seatIds) {
+        String sql = """
+            SELECT DISTINCT s.seat_code 
+            FROM booked_seats bs
+            JOIN seats s ON bs.seat_id = s.id
+            WHERE bs.showtime_id = :showtimeId 
+            AND bs.seat_id IN (<seatIds>)
+            AND bs.status IN ('reserved', 'booked')
+            """;
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
-                        .map(new SeatMapper())
+                        .bind("showtimeId", showtimeId)
+                        .bindList("seatIds", seatIds)
+                        .mapTo(String.class)
                         .list()
         );
     }

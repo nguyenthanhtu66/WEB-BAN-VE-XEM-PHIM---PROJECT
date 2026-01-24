@@ -1,13 +1,14 @@
 package vn.edu.hcmuaf.fit.demo1.model;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private int id;
     private String roomName;
     private int totalSeats;
-    private String roomType; // 2D, 3D, VIP
+    private String roomType; // 2D, 3D, VIP, IMAX
     private boolean isActive;
 
-    // Constructors
     public Room() {}
 
     public Room(int id, String roomName, int totalSeats, String roomType, boolean isActive) {
@@ -31,6 +32,11 @@ public class Room {
     public String getRoomType() { return roomType; }
     public void setRoomType(String roomType) { this.roomType = roomType; }
 
-    public boolean isActive() { return isActive; }
-    public void setActive(boolean active) { isActive = active; }
+    public boolean getIsActive() { return isActive; }
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+
+    // Helper methods
+    public String getDisplayName() {
+        return roomName + " (" + roomType + ")";
+    }
 }

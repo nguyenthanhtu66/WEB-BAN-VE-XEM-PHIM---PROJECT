@@ -1,18 +1,20 @@
 package vn.edu.hcmuaf.fit.demo1.model;
 
-public class Seat {
+import java.io.Serializable;
+
+public class Seat implements Serializable {
     private int id;
     private int roomId;
-    private String seatCode; // A01, A02, B01
+    private String seatCode; // A01, B05, C12
     private String rowNumber; // A, B, C
     private int seatNumber; // 1, 2, 3
     private String seatType; // normal, vip
     private boolean isActive;
 
-    // Constructors
     public Seat() {}
 
-    public Seat(int id, int roomId, String seatCode, String rowNumber, int seatNumber, String seatType, boolean isActive) {
+    public Seat(int id, int roomId, String seatCode, String rowNumber,
+                int seatNumber, String seatType, boolean isActive) {
         this.id = id;
         this.roomId = roomId;
         this.seatCode = seatCode;
@@ -41,6 +43,6 @@ public class Seat {
     public String getSeatType() { return seatType; }
     public void setSeatType(String seatType) { this.seatType = seatType; }
 
-    public boolean isActive() { return isActive; }
-    public void setActive(boolean active) { isActive = active; }
+    public boolean getIsActive() { return isActive; }
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
 }
