@@ -72,54 +72,75 @@
         <div class ="register">
             <form action="${pageContext.request.contextPath}/Register" class="register-form" method="post">
                 <h2>Đăng Ký</h2>
-                <p style="color:red">DEBUG ERRORS: ${errors}</p>
+<%--                <p style="color:red">DEBUG ERRORS: ${errors}</p>--%>
                 <div class = "field-input">
                     <label for="fullName">Họ và tên</label>
-                    <input type="text" id ="fullName" name="fullName" placeholder="Nhập họ và tên" value="${form.fullName}"  required>
-                </div>
-
-                <div class = "field-input">
-                    <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="Nhập email. VD: you@example.com" required>
-                    <c:if test="${not empty errors.email}">
-                        <div class="alert alert-danger"> role${errors.email}</div>
+                    <input type="text" id ="fullName" name="fullName" placeholder="Nhập họ và tên" value="${form.fullName}"  >
+                    <c:if test="${errors.fullName != null}">
+                        <small class="error">${errors.fullName}</small>
                     </c:if>
                 </div>
 
                 <div class = "field-input">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="tel" id ="phone" name="phoneNumber" placeholder="Nhập số điện thoại" required>
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" placeholder="Nhập email. VD: you@example.com" >
+
+                    <c:if test="${errors.email != null}">
+                        <small class="error">${errors.email}</small>
+                    </c:if>
+
                 </div>
 
                 <div class = "field-input">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="tel" id ="phone" name="phoneNumber" placeholder="Nhập số điện thoại" >
+                    <c:if test="${errors.phone != null}">
+                        <small class="error">${errors.phone}</small>
+                    </c:if>
+                </div>
+
+                <div class = "field-input">
+                    <label for="gender">Giới tính</label>
                     <div class="gender-option">
                         <label>
-                            <input type="radio" name="gender" value="male" required> Nam
+                            <input type="radio" name="gender" value="male" > Nam
                         </label>
                         <label>
-                            <input type="radio" name="gender" value="female" required> Nữ
+                            <input type="radio" name="gender" value="female" > Nữ
                         </label>
                     </div>
+                    <c:if test="${errors.gender != null}">
+                        <small class="error">${errors.gender}</small>
+                    </c:if>
                 </div>
 
                 <div class="field-input">
                     <label for="birthDate">Ngày sinh</label>
-                    <input type="date" id="birthDate" name="birthDate" required>
+                    <input type="date" id="birthDate" name="birthDate" >
+                    <c:if test="${errors.birthDate != null}">
+                        <small class="error">${errors.birthDate}</small>
+                    </c:if>
                 </div>
 
                 <div class = "field-input">
                     <label for="password">Mật khẩu</label>
-                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" >
+                    <c:if test="${errors.password != null}">
+                        <small class="error">${errors.password}</small>
+                    </c:if>
                 </div>
 
                 <div class = "field-input">
                     <label for="confirmPassword">Nhập lại mật khẩu</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Nhập lại mật khẩu" >
+                    <c:if test="${errors.confirmPass != null}">
+                        <small class="error">${errors.confirmPass}</small>
+                    </c:if>
                 </div>
 
                 <div class = "field-input">
                     <label>Tỉnh/Thành phố</label>
-                    <select id="city" name="city" class ="city" required>
+                    <select id="city" name="city" class ="city" >
                         <option value="" >Chọn tỉnh/thành phố của bạn</option>
                         <option value="Hà Nội" >Hà Nội</option>
                         <option value="TP. Huế">TP. Huế</option>
@@ -158,6 +179,9 @@
                         <option value="Cà Mau">Cà Mau</option>
 
                     </select>
+                    <c:if test="${errors.city != null}">
+                        <small class="error">${errors.city}</small>
+                    </c:if>
                 </div>
 
                 <button type="submit" class = "register-button">Đăng ký</button>
@@ -166,6 +190,13 @@
                     Bạn đã có tài khoản?<a href="Login.html"> Đăng nhập</a>
 
                 </div>
+                <c:if test="${registerSuccess}">
+                    <script>
+                        if (confirm("Đăng ký thành công! Bạn có muốn đăng nhập ngay không?")) {
+                            window.location.href = "login.jsp";
+                        }
+                    </script>
+                </c:if>
             </form>
         </div>
     </div>

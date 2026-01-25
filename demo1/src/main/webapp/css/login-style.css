@@ -16,6 +16,11 @@ body {
     width: 100%;
     min-height: 100vh;
 }
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 1px;
+}
 .header-label {
     background: #1e1e1e;
     padding: 12px 0;
