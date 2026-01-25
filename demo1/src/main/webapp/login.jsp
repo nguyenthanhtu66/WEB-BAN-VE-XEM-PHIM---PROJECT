@@ -1,11 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 1/3/2026
-  Time: 11:17 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -75,17 +70,24 @@
   </div>
   <div class="main-container" id="main-container">
     <div class ="login">
-      <form action="" class="login-form" method="post">
+      <form action="Login" class="login-form" method="post">
         <h2>Đăng Nhập</h2>
+        <c:if test="${loginError != null}">
+          <p class="error">${loginError}</p>
+        </c:if>
         <div class = "field-input">
           <label for="email">Email</label>
-          <input type="text" id="email" name="email" placeholder="Nhập email đăng nhập" required>
+          <input type="text" id="email" name="email" placeholder="Nhập email đăng nhập" value="${email != null ? email : ''}">
         </div>
-
+        <c:if test="${errors.email != null}">
+          <small class="error">${errors.email}</small>
+        </c:if>
         <div class = "field-input">
           <label for="password">Mật khẩu</label>
-          <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
-
+          <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" >
+          <c:if test="${errors.password != null}">
+            <small class="error">${errors.password}</small>
+          </c:if>
         </div>
 
         <div class ="login-option">

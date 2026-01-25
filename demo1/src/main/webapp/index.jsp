@@ -849,7 +849,7 @@
                     </c:if>
                 </a>
                 <c:choose>
-                    <c:when test="${not empty user}">
+                    <c:when test="${not empty sessionScope.user}">
                         <div class="user-dropdown">
                             <span class="header-item">
                                 <i class="fas fa-user"></i> ${user.fullName} ▼
