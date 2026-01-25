@@ -20,7 +20,6 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // KIỂM TRA NẾU LÀ REQUEST CHO FILE TĨNH -> KHÔNG XỬ LÝ
         String servletPath = request.getServletPath();
         if (servletPath != null && isStaticResource(servletPath)) {
             System.out.println("Bỏ qua file tĩnh: " + servletPath);
@@ -29,76 +28,40 @@ public class HomeController extends HttpServlet {
         }
 
         System.out.println("====== TRANG CHỦ ĐƯỢC GỌI ======");
-        System.out.println("URL: " + request.getRequestURL());
-        System.out.println("Servlet Path: " + servletPath);
-        System.out.println("Query String: " + request.getQueryString());
+        System.out.println("U...");
 
-        try {
-            // Đánh dấu request đã qua Servlet để tránh vòng lặp
-            request.setAttribute("fromServlet", "true");
+        String statusParam = request.getParameter("status");
+        String searchKeyword = request.getParameter("search");
 
-            // Lấy tham số từ URL
-            String statusParam = request.getParameter("status");
-            String searchKeyword = request.getParameter("search");
+        String normalizedStatus = normalizeStatusParam(statusParam);
+        String currentStatus = getCurrentStatus(statusParam);
 
-            List<Movie> movies;
-
-            // Xử lý tìm kiếm
-            if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-                movies = movieService.searchMovies(searchKeyword.trim());
-                request.setAttribute("searchKeyword", searchKeyword.trim());
-                System.out.println("Tìm kiếm với từ khóa: " + searchKeyword);
-            } else {
-                // Xử lý trạng thái phim
-                String status;
-                if (statusParam == null || statusParam.trim().isEmpty()) {
-                    status = "Dang+chieu"; // Mặc định
-                } else {
-                    status = normalizeStatusParam(statusParam);
-                }
-
-                System.out.println("Lấy phim với status: " + status);
-                // Lấy 8 phim cho trang chủ
-                movies = movieService.getMoviesByStatusForHome(status);
-            }
-
-            System.out.println("Số phim hiển thị: " + (movies != null ? movies.size() : 0));
-
-            // Gửi dữ liệu đến JSP
-            request.setAttribute("movies", movies);
-
-            // Xác định currentStatus để highlight tab
-            String currentStatus = getCurrentStatus(statusParam);
-            request.setAttribute("currentStatus", currentStatus);
-
-            // Thêm statusParam để sử dụng trong JSP
-            String displayStatusParam = statusParam != null ? statusParam : "Dang+chieu";
-            request.setAttribute("statusParam", displayStatusParam);
-
-            // Forward đến index.jsp
-            System.out.println("Forwarding to index.jsp...");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-            System.out.println("Forward completed.");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi hệ thống: " + e.getMessage());
+        List<Movie> movies;
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            movies = movieService.searchMovies(searchKeyword);
+            request.setAttribute("searchKeyword", searchKeyword);
+        } else {
+            movies = movieService.getMoviesByStatusForHome(normalizedStatus);
         }
+
+        request.setAttribute("movies", movies);
+        request.setAttribute("currentStatus", currentStatus);
+        request.setAttribute("fromServlet", true);
+
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
-    // Kiểm tra xem có phải là file tĩnh không
     private boolean isStaticResource(String path) {
-        return path.startsWith("/css/") || path.startsWith("/image/") ||
-                path.startsWith("/img/") || path.startsWith("/js/") ||
-                path.endsWith(".css") || path.endsWith(".js") ||
+        return path.endsWith(".css") || path.endsWith(".js") ||
                 path.endsWith(".png") || path.endsWith(".jpg") ||
                 path.endsWith(".jpeg") || path.endsWith(".gif") ||
                 path.endsWith(".ico") || path.endsWith(".svg");
     }
 
-    // Chuẩn hóa status parameter
     private String normalizeStatusParam(String statusParam) {
-        if (statusParam == null) return "Dang+chieu";
+        if (statusParam == null || statusParam.trim().isEmpty()) {
+            return "Dang+chieu";
+        }
 
         String lowerParam = statusParam.toLowerCase();
         if (lowerParam.contains("sap") || lowerParam.equals("sap+chieu") ||
@@ -109,7 +72,6 @@ public class HomeController extends HttpServlet {
         }
     }
 
-    // Lấy currentStatus để highlight tab
     private String getCurrentStatus(String statusParam) {
         if (statusParam == null || statusParam.trim().isEmpty()) {
             return "dang_chieu";

@@ -512,6 +512,61 @@ public class MovieDao extends BaseDao {
                         .one()
         );
     }
+    // Lấy phim đang chiếu
+    public List<Movie> getShowingMovies() {
+        String sql = """
+        SELECT 
+            id,           
+            title, 
+            poster_url, 
+            genre, 
+            duration, 
+            rating, 
+            status, 
+            age_rating,
+            director,
+            country,
+            cast
+        FROM movies 
+        WHERE status = 'showing'
+        AND release_date <= CURDATE()
+        ORDER BY release_date DESC, id DESC
+        """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+    // Lấy phim sắp chiếu
+    public List<Movie> getUpcomingMovies() {
+        String sql = """
+        SELECT 
+            id,           
+            title, 
+            poster_url, 
+            genre, 
+            duration, 
+            rating, 
+            status, 
+            age_rating,
+            director,
+            country,
+            cast
+        FROM movies 
+        WHERE status = 'upcoming'
+        AND release_date > CURDATE()
+        ORDER BY release_date ASC, id DESC
+        """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
 
     @Override
     public String toString() {

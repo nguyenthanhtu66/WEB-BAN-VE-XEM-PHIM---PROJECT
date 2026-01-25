@@ -865,7 +865,6 @@ body {
     min-width: 40px;
 }
 
-/* Dấu ... (không hover, không click) */
 .pagination .dots {
     pointer-events: none;           /* không cho click */
     background-color: transparent;  /* trong suốt */

@@ -23,21 +23,6 @@ public class RoomDao extends BaseDao {
         }
     }
 
-    // Lấy tất cả phòng đang hoạt động
-    public List<Room> getAllActiveRooms() {
-        String sql = """
-            SELECT * FROM rooms 
-            WHERE is_active = TRUE 
-            ORDER BY room_name
-            """;
-
-        return get().withHandle(handle ->
-                handle.createQuery(sql)
-                        .map(new RoomMapper())
-                        .list()
-        );
-    }
-
     // Lấy phòng theo ID
     public Room getRoomById(int roomId) {
         String sql = "SELECT * FROM rooms WHERE id = :roomId";
@@ -84,5 +69,40 @@ public class RoomDao extends BaseDao {
         );
 
         return count == 0;
+    }
+    // Lấy phòng có suất chiếu cho phim cụ thể
+    public List<Room> getRoomsForMovie(int movieId) {
+        String sql = """
+        SELECT DISTINCT r.* 
+        FROM rooms r
+        JOIN showtimes st ON r.id = st.room_id
+        WHERE st.movie_id = :movieId
+        AND st.is_active = TRUE
+        AND st.show_date >= CURDATE()
+        AND r.is_active = TRUE
+        ORDER BY r.room_name
+        """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("movieId", movieId)
+                        .map(new RoomMapper())
+                        .list()
+        );
+    }
+
+    // Lấy tất cả phòng đang hoạt động
+    public List<Room> getAllActiveRooms() {
+        String sql = """
+        SELECT * FROM rooms 
+        WHERE is_active = TRUE 
+        ORDER BY room_name
+        """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .map(new RoomMapper())
+                        .list()
+        );
     }
 }
