@@ -29,15 +29,15 @@ public class UserRegisterValidate {
             errors.put("phone", "Số điện thoại không hợp lệ, vui lòng nhập lại");
         }
         //Giới tính:
-        if(form.getGender() == null){
+        if(form.getGender() == null || form.getGender().trim().isEmpty()){
             errors.put("gender", "Vui lòng chọn giới tính");
         }
         //Ngày sinh:
-        if(form.getBirthDate() == null){
+        if(form.getBirthDate() == null || form.getBirthDate().trim().isEmpty()){
             errors.put("birthDate", "Vui lòng nhập ngày tháng năm sinh, đây là thông tin bắt buộc");
         }
         //Mật khẩu:
-        if(form.getPassword() == null){
+        if(form.getPassword() == null || form.getPassword().trim().isEmpty()){
             errors.put("password", "Vui lòng nhập mật khẩu, đây là thông tin bắt buộc");
         }
         else if(!form.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-])\\S{8,}$")){
@@ -45,6 +45,9 @@ public class UserRegisterValidate {
         }
         if(!form.getPassword().equals(form.getConfirmPass())){
             errors.put("confirmPass", "Mật khẩu xác nhận không trùng khớp với mật khẩu, vui lòng nhập lại");
+        }
+        else if(form.getConfirmPass() == null || form.getConfirmPass().trim().isEmpty()){
+            errors.put("confirmPass", "Vui lòng nhập mật khẩu xác nhận giống ở trên");
         }
         //Tỉnh/Thành phố:
         if(form.getCity() == null || form.getCity().trim().isEmpty()){

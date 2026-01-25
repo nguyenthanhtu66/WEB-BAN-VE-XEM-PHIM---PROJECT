@@ -17,7 +17,7 @@ import java.util.Map;
 public class RegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.getRequestDispatcher("/Register.jsp").forward(request, response);
     }
 
     @Override
@@ -37,6 +37,7 @@ public class RegisterController extends HttpServlet {
         if(!errors.isEmpty()){
             request.setAttribute("errors", errors);
             request.setAttribute("form", form);
+            request.setAttribute("registerSuccess", true);
             request.getRequestDispatcher("/Register.jsp").forward(request,response);
             return;
         }
