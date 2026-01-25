@@ -80,7 +80,8 @@
                 <!-- Poster (dùng dữ liệu động) -->
                 <div class="movie-poster">
                     <div class="age-rating">${movie.ageRating}</div>
-                    <img src="${movie.posterUrl}" alt="${movie.title}">
+                    <img src="${movie.posterUrl}" alt="${movie.title}"
+                         onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'">
                     <button class="book-ticket-btn" onclick="openBookingModal()">ĐẶT VÉ NGAY</button>
                 </div>
 
@@ -95,15 +96,24 @@
                         </div>
                         <div class="meta-item">
                             <span class="meta-icon">Thời gian:</span>
-                            <span>${movie.duration}'</span>
+                            <span>${movie.formattedDuration}</span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-icon">Quốc gia:</span>
-                            <span>${movie.countryName}</span>
+                            <span>${movie.country}</span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-icon">Đánh giá:</span>
-                            <span>★ ${movie.formattedRating}/10</span>
+                            <span>
+                                <c:choose>
+                                    <c:when test="${movie.rating > 0}">
+                                        ★ ${movie.rating}/10
+                                    </c:when>
+                                    <c:otherwise>
+                                        Chưa có đánh giá
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
                         </div>
                         <div class="meta-item">
                             <div class="age-rating-badge">
@@ -117,28 +127,51 @@
                                 </c:choose>
                             </div>
                         </div>
+                        <c:if test="${not empty movie.releaseDate}">
+                            <div class="meta-item">
+                                <span class="meta-icon">Khởi chiếu:</span>
+                                <span>
+                                    <fmt:formatDate value="${movie.releaseDate}" pattern="dd/MM/yyyy" />
+                                </span>
+                            </div>
+                        </c:if>
                     </div>
 
                     <h2 class="section-title">MÔ TẢ</h2>
                     <div class="movie-description">
                         <div class="description-item">
                             <span class="description-label">Đạo diễn:</span>
-                            <span>${movie.director}</span>
+                            <span>${not empty movie.director ? movie.director : 'Đang cập nhật'}</span>
                         </div>
                         <div class="description-item">
                             <span class="description-label">Diễn viên:</span>
-                            <span>${movie.cast}</span>
+                            <span>${not empty movie.cast ? movie.cast : 'Đang cập nhật'}</span>
                         </div>
                         <div class="description-item">
-                            <span class="description-label">Khởi chiếu:</span>
-                            <span>Thứ Sáu, 17/01/2025</span>
+                            <span class="description-label">Trạng thái:</span>
+                            <span>
+                                <c:choose>
+                                    <c:when test="${movie.status == 'showing'}">Đang chiếu</c:when>
+                                    <c:when test="${movie.status == 'upcoming'}">Sắp chiếu</c:when>
+                                    <c:otherwise>Đã chiếu</c:otherwise>
+                                </c:choose>
+                            </span>
                         </div>
                     </div>
 
-                    <h2 class="section-title">NỘI DUNG PHIM</h2>
-                    <div class="movie-content">
-                        <p>${movie.description}</p>
-                    </div>
+                    <c:if test="${not empty movie.synopsis}">
+                        <h2 class="section-title">TÓM TẮT</h2>
+                        <div class="movie-content">
+                            <p>${movie.synopsis}</p>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${not empty movie.description}">
+                        <h2 class="section-title">NỘI DUNG PHIM</h2>
+                        <div class="movie-content">
+                            <p>${movie.description}</p>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
