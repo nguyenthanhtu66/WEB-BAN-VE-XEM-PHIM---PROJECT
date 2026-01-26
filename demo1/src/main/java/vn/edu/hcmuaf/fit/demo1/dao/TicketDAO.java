@@ -1,7 +1,7 @@
 package vn.edu.hcmuaf.fit.demo1.dao;
 
 import vn.edu.hcmuaf.fit.demo1.model.Ticket;
-import vn.edu.hcmuaf.fit.demo1.util.DBContext;
+import vn.edu.hcmuaf.fit.demo1.util.TicketDBContext;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,20 +14,21 @@ public class TicketDAO {
         List<Ticket> tickets = new ArrayList<>();
 
         String sql = """
-            SELECT 
-                id,
-                movie_name,
-                show_time,
-                seats,
-                total_price,
-                status
-            FROM tickets
-            WHERE user_id = ?
-            ORDER BY show_time DESC
-        """;
+                    SELECT
+                        id,
+                        movie_name,
+                        show_time,
+                        seats,
+                        total_price,
+                        status
+                    FROM tickets
+                    WHERE user_id = ?
+                    ORDER BY show_time DESC
+                """;
 
-        try (Connection con = DBContext.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = TicketDBContext.getConnection();
+
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
@@ -51,25 +52,26 @@ public class TicketDAO {
     }
 
     // ===== Hủy vé =====
- public boolean cancelTicket(int ticketId) {
+    public boolean cancelTicket(int ticketId, int userId) {
     String sql = """
         UPDATE tickets
         SET status = 'CANCELLED'
-        WHERE id = ? AND status = 'CONFIRMED'
+        WHERE id = ? AND user_id = ? AND status = 'CONFIRMED'
     """;
 
-    try (Connection con = DBContext.getConnection();
+    try (Connection con = TicketDBContext.getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
 
         ps.setInt(1, ticketId);
+        ps.setInt(2, userId);
         return ps.executeUpdate() > 0;
 
     } catch (Exception e) {
         e.printStackTrace();
     }
     return false;
-}
-    
 
-    
+}
+
+
 }

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBContext {
-    public Connection getConnection() throws Exception {
+    public static Connection getConnection() throws Exception {
         String url = "jdbc:sqlserver://localhost:1433;databaseName=Ten_Database_Cua_Ban;encrypt=false";
         String user = "sa";
         String pass = "Mat_Khau_Cua_Ban";

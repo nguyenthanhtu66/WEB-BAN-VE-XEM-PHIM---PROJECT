@@ -14,8 +14,6 @@ public class TicketService {
     }
 
     public boolean cancelTicket(int ticketId, int userId) {
-        // (Có thể mở rộng kiểm tra ticket có thuộc user hay không)
-        return ticketDAO.cancelTicket(ticketId);
+        return ticketDAO.cancelTicket(ticketId, userId);
     }
-    
 }

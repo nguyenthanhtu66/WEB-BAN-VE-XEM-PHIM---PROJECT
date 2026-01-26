@@ -1,6 +1,6 @@
 package vn.edu.hcmuaf.fit.demo1.controller;
 
-import vn.edu.hcmuaf.fit.demo1.util.DBContext;
+import vn.edu.hcmuaf.fit.demo1.util.TicketDBContext;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,7 +19,7 @@ public class TestDBController extends HttpServlet {
 
         resp.setContentType("text/plain; charset=UTF-8");
 
-        try (Connection con = DBContext.getConnection()) {
+        try (Connection con = TicketDBContext.getConnection()) {
             resp.getWriter().println("✅ KẾT NỐI SQL SERVER THÀNH CÔNG");
             resp.getWriter().println("Connection = " + con);
         } catch (Exception e) {
