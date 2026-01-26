@@ -102,11 +102,11 @@
                         <h2 class="form-title">LẬP KẾ HOẠCH CÙNG CHÚNG TÔI NGAY</h2>
 
                         <c:if test="${not empty error}">
-                            <p style="color:red; text-align:center">${error}</p>
+                            <p style="color:red;position: relative;top: -20px; text-align:center">${error}</p>
                         </c:if>
 
                         <c:if test="${not empty success}">
-                            <p style="color:#ff6600; text-align:center">${success}</p>
+                            <p style="color:rgb(45, 189, 45); position: relative;top: -20px; text-align:center">${success}</p>
                         </c:if>
 
 
