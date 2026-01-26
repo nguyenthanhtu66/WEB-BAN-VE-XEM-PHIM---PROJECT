@@ -106,7 +106,8 @@
                         </c:if>
 
                         <c:if test="${not empty success}">
-                            <p style="color:rgb(45, 189, 45); position: relative;top: -20px; text-align:center">${success}</p>
+                            <p style="color:rgb(45, 189, 45); position: relative;top: -20px; text-align:center">
+                                ${success}</p>
                         </c:if>
 
 
@@ -115,33 +116,49 @@
 
                                 <div class="form-group">
                                     <label for="ho-ten">Họ tên</label>
-                                    <input type="text" id="ho-ten" name="hoTen" placeholder="Nhập Họ Tên" required>
+                                    <input type="text" id="ho-ten" name="hoTen" value="${contact.hoTen}"
+                                        placeholder="Nhập Họ Tên" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="so-dien-thoai">Số điện thoại</label>
                                     <input type="tel" id="so-dien-thoai" name="soDienThoai"
-                                        placeholder="Nhập Điện Thoại" required>
+                                        value="${contact.soDienThoai}" placeholder="Nhập Điện Thoại" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" placeholder="Nhập Email" required>
+                                    <input type="email" id="email" name="email" value="${contact.email}"
+                                        placeholder="Nhập Email" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="chon-dich-vu">Chọn dịch vụ</label>
                                     <select id="chon-dich-vu" name="dichVu" required>
                                         <option value="" disabled selected hidden>CHỌN DỊCH VỤ</option>
-                                        <option value="thue-rap">THUÊ RẠP TỔ CHỨC SỰ KIỆN</option>
-                                        <option value="quang-cao">QUẢNG CÁO TẠI RẠP</option>
+                                        <option value="thue-rap" ${contact.dichVu=='thue-rap' ? 'selected' : '' }>
+                                            THUÊ RẠP TỔ CHỨC SỰ KIỆN
+                                        </option>
+
+                                        <option value="quang-cao" ${contact.dichVu=='quang-cao' ? 'selected' : '' }>
+                                            QUẢNG CÁO TẠI RẠP
+                                        </option>
+                                        <option value="mua-phieu-qua-tang" ${contact.dichVu=='mua-phieu-qua-tang'
+                                            ? 'selected' : '' }>
+                                            MUA PHIẾU QUÀ TẶNG / E-CODE
+
+                                        </option>
+                                        <option value="mua-ve-nhom" ${contact.dichVu=='mua-ve-nhom' ? 'selected' : '' }>
+                                            MUA VÉ NHÓM
+                                        </option>
+
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group full-width">
                                 <label for="thong-tin-chi-tiet">Thông tin chi tiết</label>
-                                <textarea id="thong-tin-chi-tiet" name="chiTiet" rows="3"
-                                    placeholder="Thông Tin Chi Tiết"></textarea>
+                                <textarea id="thong-tin-chi-tiet" name="chiTiet"  rows="3" 
+                                    placeholder="Thông Tin Chi Tiết">${contact.chiTiet}</textarea>
                             </div>
 
                             <div class="form-check full-width">

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -20,16 +21,16 @@ public class ContactController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        HttpSession session = req.getSession();
 
-        // Hiển thị thông báo thành công sau redirect (PRG)
-        String success = req.getParameter("success");
-        if ("1".equals(success)) {
-            req.setAttribute("success",
-                    "Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.");
+        String success = (String) session.getAttribute("success");
+        if (success != null) {
+            req.setAttribute("success", success);
+            session.removeAttribute("success"); // ⭐ QUAN TRỌNG
         }
 
         req.getRequestDispatcher("/WEB-INF/views/contact.jsp")
-           .forward(req, resp);
+                .forward(req, resp);
     }
 
     // POST: xử lý submit
@@ -46,6 +47,15 @@ public class ContactController extends HttpServlet {
         String chiTiet = req.getParameter("chiTiet");
         String dongY = req.getParameter("dy");
 
+        // ===== TẠO MODEL NGAY TỪ ĐẦU =====
+        Contact contact = new Contact(
+                hoTen,
+                soDienThoai,
+                email,
+                dichVu,
+                chiTiet,
+                dongY);
+
         // ===== VALIDATE SERVER-SIDE =====
         if (hoTen == null || hoTen.isBlank()
                 || soDienThoai == null || soDienThoai.isBlank()
@@ -53,37 +63,34 @@ public class ContactController extends HttpServlet {
                 || dichVu == null || dichVu.isBlank()) {
 
             req.setAttribute("error", "Vui lòng nhập đầy đủ các trường bắt buộc.");
+            req.setAttribute("contact", contact); // ⭐ QUAN TRỌNG
             forward(req, resp);
             return;
         }
 
         if (dongY == null) {
             req.setAttribute("error", "Bạn phải đồng ý với điều khoản để tiếp tục.");
+            req.setAttribute("contact", contact); // ⭐ QUAN TRỌNG
             forward(req, resp);
             return;
         }
 
-        // ===== TẠO MODEL =====
-        Contact contact = new Contact(
-                hoTen,
-                soDienThoai,
-                email,
-                dichVu,
-                chiTiet,
-                dongY
-        );
-
-        // ===== GỌI SERVICE (CHUẨN MVC) =====
+        // ===== LƯU DB =====
         contactService.save(contact);
 
         // ===== PRG PATTERN =====
-        resp.sendRedirect(req.getContextPath() + "/contact?success=1");
+        req.getSession().setAttribute(
+                "success",
+                "Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.");
+
+        resp.sendRedirect(req.getContextPath() + "/contact");
+
     }
 
     private void forward(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         req.getRequestDispatcher("/WEB-INF/views/contact.jsp")
-           .forward(req, resp);
+                .forward(req, resp);
     }
 }

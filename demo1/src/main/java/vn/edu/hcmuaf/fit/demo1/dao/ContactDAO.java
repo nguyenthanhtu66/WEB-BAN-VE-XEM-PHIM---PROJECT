@@ -1,7 +1,7 @@
 package vn.edu.hcmuaf.fit.demo1.dao;
 
 import vn.edu.hcmuaf.fit.demo1.model.Contact;
-import vn.edu.hcmuaf.fit.demo1.util.DBContext;
+import vn.edu.hcmuaf.fit.demo1.util.ContactDBContext;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ public class ContactDAO {
         "VALUES (?, ?, ?, ?, ?)";
 
     public void insert(Contact contact) {
-        DBContext db = new DBContext();
+        ContactDBContext db = new ContactDBContext();
 
         try (
             Connection conn = db.getConnection();
