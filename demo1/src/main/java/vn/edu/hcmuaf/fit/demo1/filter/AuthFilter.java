@@ -9,7 +9,7 @@ import vn.edu.hcmuaf.fit.demo1.model.User;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/profile","/orders","/checkout","/cart/*"})
+@WebFilter(urlPatterns = {"/profile", "/user/*","/orders","/checkout","/cart/*"})
 public class AuthFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
