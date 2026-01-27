@@ -22,13 +22,13 @@ public class TicketCancelController extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
         int ticketId = Integer.parseInt(req.getParameter("ticketId"));
 
-        ticketService.cancelTicket(ticketId, ticketId);
+        ticketService.cancelTicket(ticketId, user.getId());
 
         // Quay lại trang lịch sử vé
         resp.sendRedirect(req.getContextPath() + "/ticket-warehouse");

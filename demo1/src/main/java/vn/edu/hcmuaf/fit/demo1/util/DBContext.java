@@ -2,15 +2,44 @@ package vn.edu.hcmuaf.fit.demo1.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Properties;
+import java.io.InputStream;
 
 public class DBContext {
-    public static Connection getConnection() throws Exception {
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Ten_Database_Cua_Ban;encrypt=false";
-        String user = "sa";
-        String pass = "Mat_Khau_Cua_Ban";
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        return DriverManager.getConnection(url, user, pass);
+
+    private static Properties dbProps = new Properties();
+
+    static {
+        try {
+            InputStream input = DBContext.class
+                    .getClassLoader()
+                    .getResourceAsStream("db.properties");
+
+            if (input == null) {
+                throw new RuntimeException("❌ Không tìm thấy file db.properties");
+            }
+
+            dbProps.load(input);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
- 
+    public static Connection getConnection() throws Exception {
+
+        String host = dbProps.getProperty("db.host");
+        String port = dbProps.getProperty("db.port");
+        String dbName = dbProps.getProperty("db.dbname");
+        String user = dbProps.getProperty("db.username");
+        String pass = dbProps.getProperty("db.password");
+        String option = dbProps.getProperty("db.option");
+
+        String url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
+                + "?" + option
+                + "&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+
+        return DriverManager.getConnection(url, user, pass);
+    }
 }

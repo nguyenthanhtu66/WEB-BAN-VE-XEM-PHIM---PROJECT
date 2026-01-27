@@ -6,7 +6,7 @@
     import vn.edu.hcmuaf.fit.demo1.dao.UserDao;
     import vn.edu.hcmuaf.fit.demo1.dto.LoginForm;
     import vn.edu.hcmuaf.fit.demo1.model.User;
-    import vn.edu.hcmuaf.fit.demo1.util.PasswordUtils;
+    import vn.edu.hcmuaf.fit.demo1.util.PasswordUtils;                                                                                                                                                                                              
     import vn.edu.hcmuaf.fit.demo1.validation.LoginValidate;
 
     import java.io.IOException;

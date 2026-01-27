@@ -29,12 +29,19 @@ public class TicketWarehouseController extends HttpServlet {
             user.setEmail("demo@gmail.com");
             session.setAttribute("user", user);
         }
+        int totalTickets = ticketService.countActiveTickets(user.getId());
+        int totalPrice = ticketService.getTotalTicketPrice(user.getId());
+
+        req.setAttribute("totalTickets", totalTickets);
+
+        req.setAttribute("totalPrice", totalPrice);
 
         req.setAttribute("tickets",
                 ticketService.getTicketsByUser(user.getId()));
 
         req.getRequestDispatcher("/WEB-INF/views/ticket-warehouse.jsp")
-           .forward(req, resp);
+                .forward(req, resp);
+
     }
 
     @Override

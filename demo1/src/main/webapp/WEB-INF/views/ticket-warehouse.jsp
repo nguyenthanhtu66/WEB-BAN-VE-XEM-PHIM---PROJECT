@@ -37,6 +37,9 @@
                             </div>
                         </div>
 
+
+
+
                         <div class="my-ticket-container">
                             <div class="menu">
                                 <a href="${pageContext.request.contextPath}/user">
@@ -52,6 +55,9 @@
                             </div>
 
                             <div id="tickets" class="my-tickets">
+                                <span style="margin-right: 20px;"><strong style="color: #ff6600;">Số vé của bạn: </strong>${totalTickets}</span>
+                                <span><strong style="color: #ff6600;">Tổng tiền:</strong> <fmt:formatNumber value="${totalPrice}" type="number" /> VNĐ </span>
+
                                 <h2 class="section-title">Danh Sách Vé Đã Đặt</h2>
 
                                 <div class="ticket-list">
@@ -107,13 +113,22 @@
                                                 </form>
                                             </c:if>
 
+                                            <c:if test="${t.status == 'CANCELLED'}">
+                                                <form action="${pageContext.request.contextPath}/ticket-delete"
+                                                    method="post"
+                                                    onsubmit="return confirm('Bạn có chắc muốn xóa vé này không?');">
+                                                    <input type="hidden" name="ticketId" value="${t.id}">
+                                                    <button type="submit" class="view-detail-btn">Xóa</button>
+                                                </form>
+                                            </c:if>
+
+
                                         </div>
                                     </c:forEach>
 
                                 </div>
                             </div>
                         </div>
-
                     </main>
                 </div>
             </body>
