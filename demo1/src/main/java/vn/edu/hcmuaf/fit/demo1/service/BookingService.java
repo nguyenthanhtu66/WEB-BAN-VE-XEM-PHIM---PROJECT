@@ -2,535 +2,448 @@ package vn.edu.hcmuaf.fit.demo1.service;
 
 import vn.edu.hcmuaf.fit.demo1.dao.*;
 import vn.edu.hcmuaf.fit.demo1.model.*;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import jakarta.servlet.http.HttpSession;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BookingService {
 
-    private final BookingDao bookingDao = new BookingDao();
-    private final ShowtimeDao showtimeDao = new ShowtimeDao();
-    private final SeatDao seatDao = new SeatDao();
     private final RoomDao roomDao = new RoomDao();
+    private final SeatDao seatDao = new SeatDao();
+    private final ShowtimeDao showtimeDao = new ShowtimeDao();
+    private final TicketTypeDao ticketTypeDao = new TicketTypeDao();
+    private final BookedSeatDao bookedSeatDao = new BookedSeatDao();
     private final MovieDao movieDao = new MovieDao();
 
-    // Map để lưu trữ reservation tạm thời (5 phút)
-    private final Map<String, ReservationInfo> reservations = new ConcurrentHashMap<>();
+    // Giá vé cơ bản (100,000 VNĐ)
+    private static final double BASE_TICKET_PRICE = 100000.0;
 
-    // Scheduler để cleanup reservation hết hạn
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+    // ==================== VALIDATION METHODS ====================
 
-    public BookingService() {
-        // Schedule cleanup mỗi 1 phút
-        scheduler.scheduleAtFixedRate(this::cleanupExpiredReservations, 1, 1, TimeUnit.MINUTES);
-
-        // Schedule notification cho reservation sắp hết hạn
-        scheduler.scheduleAtFixedRate(this::notifyExpiringReservations, 30, 30, TimeUnit.SECONDS);
-    }
-
-    // Class để lưu thông tin reservation
-    private static class ReservationInfo {
-        String reservationId;
-        int showtimeId;
-        List<Integer> seatIds;
-        List<String> seatCodes;
-        int userId;
-        LocalDateTime expiryTime;
-        String sessionId;
-        LocalDateTime createdAt;
-
-        ReservationInfo(String reservationId, int showtimeId, List<Integer> seatIds,
-                        List<String> seatCodes, int userId, String sessionId) {
-            this.reservationId = reservationId;
-            this.showtimeId = showtimeId;
-            this.seatIds = seatIds;
-            this.seatCodes = seatCodes;
-            this.userId = userId;
-            this.sessionId = sessionId;
-            this.expiryTime = LocalDateTime.now().plusMinutes(5); // 5 phút
-            this.createdAt = LocalDateTime.now();
-        }
-
-        boolean isExpired() {
-            return LocalDateTime.now().isAfter(expiryTime);
-        }
-
-        long getRemainingSeconds() {
-            return java.time.Duration.between(LocalDateTime.now(), expiryTime).getSeconds();
-        }
-    }
-
-    // Giữ ghế tạm thời (5 phút)
-    public Map<String, Object> reserveSeats(int showtimeId, List<String> seatCodes,
-                                            int roomId, int userId, String sessionId) {
-        Map<String, Object> result = new HashMap<>();
+    /**
+     * Validate booking data
+     */
+    public boolean validateBooking(int movieId, int roomId, int showtimeId, int ticketTypeId, int seatId) {
+        System.out.println("=== VALIDATE BOOKING ===");
+        System.out.println("movieId=" + movieId + ", showtimeId=" + showtimeId +
+                ", ticketTypeId=" + ticketTypeId + ", seatId=" + seatId);
 
         try {
-            // 1. Kiểm tra thông tin showtime
+            // Kiểm tra showtime có hợp lệ không
             Showtime showtime = showtimeDao.getShowtimeById(showtimeId);
-            if (showtime == null || !showtime.getIsActive()) {
-                result.put("success", false);
-                result.put("message", "Suất chiếu không tồn tại hoặc không hoạt động");
-                return result;
+            if (showtime == null || !showtime.isActive()) {
+                System.out.println("❌ Showtime not found or inactive");
+                return false;
             }
 
-            // 2. Kiểm tra thời gian showtime
-            LocalDateTime showDateTime = LocalDateTime.of(showtime.getShowDate(), showtime.getShowTime());
-            if (showDateTime.isBefore(LocalDateTime.now())) {
-                result.put("success", false);
-                result.put("message", "Suất chiếu đã bắt đầu hoặc đã kết thúc");
-                return result;
+            if (roomId > 0 && showtime.getRoomId() != roomId) {
+                System.out.println("❌ Room ID mismatch");
+                return false;
             }
 
-            // 3. Chuyển seatCodes thành seatIds
-            List<Integer> seatIds = new ArrayList<>();
-            List<String> invalidSeats = new ArrayList<>();
-            Map<String, Integer> seatCodeToIdMap = new HashMap<>();
-
-            for (String seatCode : seatCodes) {
-                Seat seat = seatDao.getSeatByCode(roomId, seatCode.trim());
-                if (seat != null && seat.getIsActive()) {
-                    seatIds.add(seat.getId());
-                    seatCodeToIdMap.put(seatCode.trim(), seat.getId());
-                } else {
-                    invalidSeats.add(seatCode);
-                }
+            if (showtime.getMovieId() != movieId) {
+                System.out.println("❌ Movie ID mismatch");
+                return false;
             }
 
-            if (!invalidSeats.isEmpty()) {
-                result.put("success", false);
-                result.put("message", "Ghế không hợp lệ: " + String.join(", ", invalidSeats));
-                return result;
+            // Kiểm tra showtime date
+            if (showtime.getShowDate().isBefore(LocalDate.now())) {
+                System.out.println("❌ Showtime date is in the past");
+                return false;
             }
 
-            if (seatIds.isEmpty()) {
-                result.put("success", false);
-                result.put("message", "Không có ghế nào được chọn");
-                return result;
+            // Kiểm tra ticket type có hợp lệ không
+            if (!ticketTypeDao.isTicketTypeValid(ticketTypeId)) {
+                System.out.println("❌ Ticket type invalid");
+                return false;
             }
 
-            // 4. Kiểm tra ghế có sẵn không
-            List<String> unavailableSeats = seatDao.getUnavailableSeatCodes(showtimeId, seatIds);
-            if (!unavailableSeats.isEmpty()) {
-                result.put("success", false);
-                result.put("message", "Ghế đã được đặt: " + String.join(", ", unavailableSeats));
-                return result;
+            // Kiểm tra seat có tồn tại và active không
+            Seat seat = seatDao.getSeatById(seatId);
+            if (seat == null || !seat.isActive()) {
+                System.out.println("❌ Seat not found or inactive");
+                return false;
             }
 
-            // 5. Giữ ghế trong database
-            boolean reserved = bookingDao.reserveMultipleSeats(showtimeId, seatIds, userId);
-            if (!reserved) {
-                result.put("success", false);
-                result.put("message", "Không thể giữ ghế. Vui lòng thử lại.");
-                return result;
+            // Kiểm tra seat có thuộc đúng phòng không
+            if (seat.getRoomId() != showtime.getRoomId()) {
+                System.out.println("❌ Seat does not belong to showtime room");
+                return false;
             }
 
-            // 6. Tạo reservation ID
-            String reservationId = bookingDao.createReservationId(showtimeId, userId);
+            System.out.println("✅ All basic validations passed");
+            System.out.println("=== END VALIDATE BOOKING ===");
 
-            // 7. Lưu vào map
-            ReservationInfo info = new ReservationInfo(reservationId, showtimeId, seatIds,
-                    new ArrayList<>(seatCodes), userId, sessionId);
-            reservations.put(reservationId, info);
-
-            // 8. Lấy thông tin ghế
-            List<Seat> seats = seatDao.getSeatsByRoom(roomId);
-            Map<Integer, String> seatIdToCodeMap = new HashMap<>();
-            for (Seat seat : seats) {
-                seatIdToCodeMap.put(seat.getId(), seat.getSeatCode());
-            }
-
-            result.put("success", true);
-            result.put("message", "Đã giữ ghế thành công. Bạn có 5 phút để hoàn tất.");
-            result.put("reservationId", reservationId);
-            result.put("expiryTime", info.expiryTime.toString());
-            result.put("seatCodes", seatCodes);
-            result.put("remainingSeconds", info.getRemainingSeconds());
-            result.put("showtimeId", showtimeId);
-            result.put("userId", userId);
+            return true;
 
         } catch (Exception e) {
+            System.err.println("Validation error: " + e.getMessage());
             e.printStackTrace();
-            result.put("success", false);
-            result.put("message", "Lỗi hệ thống: " + e.getMessage());
+            return false;
         }
-
-        return result;
     }
 
-    // Xác nhận booking
-    public Map<String, Object> confirmBooking(int showtimeId, List<String> seatCodes,
-                                              int roomId, int userId, int orderId) {
-        Map<String, Object> result = new HashMap<>();
+    /**
+     * Validate booking data with session ID
+     */
+    public boolean validateBookingWithSession(int movieId, int roomId, int showtimeId, int ticketTypeId,
+                                              int seatId, String sessionId) {
+        System.out.println("=== VALIDATE BOOKING WITH SESSION ===");
+        System.out.println("movieId=" + movieId + ", showtimeId=" + showtimeId +
+                ", ticketTypeId=" + ticketTypeId + ", seatId=" + seatId + ", sessionId=" + sessionId);
+
+        // Basic validation first
+        if (!validateBooking(movieId, roomId, showtimeId, ticketTypeId, seatId)) {
+            return false;
+        }
+
+        // Check seat availability for this session
+        boolean isAvailable = isSeatAvailable(showtimeId, seatId, sessionId);
+        System.out.println("Seat available for session: " + isAvailable);
+
+        if (!isAvailable) {
+            System.out.println("❌ Seat not available for this session");
+            return false;
+        }
+
+        System.out.println("✅ All validations with session passed");
+        System.out.println("=== END VALIDATE BOOKING WITH SESSION ===");
+        return true;
+    }
+
+    // ==================== ROOM ====================
+
+    public List<Room> getAllActiveRooms() {
+        return roomDao.getAllActiveRooms();
+    }
+
+    public List<Room> getRoomsByMovieId(int movieId) {
+        System.out.println("BookingService.getRoomsByMovieId - movieId: " + movieId);
+        List<Room> rooms = roomDao.getRoomsByMovieId(movieId);
+        System.out.println("BookingService.getRoomsByMovieId - returned " +
+                (rooms != null ? rooms.size() : 0) + " rooms");
+        return rooms;
+    }
+
+    public Room getRoomById(int roomId) {
+        return roomDao.getRoomById(roomId);
+    }
+
+    // ==================== SEAT ====================
+
+    public List<Seat> getSeatsByRoomId(int roomId) {
+        return seatDao.getSeatsByRoomId(roomId);
+    }
+
+    public Seat getSeatById(int seatId) {
+        return seatDao.getSeatById(seatId);
+    }
+
+    public List<String> getRowNumbersByRoom(int roomId) {
+        return seatDao.getRowNumbersByRoom(roomId);
+    }
+
+    // ==================== SHOWTIME ====================
+
+    public List<Showtime> getShowtimesByMovieAndRoom(int movieId, int roomId) {
+        return showtimeDao.getShowtimesByMovieAndRoom(movieId, roomId);
+    }
+
+    public List<LocalDate> getAvailableDatesByMovieAndRoom(int movieId, int roomId) {
+        return showtimeDao.getAvailableDatesByMovieAndRoom(movieId, roomId);
+    }
+
+    public List<LocalTime> getAvailableTimesByMovieRoomAndDate(int movieId, int roomId, LocalDate showDate) {
+        return showtimeDao.getAvailableTimesByMovieRoomAndDate(movieId, roomId, showDate);
+    }
+
+    public Showtime getShowtimeById(int showtimeId) {
+        return showtimeDao.getShowtimeById(showtimeId);
+    }
+
+    // ==================== TICKET TYPE ====================
+
+    public List<TicketType> getAllActiveTicketTypes() {
+        return ticketTypeDao.getAllActiveTicketTypes();
+    }
+
+    public TicketType getTicketTypeById(int ticketTypeId) {
+        return ticketTypeDao.getTicketTypeById(ticketTypeId);
+    }
+
+    // ==================== BOOKED SEATS ====================
+
+    public List<Integer> getBookedSeatIdsByShowtime(int showtimeId) {
+        return bookedSeatDao.getBookedSeatIdsByShowtime(showtimeId);
+    }
+
+    public List<Integer> getReservedSeatIdsByShowtime(int showtimeId, String sessionId) {
+        return bookedSeatDao.getReservedSeatIdsByShowtime(showtimeId, sessionId);
+    }
+
+    public boolean isSeatAvailable(int showtimeId, int seatId) {
+        return bookedSeatDao.isSeatAvailable(showtimeId, seatId, "");
+    }
+
+    public boolean isSeatAvailable(int showtimeId, int seatId, String sessionId) {
+        return bookedSeatDao.isSeatAvailable(showtimeId, seatId, sessionId);
+    }
+
+    public boolean reserveSeat(int showtimeId, int seatId, Integer userId, String sessionId) {
+        // Kiểm tra ghế có khả dụng cho session này không
+        BookedSeatDao bookedSeatDao = new BookedSeatDao();
+        boolean isAvailable;
+
+        if (userId != null) {
+            isAvailable = bookedSeatDao.isSeatAvailableForUser(showtimeId, seatId, userId);
+        } else if (sessionId != null && !sessionId.isEmpty()) {
+            isAvailable = bookedSeatDao.isSeatAvailable(showtimeId, seatId, sessionId);
+        } else {
+            isAvailable = bookedSeatDao.isSeatAvailable(showtimeId, seatId);
+        }
+
+        if (!isAvailable) {
+            System.out.println("❌ Seat not available for reservation");
+            return false;
+        }
+        return bookedSeatDao.reserveSeat(showtimeId, seatId, userId, sessionId);
+    }
+
+    public boolean releaseSeat(int showtimeId, int seatId) {
+        return bookedSeatDao.releaseSeat(showtimeId, seatId);
+    }
+
+    public boolean releaseUserSeats(int showtimeId, Integer userId) {
+        return bookedSeatDao.releaseUserSeats(showtimeId, userId);
+    }
+
+    public boolean releaseSessionSeats(int showtimeId, String sessionId) {
+        return bookedSeatDao.releaseSessionSeats(showtimeId, sessionId);
+    }
+
+    public int getAvailableSeatsCount(int showtimeId, int roomId) {
+        return bookedSeatDao.getAvailableSeatsCount(showtimeId, roomId);
+    }
+
+    public void releaseExpiredReservations() {
+        bookedSeatDao.releaseAllExpiredReservations();
+    }
+
+    // ==================== BOOKING LOGIC ====================
+
+    /**
+     * Tính giá vé dựa trên loại vé
+     */
+    public double calculateTicketPrice(int ticketTypeId) {
+        TicketType ticketType = ticketTypeDao.getTicketTypeById(ticketTypeId);
+        if (ticketType == null) {
+            return BASE_TICKET_PRICE;
+        }
+        return ticketType.getActualPrice(BASE_TICKET_PRICE);
+    }
+
+    /**
+     * Lấy thông tin đầy đủ cho CartItem
+     */
+    public CartItem createCartItem(int movieId, int showtimeId, int seatId, int ticketTypeId) {
+        System.out.println("Creating cart item: movieId=" + movieId + ", showtimeId=" + showtimeId +
+                ", seatId=" + seatId + ", ticketTypeId=" + ticketTypeId);
 
         try {
-            // 1. Kiểm tra thông tin showtime
+            // Lấy thông tin movie
+            Movie movie = movieDao.getMovieById(movieId);
+            if (movie == null) {
+                System.out.println("Movie not found: " + movieId);
+                return null;
+            }
+
+            // Lấy thông tin showtime
             Showtime showtime = showtimeDao.getShowtimeById(showtimeId);
             if (showtime == null) {
-                result.put("success", false);
-                result.put("message", "Suất chiếu không tồn tại");
-                return result;
+                System.out.println("Showtime not found: " + showtimeId);
+                return null;
             }
 
-            // 2. Chuyển seatCodes thành seatIds
-            List<Integer> seatIds = new ArrayList<>();
-            for (String seatCode : seatCodes) {
-                Seat seat = seatDao.getSeatByCode(roomId, seatCode.trim());
-                if (seat != null) {
-                    seatIds.add(seat.getId());
-                }
+            // Lấy thông tin room
+            Room room = roomDao.getRoomById(showtime.getRoomId());
+            if (room == null) {
+                System.out.println("Room not found: " + showtime.getRoomId());
+                return null;
             }
 
-            if (seatIds.isEmpty()) {
-                result.put("success", false);
-                result.put("message", "Không có ghế nào được chọn");
-                return result;
+            // Lấy thông tin seat
+            Seat seat = seatDao.getSeatById(seatId);
+            if (seat == null) {
+                System.out.println("Seat not found: " + seatId);
+                return null;
             }
 
-            // 3. Xác nhận booking trong database
-            boolean confirmed = bookingDao.confirmBooking(showtimeId, seatIds, orderId, userId);
+            // Lấy thông tin ticket type
+            TicketType ticketType = ticketTypeDao.getTicketTypeById(ticketTypeId);
+            if (ticketType == null) {
+                System.out.println("Ticket type not found: " + ticketTypeId);
+                return null;
+            }
 
-            if (confirmed) {
-                result.put("success", true);
-                result.put("message", "Đặt vé thành công!");
-                result.put("orderId", orderId);
-                result.put("seatCodes", seatCodes);
-                result.put("showtimeId", showtimeId);
+            // Tính giá
+            double price = calculateTicketPrice(ticketTypeId);
 
-                // 4. Xóa reservation khỏi map
-                String reservationIdToRemove = null;
-                for (Map.Entry<String, ReservationInfo> entry : reservations.entrySet()) {
-                    ReservationInfo info = entry.getValue();
-                    if (info.showtimeId == showtimeId &&
-                            info.userId == userId &&
-                            info.seatCodes.containsAll(seatCodes)) {
-                        reservationIdToRemove = entry.getKey();
-                        break;
-                    }
-                }
+            // Tạo CartItem
+            CartItem cartItem = new CartItem(
+                    movie.getId(),
+                    movie.getTitle(),
+                    movie.getPosterUrl(),
+                    showtime.getId(),
+                    showtime.getShowDate(),
+                    showtime.getShowTime(),
+                    room.getId(),
+                    room.getRoomName(),
+                    seat.getId(),
+                    seat.getSeatCode(),
+                    ticketType.getId(),
+                    ticketType.getTypeName(),
+                    price
+            );
 
-                if (reservationIdToRemove != null) {
-                    reservations.remove(reservationIdToRemove);
-                }
+            System.out.println("CartItem created successfully");
+            return cartItem;
 
-                // 5. Gửi thông báo xác nhận (có thể gửi email/SMS)
-                sendBookingConfirmation(userId, orderId, showtimeId, seatCodes);
+        } catch (Exception e) {
+            System.err.println("Error creating cart item: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    /**
+     * Kiểm tra xem seat có trong cart của session không
+     */
+    public boolean isSeatInCart(int showtimeId, int seatId, HttpSession session) {
+        if (session == null) return false;
+
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) return false;
+
+        return cart.containsSeat(showtimeId, seatId);
+    }
+
+    /**
+     * Lấy danh sách seat IDs trong cart cho một showtime
+     */
+    public List<Integer> getCartSeatIdsForShowtime(int showtimeId, HttpSession session) {
+        if (session == null) return List.of();
+
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) return List.of();
+
+        return cart.getSeatIdsForShowtime(showtimeId);
+    }
+
+    /**
+     * Xóa tất cả seat reservations của session khi clear cart
+     */
+    public boolean clearSessionCartSeats(HttpSession session) {
+        if (session == null) return false;
+
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null || cart.isEmpty()) return false;
+
+        String sessionId = session.getId();
+        boolean allReleased = true;
+
+        for (CartItem item : cart.getItems()) {
+            boolean released = bookedSeatDao.releaseSeat(item.getShowtimeId(), item.getSeatId());
+            if (!released) {
+                allReleased = false;
+                System.err.println("Failed to release seat: showtimeId=" +
+                        item.getShowtimeId() + ", seatId=" + item.getSeatId());
+            }
+        }
+
+        return allReleased;
+    }
+
+    /**
+     * Lấy trạng thái chi tiết của seat
+     */
+    public String getSeatStatus(int showtimeId, int seatId, String sessionId, HttpSession session) {
+        // Kiểm tra nếu đã booked
+        if (bookedSeatDao.isSeatBooked(showtimeId, seatId)) {
+            return "booked";
+        }
+
+        // Kiểm tra nếu đang reserved bởi session khác
+        if (bookedSeatDao.isSeatReservedByOtherSession(showtimeId, seatId, sessionId)) {
+            return "reserved";
+        }
+
+        // Kiểm tra nếu trong cart của session này
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart != null && cart.containsSeat(showtimeId, seatId)) {
+            return "in_cart";
+        }
+
+        // Kiểm tra nếu đang reserved bởi session này
+        if (bookedSeatDao.isSeatReservedBySession(showtimeId, seatId, sessionId)) {
+            return "reserved_by_me";
+        }
+
+        return "available";
+    }
+
+    /**
+     * Get complete seat map with all statuses
+     */
+    public List<Map<String, Object>> getSeatMapWithStatuses(int roomId, int showtimeId, String sessionId, HttpSession httpSession) {
+        List<Seat> seats = seatDao.getSeatsByRoomId(roomId);
+        List<Integer> bookedSeatIds = bookedSeatDao.getBookedSeatIdsByShowtime(showtimeId);
+        List<Integer> reservedSeatIds = bookedSeatDao.getReservedSeatIdsByShowtime(showtimeId, sessionId);
+
+        return seats.stream().map(seat -> {
+            Map<String, Object> seatInfo = new HashMap<>();
+            seatInfo.put("id", seat.getId());
+            seatInfo.put("seatCode", seat.getSeatCode());
+            seatInfo.put("rowNumber", seat.getRowNumber());
+            seatInfo.put("seatNumber", seat.getSeatNumber());
+            seatInfo.put("seatType", seat.getSeatType());
+
+            boolean isBooked = bookedSeatIds.contains(seat.getId());
+            boolean isReserved = reservedSeatIds.contains(seat.getId());
+            boolean isInCart = httpSession != null &&
+                    ((Cart) httpSession.getAttribute("cart") != null &&
+                            ((Cart) httpSession.getAttribute("cart")).containsSeat(showtimeId, seat.getId()));
+
+            // Determine status
+            String status;
+            if (isBooked) {
+                status = "booked";
+            } else if (isReserved) {
+                status = "reserved";
+            } else if (isInCart) {
+                status = "in_cart";
             } else {
-                result.put("success", false);
-                result.put("message", "Không thể xác nhận booking. Vui lòng thử lại.");
+                status = "available";
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("success", false);
-            result.put("message", "Lỗi hệ thống: " + e.getMessage());
-        }
+            seatInfo.put("status", status);
+            seatInfo.put("isBooked", isBooked);
+            seatInfo.put("isReserved", isReserved);
+            seatInfo.put("isInCart", isInCart);
+            seatInfo.put("isAvailable", !isBooked && !isReserved && !isInCart);
 
-        return result;
+            return seatInfo;
+        }).collect(Collectors.toList());
     }
 
-    // Hủy reservation
-    public Map<String, Object> cancelReservation(String reservationId, int userId) {
-        Map<String, Object> result = new HashMap<>();
-
-        try {
-            ReservationInfo info = reservations.get(reservationId);
-            if (info != null && info.userId == userId) {
-                // 1. Release ghế trong database
-                bookingDao.releaseMultipleSeats(info.showtimeId, info.seatIds, userId);
-
-                // 2. Xóa khỏi map
-                reservations.remove(reservationId);
-
-                result.put("success", true);
-                result.put("message", "Đã hủy giữ ghế");
-                result.put("reservationId", reservationId);
-            } else {
-                result.put("success", false);
-                result.put("message", "Reservation không tồn tại hoặc không thuộc về bạn");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("success", false);
-            result.put("message", "Lỗi hệ thống");
-        }
-
-        return result;
-    }
-
-    // Kiểm tra trạng thái ghế
-    public Map<String, Object> checkSeatStatus(int showtimeId, int roomId) {
-        Map<String, Object> result = new HashMap<>();
-
-        try {
-            // 1. Lấy tất cả ghế của phòng
-            List<Seat> allSeats = seatDao.getSeatsByRoom(roomId);
-
-            // 2. Lấy ghế đã được đặt/giữ
-            List<BookedSeat> bookedSeats = bookingDao.getBookedSeatsForShowtime(showtimeId);
-
-            // 3. Tạo map seatId -> status
-            Map<Integer, String> seatStatusMap = new HashMap<>();
-            for (BookedSeat bookedSeat : bookedSeats) {
-                seatStatusMap.put(bookedSeat.getSeatId(), bookedSeat.getStatus());
-            }
-
-            // 4. Tạo response
-            List<Map<String, Object>> seatsInfo = new ArrayList<>();
-            for (Seat seat : allSeats) {
-                Map<String, Object> seatInfo = new HashMap<>();
-                seatInfo.put("seatId", seat.getId());
-                seatInfo.put("seatCode", seat.getSeatCode());
-                seatInfo.put("rowNumber", seat.getRowNumber());
-                seatInfo.put("seatNumber", seat.getSeatNumber());
-                seatInfo.put("seatType", seat.getSeatType());
-                seatInfo.put("isActive", seat.getIsActive());
-
-                String status = seatStatusMap.get(seat.getId());
-                if (status == null) {
-                    seatInfo.put("status", "available");
-                } else if ("reserved".equals(status)) {
-                    seatInfo.put("status", "reserved");
-                } else {
-                    seatInfo.put("status", "booked");
-                }
-
-                seatsInfo.add(seatInfo);
-            }
-
-            // 5. Lấy thông tin showtime
-            Showtime showtime = showtimeDao.getShowtimeById(showtimeId);
-            if (showtime != null) {
-                result.put("showtime", showtime);
-            }
-
-            result.put("success", true);
-            result.put("seats", seatsInfo);
-            result.put("totalSeats", allSeats.size());
-            result.put("availableSeats", allSeats.size() - bookedSeats.size());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("success", false);
-            result.put("message", "Lỗi hệ thống: " + e.getMessage());
-        }
-
-        return result;
-    }
-
-    // Lấy thông tin reservation
-    public Map<String, Object> getReservationInfo(String reservationId) {
-        Map<String, Object> result = new HashMap<>();
-
-        try {
-            ReservationInfo info = reservations.get(reservationId);
-            if (info != null) {
-                result.put("success", true);
-                result.put("reservationId", info.reservationId);
-                result.put("showtimeId", info.showtimeId);
-                result.put("seatCodes", info.seatCodes);
-                result.put("seatIds", info.seatIds);
-                result.put("userId", info.userId);
-                result.put("expiryTime", info.expiryTime.toString());
-                result.put("remainingSeconds", info.getRemainingSeconds());
-                result.put("isExpired", info.isExpired());
-                result.put("createdAt", info.createdAt.toString());
-            } else {
-                result.put("success", false);
-                result.put("message", "Reservation không tồn tại");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("success", false);
-            result.put("message", "Lỗi hệ thống");
-        }
-
-        return result;
-    }
-
-    // Kiểm tra reservation còn hiệu lực không
-    public boolean isReservationValid(String reservationId, int userId) {
-        try {
-            ReservationInfo info = reservations.get(reservationId);
-            return info != null && info.userId == userId && !info.isExpired();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // Lấy tất cả reservation của user
-    public List<ReservationInfo> getUserReservations(int userId) {
-        List<ReservationInfo> userReservations = new ArrayList<>();
-        for (ReservationInfo info : reservations.values()) {
-            if (info.userId == userId && !info.isExpired()) {
-                userReservations.add(info);
-            }
-        }
-        return userReservations;
-    }
-
-    // Cleanup reservation hết hạn
-    private void cleanupExpiredReservations() {
-        try {
-            // 1. Cleanup trong map
-            List<String> expiredReservations = new ArrayList<>();
-
-            for (Map.Entry<String, ReservationInfo> entry : reservations.entrySet()) {
-                ReservationInfo info = entry.getValue();
-                if (info.isExpired()) {
-                    // Release ghế trong database
-                    bookingDao.releaseMultipleSeats(info.showtimeId, info.seatIds, info.userId);
-                    expiredReservations.add(entry.getKey());
-                }
-            }
-
-            // Xóa khỏi map
-            for (String reservationId : expiredReservations) {
-                reservations.remove(reservationId);
-            }
-
-            // 2. Cleanup trong database
-            bookingDao.cleanupExpiredReservations();
-
-            // Log số lượng reservation đã cleanup
-            if (!expiredReservations.isEmpty()) {
-                System.out.println("Đã cleanup " + expiredReservations.size() + " reservation hết hạn");
-            }
-
-        } catch (Exception e) {
-            System.err.println("Error in cleanupExpiredReservations: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    // Thông báo reservation sắp hết hạn
-    private void notifyExpiringReservations() {
-        try {
-            List<ReservationInfo> expiringReservations = new ArrayList<>();
-
-            for (ReservationInfo info : reservations.values()) {
-                long remainingSeconds = info.getRemainingSeconds();
-                // Thông báo khi còn 1 phút
-                if (remainingSeconds > 0 && remainingSeconds <= 60) {
-                    expiringReservations.add(info);
-                }
-            }
-
-            // Gửi thông báo (có thể gửi qua WebSocket hoặc lưu vào database)
-            for (ReservationInfo info : expiringReservations) {
-                sendExpirationWarning(info);
-            }
-
-        } catch (Exception e) {
-            System.err.println("Error in notifyExpiringReservations: " + e.getMessage());
-        }
-    }
-
-    // Phương thức helper
-    private void sendBookingConfirmation(int userId, int orderId, int showtimeId, List<String> seatCodes) {
-        // Implement gửi email/SMS thông báo
-        System.out.println("Gửi thông báo xác nhận booking: Order #" + orderId +
-                ", User: " + userId + ", Ghế: " + seatCodes);
-    }
-
-    private void sendExpirationWarning(ReservationInfo info) {
-        // Implement gửi cảnh báo
-        System.out.println("Cảnh báo: Reservation " + info.reservationId +
-                " sẽ hết hạn trong " + info.getRemainingSeconds() + " giây");
-    }
-
-    // Lấy thông tin phòng và lịch chiếu
-    public Map<String, Object> getRoomAndShowtimeInfo(int movieId, int roomId, String showtimeStr) {
-        Map<String, Object> result = new HashMap<>();
-
-        try {
-            Movie movie = movieDao.getMovieById(movieId);
-            Room room = roomDao.getRoomById(roomId);
-
-            if (movie == null || room == null) {
-                result.put("success", false);
-                result.put("message", "Thông tin không hợp lệ");
-                return result;
-            }
-
-            // Parse showtime
-            String[] parts = showtimeStr.split("T");
-            if (parts.length != 2) {
-                result.put("success", false);
-                result.put("message", "Định dạng thời gian không hợp lệ");
-                return result;
-            }
-
-            java.time.LocalDate showDate = java.time.LocalDate.parse(parts[0]);
-            java.time.LocalTime showTime = java.time.LocalTime.parse(parts[1]);
-
-            // Tìm hoặc tạo showtime
-            Integer showtimeId = showtimeDao.createShowtime(movieId, roomId, showDate, showTime);
-
-            if (showtimeId == null || showtimeId <= 0) {
-                result.put("success", false);
-                result.put("message", "Không thể tạo suất chiếu");
-                return result;
-            }
-
-            Showtime showtime = showtimeDao.getShowtimeById(showtimeId);
-
-            result.put("success", true);
-            result.put("movie", movie);
-            result.put("room", room);
-            result.put("showtime", showtime);
-            result.put("showtimeId", showtimeId);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("success", false);
-            result.put("message", "Lỗi hệ thống: " + e.getMessage());
-        }
-
-        return result;
-    }
-
-    // Release seat theo reservation ID
-    public boolean releaseSeatsByReservationId(String reservationId) {
-        try {
-            ReservationInfo info = reservations.get(reservationId);
-            if (info != null) {
-                bookingDao.releaseMultipleSeats(info.showtimeId, info.seatIds, info.userId);
-                reservations.remove(reservationId);
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Shutdown scheduler
-    public void shutdown() {
-        try {
-            scheduler.shutdown();
-            if (!scheduler.awaitTermination(60, TimeUnit.SECONDS)) {
-                scheduler.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            scheduler.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
-    }
-
-    // Lấy số lượng reservation đang active
-    public int getActiveReservationCount() {
-        return reservations.size();
-    }
-
-    // Lấy tất cả reservation đang active (cho admin)
-    public Map<String, ReservationInfo> getAllActiveReservations() {
-        return new HashMap<>(reservations);
+    /**
+     * Get movie by ID
+     */
+    public Movie getMovieById(int movieId) {
+        return movieDao.getMovieById(movieId);
     }
 }

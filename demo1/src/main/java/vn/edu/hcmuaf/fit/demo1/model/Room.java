@@ -6,7 +6,7 @@ public class Room implements Serializable {
     private int id;
     private String roomName;
     private int totalSeats;
-    private String roomType; // 2D, 3D, VIP, IMAX
+    private String roomType;
     private boolean isActive;
 
     public Room() {}
@@ -20,23 +20,54 @@ public class Room implements Serializable {
     }
 
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getRoomName() { return roomName; }
-    public void setRoomName(String roomName) { this.roomName = roomName; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public int getTotalSeats() { return totalSeats; }
-    public void setTotalSeats(int totalSeats) { this.totalSeats = totalSeats; }
+    public String getRoomName() {
+        return roomName;
+    }
 
-    public String getRoomType() { return roomType; }
-    public void setRoomType(String roomType) { this.roomType = roomType; }
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 
-    public boolean getIsActive() { return isActive; }
-    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+    public int getTotalSeats() {
+        return totalSeats;
+    }
 
-    // Helper methods
-    public String getDisplayName() {
-        return roomName + " (" + roomType + ")";
+    public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", roomName='" + roomName + '\'' +
+                ", totalSeats=" + totalSeats +
+                ", roomType='" + roomType + '\'' +
+                ", isActive=" + isActive +
+                '}';
     }
 }

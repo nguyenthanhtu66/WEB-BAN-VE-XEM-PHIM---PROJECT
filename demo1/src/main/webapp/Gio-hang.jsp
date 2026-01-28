@@ -291,202 +291,115 @@
 
     <!-- Main Container -->
     <div class="main-container">
-        <h1 class="page-title">Giỏ Hàng Của Bạn</h1>
+        <h1 class="page-title"><i class="fas fa-shopping-cart"></i> GIỎ HÀNG CỦA BẠN</h1>
 
-        <div class="cart-container">
-            <!-- Cart Items -->
-            <div class="cart-items">
-                <c:choose>
-                    <c:when test="${empty cart or empty cart.items}">
-                        <div class="empty-cart">
-                            <div class="empty-cart-icon">🛒</div>
-                            <h2>Giỏ hàng của bạn đang trống</h2>
-                            <p>Hãy thêm vé xem phim vào giỏ hàng của bạn!</p>
-                            <a href="${pageContext.request.contextPath}/home" class="continue-shopping">← Tiếp tục mua vé</a>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="item" items="${cart.items}">
-                            <div class="cart-item" id="item-${item.id}">
+        <c:choose>
+            <c:when test="${empty cart or cart.totalItems == 0}">
+                <!-- Giỏ hàng trống -->
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h2>Giỏ hàng trống</h2>
+                    <p>Bạn chưa có vé nào trong giỏ hàng</p>
+                    <a href="${pageContext.request.contextPath}/home" class="see-more-btn">
+                        <i class="fas fa-film"></i> Xem phim ngay
+                    </a>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <!-- Có vé trong giỏ -->
+                <div class="cart-container">
+                    <div class="cart-items">
+                        <c:forEach items="${cart.items}" var="item">
+                            <div class="cart-item">
                                 <div class="item-poster">
-                                    <img src="${item.posterUrl}" alt="${item.movieTitle}"
-                                         onerror="this.src='${pageContext.request.contextPath}/image/default-poster.jpg'">
+                                    <img src="${pageContext.request.contextPath}${item.moviePoster}" alt="${item.movieTitle}">
                                 </div>
                                 <div class="item-details">
                                     <h3 class="item-title">${item.movieTitle}</h3>
                                     <div class="item-info">
                                         <div class="info-row">
-                                            <span class="info-label">Phòng chiếu:</span>
-                                            <span>${item.room}</span>
+                                            <span class="info-label">📅 Ngày chiếu:</span>
+                                            <span><fmt:formatDate value="${item.showDate}" pattern="dd/MM/yyyy (EEE)" /></span>
                                         </div>
                                         <div class="info-row">
-                                            <span class="info-label">Ngày giờ:</span>
-                                            <span>${item.showtime}</span>
+                                            <span class="info-label">🕐 Giờ chiếu:</span>
+                                            <span>${item.showTime}</span>
                                         </div>
                                         <div class="info-row">
-                                            <span class="info-label">Loại vé:</span>
-                                            <span>
-                                                <c:choose>
-                                                    <c:when test="${item.ticketType == 'adult'}">Người lớn</c:when>
-                                                    <c:when test="${item.ticketType == 'student'}">Học sinh/Sinh viên</c:when>
-                                                    <c:when test="${item.ticketType == 'child'}">Trẻ em</c:when>
-                                                    <c:otherwise>${item.ticketType}</c:otherwise>
-                                                </c:choose>
-                                            </span>
+                                            <span class="info-label">🚪 Phòng:</span>
+                                            <span>${item.roomName}</span>
                                         </div>
-                                        <c:if test="${not empty item.seats}">
-                                            <div class="info-row">
-                                                <span class="info-label">Ghế:</span>
-                                                <span class="item-seats">${item.seats}</span>
-                                                <button class="edit-seat-btn" onclick="openSeatModal('${item.id}')">
-                                                    Chỉnh sửa ghế
-                                                </button>
-                                            </div>
-                                        </c:if>
+                                        <div class="info-row">
+                                            <span class="info-label">💺 Ghế:</span>
+                                            <span class="item-seats">${item.seatCode}</span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span class="info-label">🎫 Loại vé:</span>
+                                            <span>${item.ticketTypeName}</span>
+                                        </div>
                                     </div>
                                     <div class="item-actions">
-                                        <div class="quantity-control">
-                                            <form method="post" action="${pageContext.request.contextPath}/cart/update" class="quantity-form">
-                                                <input type="hidden" name="itemId" value="${item.id}">
-                                                <button type="button" class="quantity-btn minus"
-                                                        onclick="updateQuantity('${item.id}', ${item.quantity - 1})">−</button>
-                                                <span class="quantity-value">${item.quantity}</span>
-                                                <button type="button" class="quantity-btn plus"
-                                                        onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
-                                            </form>
-                                        </div>
-                                        <span class="item-price"><fmt:formatNumber value="${item.total}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
+                                        <div class="item-price">${item.formattedPrice}</div>
                                         <div class="action-icons">
-                                            <a href="${pageContext.request.contextPath}/cart/remove?id=${item.id}"
-                                               class="icon-btn delete" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">🗑️</a>
+                                            <form method="post" action="${pageContext.request.contextPath}/cart" style="display: inline;">
+                                                <input type="hidden" name="action" value="remove">
+                                                <input type="hidden" name="showtimeId" value="${item.showtimeId}">
+                                                <input type="hidden" name="seatId" value="${item.seatId}">
+                                                <button type="submit" class="icon-btn delete" title="Xóa">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-
-            <!-- Cart Summary -->
-            <c:if test="${not empty cart and not empty cart.items}">
-                <div class="cart-summary">
-                    <h2 class="summary-title">Tổng Đơn Hàng</h2>
-
-                    <div class="summary-row">
-                        <span>Tạm tính:</span>
-                        <span><fmt:formatNumber value="${cart.subtotal}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
                     </div>
 
-                    <div class="summary-row">
-                        <span>Phí dịch vụ (5%):</span>
-                        <span><fmt:formatNumber value="${cart.serviceFee}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
-                    </div>
+                    <!-- Summary -->
+                    <div class="cart-summary">
+                        <h3 class="summary-title">THÔNG TIN ĐƠN HÀNG</h3>
 
-                    <c:if test="${cart.discount > 0}">
                         <div class="summary-row">
-                            <span>Giảm giá:</span>
-                            <span style="color: #2ecc71;">-<fmt:formatNumber value="${cart.discount}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
+                            <span>Số lượng vé:</span>
+                            <span class="amount">${cart.totalItems}</span>
                         </div>
-                    </c:if>
 
-                    <div class="promo-code">
-                        <div class="promo-input">
-                            <input type="text" id="promoCode" placeholder="Nhập mã khuyến mãi">
-                            <button type="button" onclick="applyPromoCode()">Áp dụng</button>
+                        <div class="summary-row">
+                            <span>Tạm tính:</span>
+                            <span class="amount"><fmt:formatNumber value="${cart.totalAmount}" pattern="#,###"/> đ</span>
                         </div>
-                        <div id="promoMessage" class="promo-message"></div>
-                    </div>
 
-                    <div class="summary-row total">
-                        <span>Tổng cộng:</span>
-                        <span class="amount">
-                            <fmt:formatNumber value="${cart.grandTotal}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
-                        </span>
-                    </div>
+                        <div class="promo-code">
+                            <div class="promo-input">
+                                <input type="text" placeholder="Nhập mã giảm giá">
+                                <button type="button">Áp dụng</button>
+                            </div>
+                        </div>
 
-                    <button class="checkout-btn" onclick="proceedToCheckout()">Thanh toán</button>
-                    <a href="${pageContext.request.contextPath}/cart/clear" class="continue-shopping"
-                       onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')">Xóa giỏ hàng</a>
-                    <a href="${pageContext.request.contextPath}/home" class="continue-shopping">← Tiếp tục mua vé</a>
-                </div>
-            </c:if>
-        </div>
-    </div>
+                        <div class="summary-row total">
+                            <span>TỔNG CỘNG:</span>
+                            <span class="amount"><fmt:formatNumber value="${cart.totalAmount}" pattern="#,###"/> đ</span>
+                        </div>
 
-    <!-- Modal chọn ghế -->
-    <div id="seatModal" class="seat-modal">
-        <div class="seat-modal-content">
-            <h2 class="seat-modal-title">Chọn Ghế Ngồi</h2>
+                        <button type="button" class="checkout-btn" onclick="location.href='${pageContext.request.contextPath}/checkout'">
+                            <i class="fas fa-check-circle"></i> THANH TOÁN NGAY
+                        </button>
 
-            <div class="seat-map-container">
-                <div class="screen-label">MÀN HÌNH</div>
+                        <a href="${pageContext.request.contextPath}/home" class="continue-shopping">
+                            <i class="fas fa-arrow-left"></i> Tiếp tục mua vé
+                        </a>
 
-                <!-- Seat map sẽ được tạo bằng JavaScript -->
-                <div id="seatMapContainer" class="seat-map">
-                    <div id="seatRows"></div>
-                </div>
-
-                <div class="seat-legend">
-                    <div class="legend-item">
-                        <div class="legend-box available"></div>
-                        <span>Ghế trống</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box selected"></div>
-                        <span>Đang chọn</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box booked"></div>
-                        <span>Đã đặt</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box reserved"></div>
-                        <span>Đang giữ</span>
+                        <form method="post" action="${pageContext.request.contextPath}/cart" style="margin-top: 15px;">
+                            <input type="hidden" name="action" value="clear">
+                            <button type="submit" class="continue-shopping" style="width: 100%; border: 2px solid #e74c3c; color: #e74c3c;">
+                                <i class="fas fa-trash-alt"></i> Xóa toàn bộ giỏ hàng
+                            </button>
+                        </form>
                     </div>
                 </div>
-
-                <div class="seat-selection-summary">
-                    <div class="summary-item">
-                        <span>Số ghế đã chọn:</span>
-                        <span id="selectedSeatsCount">0</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Tổng tiền:</span>
-                        <span id="seatTotalPrice">0 đ</span>
-                    </div>
-                    <div class="selected-seats-display" id="selectedSeatsDisplay">
-                        <!-- Selected seats will appear here -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-booking-form">
-                <div class="modal-form-group">
-                    <label>Loại vé:</label>
-                    <select id="modalTicketType" onchange="updateSeatPrice()">
-                        <option value="adult">Người lớn - 100.000đ</option>
-                        <option value="student">Học sinh/Sinh viên - 80.000đ</option>
-                        <option value="child">Trẻ em - 60.000đ</option>
-                    </select>
-                </div>
-
-                <div class="modal-form-group">
-                    <label>Số lượng vé:</label>
-                    <input type="number" id="modalQuantity" value="1" min="1" max="10"
-                           onchange="validateSeatSelection()" readonly>
-                </div>
-
-                <div class="modal-buttons">
-                    <button type="button" class="modal-btn modal-btn-primary" onclick="saveSeatSelection()">
-                        Xác nhận
-                    </button>
-                    <button type="button" class="modal-btn modal-btn-secondary" onclick="closeSeatModal()">
-                        Hủy
-                    </button>
-                </div>
-            </div>
-        </div>
+            </c:otherwise>
+        </c:choose>
     </div>
 
     <!-- Footer -->

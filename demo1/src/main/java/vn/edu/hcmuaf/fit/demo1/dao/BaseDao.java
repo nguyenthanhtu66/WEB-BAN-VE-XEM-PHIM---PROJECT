@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class BaseDao {
     private Jdbi jdbi;
 
-    protected Jdbi get(){
+    public Jdbi get(){
         if(jdbi==null) connect();
         return jdbi;
     }

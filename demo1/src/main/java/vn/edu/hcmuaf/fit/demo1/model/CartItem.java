@@ -1,110 +1,168 @@
 package vn.edu.hcmuaf.fit.demo1.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class CartItem implements Serializable {
-    private String id; // UUID cho mỗi item
     private int movieId;
     private String movieTitle;
-    private String posterUrl;
+    private String moviePoster;
     private int showtimeId;
-    private String showtime;
+    private LocalDate showDate;
+    private LocalTime showTime;
     private int roomId;
-    private String room;
-    private String ticketType;
-    private int quantity;
-    private String seats; // Danh sách ghế, format: "A01, A02, B03"
-    private double unitPrice;
-    private double total;
-    private String reservationId; // ID để giữ ghế tạm thời
+    private String roomName;
+    private int seatId;
+    private String seatCode;
+    private int ticketTypeId;
+    private String ticketTypeName;
+    private double price;
 
-    // Constructors
     public CartItem() {}
 
-    public CartItem(String id, int movieId, String movieTitle, String posterUrl,
-                    int showtimeId, String showtime, int roomId, String room,
-                    String ticketType, int quantity, String seats, double unitPrice) {
-        this.id = id;
+    public CartItem(int movieId, String movieTitle, String moviePoster,
+                    int showtimeId, LocalDate showDate, LocalTime showTime,
+                    int roomId, String roomName,
+                    int seatId, String seatCode,
+                    int ticketTypeId, String ticketTypeName, double price) {
         this.movieId = movieId;
         this.movieTitle = movieTitle;
-        this.posterUrl = posterUrl;
+        this.moviePoster = moviePoster;
         this.showtimeId = showtimeId;
-        this.showtime = showtime;
+        this.showDate = showDate;
+        this.showTime = showTime;
         this.roomId = roomId;
-        this.room = room;
-        this.ticketType = ticketType;
-        this.quantity = quantity;
-        this.seats = seats;
-        this.unitPrice = unitPrice;
-        this.total = unitPrice * quantity;
+        this.roomName = roomName;
+        this.seatId = seatId;
+        this.seatCode = seatCode;
+        this.ticketTypeId = ticketTypeId;
+        this.ticketTypeName = ticketTypeName;
+        this.price = price;
     }
 
     // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
-    public int getMovieId() { return movieId; }
-    public void setMovieId(int movieId) { this.movieId = movieId; }
-
-    public String getMovieTitle() { return movieTitle; }
-    public void setMovieTitle(String movieTitle) { this.movieTitle = movieTitle; }
-
-    public String getPosterUrl() { return posterUrl; }
-    public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
-
-    public int getShowtimeId() { return showtimeId; }
-    public void setShowtimeId(int showtimeId) { this.showtimeId = showtimeId; }
-
-    public String getShowtime() { return showtime; }
-    public void setShowtime(String showtime) { this.showtime = showtime; }
-
-    public int getRoomId() { return roomId; }
-    public void setRoomId(int roomId) { this.roomId = roomId; }
-
-    public String getRoom() { return room; }
-    public void setRoom(String room) { this.room = room; }
-
-    public String getTicketType() { return ticketType; }
-    public void setTicketType(String ticketType) { this.ticketType = ticketType; }
-
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-        this.total = this.unitPrice * quantity;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public String getSeats() { return seats; }
-    public void setSeats(String seats) { this.seats = seats; }
-
-    public double getUnitPrice() { return unitPrice; }
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
-        this.total = unitPrice * this.quantity;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
-    public double getTotal() { return total; }
+    public String getMovieTitle() {
+        return movieTitle;
+    }
 
-    public String getReservationId() { return reservationId; }
-    public void setReservationId(String reservationId) { this.reservationId = reservationId; }
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public String getMoviePoster() {
+        return moviePoster;
+    }
+
+    public void setMoviePoster(String moviePoster) {
+        this.moviePoster = moviePoster;
+    }
+
+    public int getShowtimeId() {
+        return showtimeId;
+    }
+
+    public void setShowtimeId(int showtimeId) {
+        this.showtimeId = showtimeId;
+    }
+
+    public LocalDate getShowDate() {
+        return showDate;
+    }
+
+    public void setShowDate(LocalDate showDate) {
+        this.showDate = showDate;
+    }
+
+    public LocalTime getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(LocalTime showTime) {
+        this.showTime = showTime;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public int getSeatId() {
+        return seatId;
+    }
+
+    public void setSeatId(int seatId) {
+        this.seatId = seatId;
+    }
+
+    public String getSeatCode() {
+        return seatCode;
+    }
+
+    public void setSeatCode(String seatCode) {
+        this.seatCode = seatCode;
+    }
+
+    public int getTicketTypeId() {
+        return ticketTypeId;
+    }
+
+    public void setTicketTypeId(int ticketTypeId) {
+        this.ticketTypeId = ticketTypeId;
+    }
+
+    public String getTicketTypeName() {
+        return ticketTypeName;
+    }
+
+    public void setTicketTypeName(String ticketTypeName) {
+        this.ticketTypeName = ticketTypeName;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     // Helper methods
-    public String getSeatsDisplay() {
-        if (seats == null || seats.isEmpty()) return "Chưa chọn ghế";
-        return seats;
+    public String getFormattedPrice() {
+        return String.format("%,.0f đ", price);
     }
 
-    public String getTicketTypeDisplay() {
-        switch(ticketType) {
-            case "adult": return "Người lớn";
-            case "student": return "Học sinh/Sinh viên";
-            case "child": return "Trẻ em";
-            case "u22": return "U22";
-            default: return ticketType;
-        }
+    public String getFormattedShowDateTime() {
+        return showDate + " " + showTime;
     }
 
-    public void updateQuantity(int newQuantity) {
-        this.quantity = Math.max(1, newQuantity);
-        this.total = this.unitPrice * this.quantity;
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "movieTitle='" + movieTitle + '\'' +
+                ", showDate=" + showDate +
+                ", showTime=" + showTime +
+                ", seatCode='" + seatCode + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
