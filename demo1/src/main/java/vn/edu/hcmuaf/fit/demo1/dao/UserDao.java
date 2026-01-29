@@ -6,7 +6,8 @@ import java.util.Optional;
 
 public class UserDao extends BaseDao {
 
-    public void insert(User user){
+    // Thêm user mới
+    public void insert(User user) {
         get().useHandle(handle ->
                 handle.createUpdate("""
             INSERT INTO users(
@@ -25,7 +26,8 @@ public class UserDao extends BaseDao {
         );
     }
 
-    public User findByEmail(String email){
+    // Tìm user bằng email
+    public User findByEmail(String email) {
         return get().withHandle(handle ->
                 handle.createQuery("SELECT * FROM users WHERE email = :email")
                         .bind("email", email)
@@ -35,8 +37,8 @@ public class UserDao extends BaseDao {
         );
     }
 
-    // ===== THÊM MỚI =====
-    public User findById(int id){
+    // Tìm user bằng ID
+    public User findById(int id) {
         return get().withHandle(handle ->
                 handle.createQuery("SELECT * FROM users WHERE id = :id")
                         .bind("id", id)
@@ -46,30 +48,73 @@ public class UserDao extends BaseDao {
         );
     }
 
-    public void updateProfile(int id,
-                              String fullName,
-                              String phone,
-                              String email,
-                              String gender,
-                              String birthDate) {
+    // Kiểm tra email đã tồn tại chưa
+    public boolean emailExists(String email) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT COUNT(*) FROM users WHERE email = :email")
+                        .bind("email", email)
+                        .mapTo(Integer.class)
+                        .one() > 0
+        );
+    }
 
+    // Cập nhật thông tin user
+    public void update(User user) {
         get().useHandle(handle ->
                 handle.createUpdate("""
-                    UPDATE users
-                    SET full_name  = :fullName,
-                        phone      = :phone,
-                        email      = :email,
-                        gender     = :gender,
-                        birth_date = :birthDate
-                    WHERE id = :id
-                """)
-                .bind("id", id)
-                .bind("fullName", fullName)
-                .bind("phone", phone)
-                .bind("email", email)
-                .bind("gender", gender)
-                .bind("birthDate", birthDate)
-                .execute()
+            UPDATE users SET
+              full_name = :fullName,
+              phone = :phone,
+              gender = :gender,
+              birth_date = :birthDate,
+              city = :city,
+              avatar_url = :avatarUrl,
+              role = :role,
+              is_active = :isActive,
+              updated_at = :updatedAt,
+              last_login = :lastLogin,
+              last_logout = :lastLogout
+            WHERE id = :id
+        """)
+                        .bindBean(user)
+                        .execute()
+        );
+    }
+
+    // Cập nhật mật khẩu
+    public void updatePassword(int userId, String hashedPassword) {
+        get().useHandle(handle ->
+                handle.createUpdate("UPDATE users SET password = :password WHERE id = :id")
+                        .bind("password", hashedPassword)
+                        .bind("id", userId)
+                        .execute()
+        );
+    }
+
+    // Cập nhật thời gian đăng nhập cuối
+    public void updateLastLogin(int userId) {
+        get().useHandle(handle ->
+                handle.createUpdate("UPDATE users SET last_login = NOW() WHERE id = :id")
+                        .bind("id", userId)
+                        .execute()
+        );
+    }
+
+    // Cập nhật thời gian đăng xuất cuối
+    public void updateLastLogout(int userId) {
+        get().useHandle(handle ->
+                handle.createUpdate("UPDATE users SET last_logout = NOW() WHERE id = :id")
+                        .bind("id", userId)
+                        .execute()
+        );
+    }
+
+    // Xóa user (soft delete - đánh dấu không active)
+    public void deactivateUser(int userId) {
+        get().useHandle(handle ->
+                handle.createUpdate("UPDATE users SET is_active = false WHERE id = :id")
+                        .bind("id", userId)
+                        .execute()
         );
     }
 

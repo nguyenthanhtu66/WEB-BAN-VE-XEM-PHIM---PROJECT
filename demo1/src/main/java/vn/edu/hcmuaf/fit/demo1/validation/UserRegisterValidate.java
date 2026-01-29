@@ -25,29 +25,26 @@ public class UserRegisterValidate {
         if(form.getPhone() == null || form.getPhone().trim().isEmpty()){
             errors.put("phone", "Vui lòng nhập số điện thoại, đây là thông tin bắt buộc");
         }
-        else if(!form.getPhone().matches("^(84|0[35789])[0-9]{8}$")){
-            errors.put("phone", "Số điện thoại không hợp lệ, vui lòng nhập lại");
-        }
         //Giới tính:
-        if(form.getGender() == null){
+        if(form.getGender() == null || form.getGender().trim().isEmpty()){
             errors.put("gender", "Vui lòng chọn giới tính");
         }
         //Ngày sinh:
-        if(form.getBirthDate() == null){
+        if(form.getBirthDate() == null || form.getBirthDate().trim().isEmpty()){
             errors.put("birthDate", "Vui lòng nhập ngày tháng năm sinh, đây là thông tin bắt buộc");
         }
         //Mật khẩu:
-        if(form.getPassword() == null){
+        if(form.getPassword() == null || form.getPassword().trim().isEmpty()){
             errors.put("password", "Vui lòng nhập mật khẩu, đây là thông tin bắt buộc");
         }
         else if(!form.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-])\\S{8,}$")){
             errors.put("password", "Mật khẩu không hợp lệ, mật khẩu phải dài hơn 8 ký tự, có ít nhất: 1 chữ số, 1 chữ thường, 1 chữ hoa, 1 ký tự đặc biệt và không có khoảng trắng");
         }
-        if(form.getConfirmPass() == null || form.getConfirmPass().trim().isEmpty()){
-            errors.put("confirmPass", "Vui lòng nhập mật khẩu xác nhận");
+        if(!form.getPassword().equals(form.getConfirmPass())){
+            errors.put("confirmPass", "Mật khẩu xác nhận không trùng khớp với mật khẩu, vui lòng nhập lại");
         }
-        else if(!form.getPassword().equals(form.getConfirmPass())){
-            errors.put("confirmPass", "Mật khẩu xác nhận không trùng khớp");
+        else if(form.getConfirmPass() == null || form.getConfirmPass().trim().isEmpty()){
+            errors.put("confirmPass", "Vui lòng nhập mật khẩu xác nhận giống ở trên");
         }
         //Tỉnh/Thành phố:
         if(form.getCity() == null || form.getCity().trim().isEmpty()){

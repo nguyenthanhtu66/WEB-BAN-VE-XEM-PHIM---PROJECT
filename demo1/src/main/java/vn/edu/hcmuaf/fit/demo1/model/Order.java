@@ -13,7 +13,7 @@ public class Order implements Serializable {
     private Integer promotionId;
     private double finalAmount;
     private String status; // pending, paid, cancelled, processing
-    private String paymentMethod;
+    private Integer paymentMethodId;
     private LocalDateTime bookingDate;
     private LocalDateTime paymentDate;
     private String notes;
@@ -22,18 +22,22 @@ public class Order implements Serializable {
     public Order() {}
 
     public Order(int id, String orderCode, int userId, int showtimeId,
-                 int totalQuantity, double totalAmount, double finalAmount,
-                 String status, String paymentMethod) {
+                 int totalQuantity, double totalAmount, Integer promotionId,
+                 double finalAmount, String status, Integer paymentMethodId,
+                 LocalDateTime bookingDate, LocalDateTime paymentDate, String notes) {
         this.id = id;
         this.orderCode = orderCode;
         this.userId = userId;
         this.showtimeId = showtimeId;
         this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;
+        this.promotionId = promotionId;
         this.finalAmount = finalAmount;
         this.status = status;
-        this.paymentMethod = paymentMethod;
-        this.bookingDate = LocalDateTime.now();
+        this.paymentMethodId = paymentMethodId;
+        this.bookingDate = bookingDate;
+        this.paymentDate = paymentDate;
+        this.notes = notes;
     }
 
     // Getters and Setters
@@ -109,12 +113,12 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public Integer getPaymentMethodId() {
+        return paymentMethodId;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setPaymentMethodId(Integer paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
     }
 
     public LocalDateTime getBookingDate() {
@@ -141,15 +145,6 @@ public class Order implements Serializable {
         this.notes = notes;
     }
 
-    // Helper methods
-    public String getFormattedTotalAmount() {
-        return String.format("%,.0f đ", totalAmount);
-    }
-
-    public String getFormattedFinalAmount() {
-        return String.format("%,.0f đ", finalAmount);
-    }
-
     @Override
     public String toString() {
         return "Order{" +
@@ -159,8 +154,13 @@ public class Order implements Serializable {
                 ", showtimeId=" + showtimeId +
                 ", totalQuantity=" + totalQuantity +
                 ", totalAmount=" + totalAmount +
+                ", promotionId=" + promotionId +
                 ", finalAmount=" + finalAmount +
                 ", status='" + status + '\'' +
+                ", paymentMethodId=" + paymentMethodId +
+                ", bookingDate=" + bookingDate +
+                ", paymentDate=" + paymentDate +
+                ", notes='" + notes + '\'' +
                 '}';
     }
 }

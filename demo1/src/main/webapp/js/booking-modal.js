@@ -242,6 +242,236 @@ function loadShowtimeId(movieId, roomId, showDate, showTime) {
             showError("Lỗi kết nối server");
         });
 }
+function processPayNow() {
+    console.log("💰 Processing Pay Now...");
+
+    // Kiểm tra dữ liệu cần thiết
+    if (!validateBookingData()) {
+        showError("Vui lòng hoàn tất tất cả các bước đặt vé trước khi thanh toán");
+        return;
+    }
+
+    // Lấy dữ liệu từ các biến global
+    const movieId = currentMovieId;
+    const showtimeId = currentShowtimeId;
+    const seatId = selectedSeatId;
+    const ticketTypeId = currentTicketTypeId;
+
+    console.log("📦 Pay Now Data:", {
+        movieId,
+        showtimeId,
+        seatId,
+        ticketTypeId
+    });
+
+    // Kiểm tra lại dữ liệu
+    if (!movieId || !showtimeId || !seatId || !ticketTypeId) {
+        showError("Thông tin đặt vé không đầy đủ");
+        return;
+    }
+
+    // Tạo form và chuyển đến trang thanh toán
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = window.contextPath + '/api/pay-now'; // Gọi API để lưu thông tin
+    form.style.display = 'none';
+
+    const addField = (name, value) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+    };
+
+    addField('movieId', movieId);
+    addField('showtimeId', showtimeId);
+    addField('seatId', seatId);
+    addField('ticketTypeId', ticketTypeId);
+
+    document.body.appendChild(form);
+    console.log("🚀 Submitting to payment page...");
+    form.submit();
+}
+function startSeatStatusPolling(showtimeId, seatId) {
+    if (!showtimeId || !seatId) return;
+
+    // Kiểm tra mỗi 5 giây
+    window.seatPollInterval = setInterval(() => {
+        checkSeatStatus(showtimeId, seatId);
+    }, 5000);
+}
+
+function checkSeatStatus(showtimeId, seatId) {
+    if (!showtimeId || !seatId || !selectedSeatId) return;
+
+    const url = window.contextPath + '/api/check-seat-status' +
+        '?showtimeId=' + showtimeId + '&seatId=' + seatId;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const isBooked = data.isBooked;
+                const seatStatus = data.seatStatus?.status;
+
+                console.log("🔄 Seat status update:", {
+                    seatId,
+                    isBooked,
+                    seatStatus,
+                    currentSelected: selectedSeatId
+                });
+
+                // Nếu ghế đã được book bởi người khác
+                if (isBooked && selectedSeatId === seatId) {
+                    console.log("⚠️ Seat has been booked by someone else!");
+
+                    // Dừng polling
+                    if (window.seatPollInterval) {
+                        clearInterval(window.seatPollInterval);
+                        window.seatPollInterval = null;
+                    }
+
+                    // Cập nhật UI
+                    if (selectedSeatElement) {
+                        selectedSeatElement.classList.remove('selected');
+                        selectedSeatElement.classList.add('booked');
+                        selectedSeatElement.disabled = true;
+                        selectedSeatElement.title = 'Ghế đã được đặt';
+                    }
+
+                    // Reset selection
+                    selectedSeatId = null;
+                    selectedSeatElement = null;
+                    document.getElementById('addToCartBtn').disabled = true;
+                    document.getElementById('payNowBtn').disabled = true;
+
+                    // Hiển thị thông báo
+                    showError("Ghế này đã được đặt bởi người khác. Vui lòng chọn ghế khác.");
+
+                    // Xóa thông tin ghế đã chọn
+                    removeSeatSelectionInfo();
+
+                    // Reload seat map để cập nhật trạng thái mới
+                    setTimeout(() => {
+                        if (currentRoomId && currentShowtimeId) {
+                            loadSeatMap(currentRoomId, currentShowtimeId);
+                        }
+                    }, 1000);
+                }
+
+                // Nếu ghế đang được reserve bởi người khác
+                if (seatStatus === 'reserved' && selectedSeatId === seatId) {
+                    const reservedUserId = data.seatStatus?.user_id;
+                    // Ở đây có thể thêm logic kiểm tra user_id nếu cần
+                    console.log("⚠️ Seat is reserved by user:", reservedUserId);
+                }
+            }
+        })
+        .catch(error => {
+            console.log("Seat status check error:", error);
+        });
+}
+// Hàm xóa thông tin ghế đã chọn
+function removeSeatSelectionInfo() {
+    const infoDiv = document.getElementById('seatSelectionInfo');
+    if (infoDiv && infoDiv.parentNode) {
+        infoDiv.parentNode.removeChild(infoDiv);
+    }
+}
+
+function payNow() {
+    console.log("💰 PAY NOW - Direct to payment");
+
+    // Validate
+    if (!validateBookingData()) {
+        showError("Vui lòng hoàn tất tất cả các bước đặt vé");
+        return;
+    }
+
+    // Show loading
+    const btn = document.getElementById('payNowBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
+    btn.disabled = true;
+
+    // Chuẩn bị dữ liệu
+    const formData = new URLSearchParams();
+    formData.append('movieId', currentMovieId.toString());
+    formData.append('showtimeId', currentShowtimeId.toString());
+    formData.append('seatId', selectedSeatId.toString());
+    formData.append('ticketTypeId', currentTicketTypeId.toString());
+
+    const url = window.contextPath + '/api/pay-now';
+    console.log("🌐 API URL:", url);
+    console.log("📦 Data:", formData.toString());
+
+    // Gọi API
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData.toString(),
+        credentials: 'include' // QUAN TRỌNG: Gửi session cookie
+    })
+        .then(response => {
+            console.log("📡 Response status:", response.status);
+            console.log("📡 Response headers:", response.headers);
+            console.log("📡 Response redirected:", response.redirected);
+
+            return response.json();
+        })
+        .then(data => {
+            console.log("📦 Pay now response:", data);
+
+            if (data.success) {
+                console.log("✅ Payment data saved, redirecting...");
+
+                // CÁCH 1: Chuyển hướng trực tiếp với tham số
+                const redirectUrl = window.contextPath + '/thanh-toan.jsp?' +
+                    'payNow=true' +
+                    '&movieId=' + currentMovieId +
+                    '&showtimeId=' + currentShowtimeId +
+                    '&seatId=' + selectedSeatId +
+                    '&ticketTypeId=' + currentTicketTypeId;
+
+                console.log("🔗 Redirect URL:", redirectUrl);
+                window.location.href = redirectUrl;
+
+            } else {
+                console.error("❌ Pay now failed:", data.message);
+
+                if (data.redirect) {
+                    // Nếu cần đăng nhập
+                    window.location.href = data.redirect;
+                } else {
+                    showError(data.message || 'Có lỗi xảy ra');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error in pay now:", error);
+
+            // CÁCH 2: Fallback - chuyển thẳng đến thanh toán với params
+            const fallbackUrl = window.contextPath + '/thanh-toan.jsp?' +
+                'payNow=true' +
+                '&movieId=' + currentMovieId +
+                '&showtimeId=' + currentShowtimeId +
+                '&seatId=' + selectedSeatId +
+                '&ticketTypeId=' + currentTicketTypeId;
+
+            console.log("🔄 Fallback to direct redirect:", fallbackUrl);
+            window.location.href = fallbackUrl;
+        });
+}
+
 function loadSeatMap(roomId, showtimeId) {
     console.log("💺 Loading seat map for room:", roomId, "showtime:", showtimeId);
     currentShowtimeId = parseInt(showtimeId);
@@ -340,36 +570,68 @@ function renderSeatMap(seats, rows) {
         seatMap.appendChild(rowDiv);
     });
 }
+function refreshSeatStatus(showtimeId, seatId) {
+    const url = window.contextPath + '/api/refresh-seat-status' +
+        '?showtimeId=' + showtimeId + '&seatId=' + seatId;
 
-// Update seat appearance based on status
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.isBooked) {
+                // Tìm seat element và cập nhật
+                const seatElement = document.querySelector(`[data-seat-id="${seatId}"]`);
+                if (seatElement) {
+                    seatElement.classList.remove('available', 'selected', 'reserved');
+                    seatElement.classList.add('booked');
+                    seatElement.disabled = true;
+                    seatElement.title = 'Ghế đã được đặt';
+                }
+            }
+        });
+}
+
+// Hàm cập nhật updateSeatAppearance
 function updateSeatAppearance(seatElement, status) {
-    seatElement.className = 'seat ' + status;
+    // Xóa tất cả class cũ
+    seatElement.className = 'seat';
 
+    // Thêm class mới
+    seatElement.classList.add(status);
+
+    // Cập nhật title và disabled state
     switch(status) {
         case 'available':
             seatElement.title = 'Ghế trống - Click để chọn';
             seatElement.disabled = false;
+            seatElement.style.cursor = 'pointer';
             break;
         case 'selected':
             seatElement.title = 'Ghế đang được chọn';
             seatElement.disabled = false;
+            seatElement.style.cursor = 'pointer';
             break;
         case 'my_reserved':
             seatElement.title = 'Bạn đang giữ ghế này (trong giỏ hàng)';
             seatElement.disabled = true;
+            seatElement.style.cursor = 'not-allowed';
             break;
         case 'reserved':
             seatElement.title = 'Ghế đang được giữ bởi người khác';
             seatElement.disabled = true;
+            seatElement.style.cursor = 'not-allowed';
             break;
         case 'booked':
             seatElement.title = 'Ghế đã được đặt';
             seatElement.disabled = true;
+            seatElement.style.cursor = 'not-allowed';
             break;
         default:
             seatElement.title = 'Ghế không khả dụng';
             seatElement.disabled = true;
+            seatElement.style.cursor = 'not-allowed';
     }
+
+    console.log("🎨 Updated seat appearance:", seatElement.dataset.seatCode, "->", status);
 }
 
 // Handle seat selection
@@ -377,56 +639,150 @@ function updateSeatAppearance(seatElement, status) {
 function handleSeatSelection(seatElement, seatId, currentStatus) {
     console.log("🎯 Seat selected:", seatId, "Status:", currentStatus);
 
-    // Nếu ghế đã là "my_reserved" (đã trong cart của user này) thì không cho chọn lại
-    if (currentStatus === 'my_reserved') {
-        console.log("ℹ️ Seat already in your cart");
+    // 1. Kiểm tra trạng thái ghế
+    if (currentStatus === 'booked') {
+        console.log("❌ Seat already booked");
+        showError("Ghế này đã được đặt. Vui lòng chọn ghế khác.");
         return;
     }
 
-    // Nếu đang chọn lại ghế đã chọn, bỏ chọn
+    if (currentStatus === 'reserved') {
+        // Kiểm tra xem có phải là ghế của người khác đang giữ không
+        console.log("⚠️ Seat is reserved by someone else");
+        showError("Ghế này đang được giữ bởi người khác. Vui lòng chọn ghế khác.");
+        return;
+    }
+
+    // 2. Nếu ghế đã là "my_reserved" (đã trong cart của user này) thì không cho chọn lại
+    if (currentStatus === 'my_reserved') {
+        console.log("ℹ️ Seat already in your cart");
+        showError("Ghế này đã có trong giỏ hàng của bạn.");
+        return;
+    }
+
+    // 3. Nếu đang chọn lại ghế đã chọn, bỏ chọn
     if (selectedSeatId === seatId) {
         console.log("🔄 Deselecting seat");
+
+        // Cập nhật trạng thái UI
         updateSeatAppearance(seatElement, 'available');
+
+        // Reset biến global
         selectedSeatId = null;
         selectedSeatElement = null;
-        document.getElementById('addToCartBtn').disabled = true;
 
-        // Release seat từ database
-        if (currentShowtimeId) {
+        // Disable nút thanh toán
+        document.getElementById('addToCartBtn').disabled = true;
+        document.getElementById('payNowBtn').disabled = true;
+
+        // Dừng polling nếu đang chạy
+        if (window.seatPollInterval) {
+            clearInterval(window.seatPollInterval);
+            window.seatPollInterval = null;
+            console.log("⏹️ Stopped seat polling");
+        }
+
+        // Release seat từ database (chỉ release nếu đang reserved)
+        if (currentShowtimeId && currentStatus === 'selected') {
             releaseSeat(currentShowtimeId, seatId);
         }
         return;
     }
 
-    // Bỏ chọn ghế cũ nếu có
+    // 4. Kiểm tra xem đã chọn đủ các bước chưa
+    if (!currentShowtimeId || !currentTicketTypeId) {
+        console.log("❌ Missing required information");
+        showError("Vui lòng hoàn tất chọn phòng, ngày, giờ và loại vé trước khi chọn ghế.");
+        return;
+    }
+
+    // 5. Bỏ chọn ghế cũ nếu có
     if (selectedSeatElement) {
         console.log("🔄 Clearing previous selection");
+
+        // Cập nhật UI cho ghế cũ
         updateSeatAppearance(selectedSeatElement, 'available');
 
         // Release ghế cũ từ database
         if (currentShowtimeId && selectedSeatId) {
             releaseSeat(currentShowtimeId, selectedSeatId);
         }
+
+        // Dừng polling cho ghế cũ
+        if (window.seatPollInterval) {
+            clearInterval(window.seatPollInterval);
+            window.seatPollInterval = null;
+        }
     }
 
-    // Chọn ghế mới
+    // 6. Chọn ghế mới
     console.log("✅ Selecting new seat:", seatId);
+
+    // Cập nhật UI
     updateSeatAppearance(seatElement, 'selected');
+
+    // Lưu thông tin ghế đang chọn
     selectedSeatId = seatId;
     selectedSeatElement = seatElement;
 
-    // Enable nút thêm vào giỏ
+    // Enable nút thanh toán
     document.getElementById('addToCartBtn').disabled = false;
+    document.getElementById('payNowBtn').disabled = false;
 
-    // Reserve seat trong database (tạm giữ)
+    // 7. Reserve seat trong database (tạm giữ)
     if (currentShowtimeId) {
         reserveSeat(currentShowtimeId, seatId);
-    }
-}
 
+        // Bắt đầu polling kiểm tra trạng thái ghế
+        startSeatStatusPolling(currentShowtimeId, seatId);
+    }
+
+    // 8. Hiển thị thông tin ghế đã chọn
+    showSeatSelectionInfo(seatElement.dataset.seatCode);
+}
+// Hàm hiển thị thông tin ghế đã chọn
+function showSeatSelectionInfo(seatCode) {
+    // Tạo hoặc cập nhật thông báo
+    let infoDiv = document.getElementById('seatSelectionInfo');
+
+    if (!infoDiv) {
+        infoDiv = document.createElement('div');
+        infoDiv.id = 'seatSelectionInfo';
+        infoDiv.className = 'seat-info-display';
+        infoDiv.style.cssText = `
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid #2ecc71;
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
+        `;
+
+        // Thêm vào trước seat map
+        const seatMap = document.getElementById('seatMap');
+        if (seatMap && seatMap.parentNode) {
+            seatMap.parentNode.insertBefore(infoDiv, seatMap);
+        }
+    }
+
+    // Cập nhật nội dung
+    infoDiv.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>Đã chọn ghế: ${seatCode}</strong>
+            <p style="font-size: 12px; margin-top: 5px; color: #95a5a6;">
+                Ghế sẽ được giữ trong 15 phút. Vui lòng hoàn tất thanh toán.
+            </p>
+        </div>
+    `;
+}
 // ========== SEAT RESERVATION FUNCTIONS ==========
 
-// Reserve seat
+// Hàm reserve seat - Cập nhật để xử lý tốt hơn
 function reserveSeat(showtimeId, seatId) {
     console.log("🔒 Reserving seat:", { showtimeId, seatId });
 
@@ -443,27 +799,43 @@ function reserveSeat(showtimeId, seatId) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: formData.toString()
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
         .then(data => {
             console.log("📦 Reserve response:", data);
-            if (!data.success) {
+            if (data.success) {
+                console.log("✅ Seat reserved successfully");
+                // Cập nhật lại seat map để hiển thị trạng thái mới
+                setTimeout(() => {
+                    if (currentRoomId && currentShowtimeId) {
+                        loadSeatMap(currentRoomId, currentShowtimeId);
+                    }
+                }, 500);
+            } else {
                 console.error("❌ Failed to reserve seat:", data.message);
                 // Reset selection nếu thất bại
-                if (selectedSeatElement) {
+                if (selectedSeatElement && selectedSeatId === seatId) {
                     updateSeatAppearance(selectedSeatElement, 'available');
                     selectedSeatId = null;
                     selectedSeatElement = null;
                     document.getElementById('addToCartBtn').disabled = true;
+                    document.getElementById('payNowBtn').disabled = true;
+                    showError("Không thể giữ ghế: " + data.message);
                 }
-                showError("Không thể giữ ghế: " + data.message);
             }
         })
         .catch(error => {
             console.error("❌ Error reserving seat:", error);
+            if (selectedSeatElement && selectedSeatId === seatId) {
+                showError("Lỗi kết nối khi giữ ghế. Vui lòng thử lại.");
+            }
         });
 }
 
-// Release seat
+
+// Hàm release seat - Cập nhật để xử lý tốt hơn
 function releaseSeat(showtimeId, seatId) {
     console.log("🔓 Releasing seat:", { showtimeId, seatId });
 
@@ -479,14 +851,38 @@ function releaseSeat(showtimeId, seatId) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: formData.toString()
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
         .then(data => {
             console.log("📦 Release response:", data);
+            if (data.success) {
+                console.log("✅ Seat released successfully");
+            }
         })
         .catch(error => {
             console.error("❌ Error releasing seat:", error);
         });
 }
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .seat.selected {
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+`;
+document.head.appendChild(style);
 
 // ========== ADD TO CART ==========
 
@@ -642,6 +1038,93 @@ function resetTimeSelection() {
 
     resetTicketTypeSelection();
 }
+function refreshSeatStatusAfterPayment(showtimeId, seatId) {
+    console.log("🔄 Refreshing seat status after payment:", { showtimeId, seatId });
+
+    // Nếu modal đang mở và là seat vừa thanh toán
+    if (currentShowtimeId === showtimeId) {
+        // Tìm seat element và cập nhật thành "booked"
+        const seatElement = document.querySelector(`[data-seat-id="${seatId}"]`);
+        if (seatElement) {
+            seatElement.classList.remove('available', 'selected', 'reserved', 'my_reserved');
+            seatElement.classList.add('booked');
+            seatElement.disabled = true;
+            seatElement.title = 'Ghế đã được đặt';
+            seatElement.style.cursor = 'not-allowed';
+
+            // Remove click event
+            seatElement.replaceWith(seatElement.cloneNode(true));
+
+            console.log("✅ Seat marked as booked in modal");
+        }
+
+        // Load lại seat map để cập nhật tất cả trạng thái
+        setTimeout(() => {
+            loadSeatMap(currentRoomId, currentShowtimeId);
+        }, 1000);
+    }
+}
+
+// Auto-refresh seat map mỗi 30 giây
+function startSeatAutoRefresh() {
+    if (currentShowtimeId && currentRoomId) {
+        setInterval(() => {
+            loadSeatMap(currentRoomId, currentShowtimeId);
+            console.log("🔄 Auto-refreshed seat map");
+        }, 30000); // 30 giây
+    }
+}
+function startSeatStatusPolling(showtimeId, seatId) {
+    if (!showtimeId || !seatId) return;
+
+    console.log("🔍 Starting seat status polling for:", { showtimeId, seatId });
+
+    // Dừng polling cũ nếu có
+    if (window.seatPollInterval) {
+        clearInterval(window.seatPollInterval);
+    }
+
+    // Kiểm tra mỗi 3 giây
+    window.seatPollInterval = setInterval(() => {
+        checkSeatStatus(showtimeId, seatId);
+    }, 3000);
+
+    // Kiểm tra ngay lập tức lần đầu
+    setTimeout(() => {
+        checkSeatStatus(showtimeId, seatId);
+    }, 500);
+}
+function refreshSeatStatusForShowtime(showtimeId) {
+    if (!showtimeId || !currentRoomId) return;
+
+    console.log("🔄 Refreshing seat status for showtime: " + showtimeId);
+
+    // Load lại seat map
+    loadSeatMap(currentRoomId, showtimeId);
+}
+function refreshSpecificSeat(showtimeId, seatId) {
+    const url = window.contextPath + '/api/refresh-seat-status' +
+        '?showtimeId=' + showtimeId + '&seatId=' + seatId;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.isBooked) {
+                // Tìm seat element và cập nhật
+                const seatElement = document.querySelector(`[data-seat-id="${seatId}"]`);
+                if (seatElement) {
+                    seatElement.classList.remove('available', 'selected', 'reserved', 'my_reserved');
+                    seatElement.classList.add('booked');
+                    seatElement.title = 'Ghế đã được đặt';
+                    seatElement.disabled = true;
+
+                    console.log("✅ Seat " + seatId + " updated to BOOKED in UI");
+                }
+            }
+        })
+        .catch(error => console.log("Refresh error:", error));
+}
+
 
 // Reset ticket type selection
 function resetTicketTypeSelection() {
