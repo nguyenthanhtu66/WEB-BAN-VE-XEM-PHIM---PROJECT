@@ -593,6 +593,83 @@ public class MovieDao extends BaseDao {
         );
     }
 
+    // Thêm phương thức filter theo thời lượng (nếu muốn dùng SQL)
+    public List<Movie> getMoviesByDurationAndStatus(String durationFilter, String dbStatus) {
+        StringBuilder sql = new StringBuilder("""
+            SELECT 
+                id,           
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country,
+                cast
+            FROM movies 
+            WHERE status = :status
+            """);
+
+        // Thêm điều kiện duration
+        if (durationFilter != null && !durationFilter.trim().isEmpty()) {
+            switch (durationFilter.toLowerCase()) {
+                case "short":
+                    sql.append(" AND duration < 90");
+                    break;
+                case "medium":
+                    sql.append(" AND duration BETWEEN 90 AND 120");
+                    break;
+                case "long":
+                    sql.append(" AND duration BETWEEN 120 AND 150");
+                    break;
+                case "very_long":
+                    sql.append(" AND duration > 150");
+                    break;
+            }
+        }
+
+        sql.append(" ORDER BY release_date DESC, id DESC");
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql.toString())
+                        .bind("status", dbStatus)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+    // Thêm phương thức filter theo độ tuổi (nếu muốn dùng SQL)
+    public List<Movie> getMoviesByAgeRatingAndStatus(String ageRating, String dbStatus) {
+        String sql = """
+            SELECT 
+                id,           
+                title, 
+                poster_url, 
+                genre, 
+                duration, 
+                rating, 
+                status, 
+                age_rating,
+                director,
+                country,
+                cast
+            FROM movies 
+            WHERE status = :status
+              AND age_rating = :ageRating
+            ORDER BY release_date DESC, id DESC
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("status", dbStatus)
+                        .bind("ageRating", ageRating)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
 
 
     @Override
