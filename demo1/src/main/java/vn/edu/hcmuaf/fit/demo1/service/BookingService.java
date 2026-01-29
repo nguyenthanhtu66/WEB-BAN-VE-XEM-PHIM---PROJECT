@@ -222,10 +222,6 @@ public class BookingService {
         return bookedSeatDao.releaseUserSeats(showtimeId, userId);
     }
 
-    public boolean releaseSessionSeats(int showtimeId, String sessionId) {
-        return bookedSeatDao.releaseSessionSeats(showtimeId, sessionId);
-    }
-
     public int getAvailableSeatsCount(int showtimeId, int roomId) {
         return bookedSeatDao.getAvailableSeatsCount(showtimeId, roomId);
     }

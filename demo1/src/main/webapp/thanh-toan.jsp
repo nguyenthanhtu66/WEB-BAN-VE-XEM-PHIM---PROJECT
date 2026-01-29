@@ -1,16 +1,51 @@
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %><%-- File: webapp/thanh-toan.jsp --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
-    if (request.getAttribute("fromServlet") == null) {
-        String redirectURL = request.getContextPath() + "/home";
-        String queryString = request.getQueryString();
-        if (queryString != null && !queryString.isEmpty()) {
-            redirectURL += "?" + queryString;
-        }
+    // Kiểm tra đăng nhập
+    if (session.getAttribute("loggedUser") == null && session.getAttribute("user") == null) {
+        String redirectURL = request.getContextPath() + "/login.jsp?redirect=" +
+                request.getRequestURI() +
+                (request.getQueryString() != null ? "?" + request.getQueryString() : "");
         response.sendRedirect(redirectURL);
         return;
+    }
+
+    // Kiểm tra nếu không có dữ liệu thanh toán
+    if (request.getAttribute("paymentData") == null &&
+            !"true".equals(request.getParameter("fromCart")) &&
+            !"true".equals(request.getParameter("payNow"))) {
+        response.sendRedirect(request.getContextPath() + "/cart");
+        return;
+    }
+    // Nếu là payNow từ modal và không có paymentData trong session
+    // Thì thử tạo từ URL parameters
+    if ("true".equals(request.getParameter("payNow"))) {
+        Map<String, Object> paymentData = (Map<String, Object>) session.getAttribute("paymentData");
+
+        if (paymentData == null) {
+            String movieId = request.getParameter("movieId");
+            String showtimeId = request.getParameter("showtimeId");
+            String seatId = request.getParameter("seatId");
+            String ticketTypeId = request.getParameter("ticketTypeId");
+
+            if (movieId != null && showtimeId != null && seatId != null && ticketTypeId != null) {
+                // Tạo paymentData từ parameters và lưu vào session
+                paymentData = new HashMap<>();
+                paymentData.put("movieId", Integer.parseInt(movieId));
+                paymentData.put("showtimeId", Integer.parseInt(showtimeId));
+                paymentData.put("seatId", Integer.parseInt(seatId));
+                paymentData.put("ticketTypeId", Integer.parseInt(ticketTypeId));
+
+                // Các thông tin khác sẽ được load bởi controller
+                session.setAttribute("paymentData", paymentData);
+
+                System.out.println("✅ Created paymentData from URL parameters");
+            }
+        }
     }
 %>
 
@@ -19,13 +54,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DTN Ticket Movie Seller</title>
+    <title>Thanh Toán - DTN Ticket Movie Seller</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="${pageContext.request.contextPath}/js/booking-modal.js" defer></script>
-    <meta name="context-path" content="${pageContext.request.contextPath}">
     <style>
-        /* ========== FIX CHO MOVIE CARD ========== */
         .movie-poster-container {
             height: 400px;
             position: relative;
@@ -688,6 +720,342 @@
             background-color: rgba(255, 102, 0, 0.1);
             color: #ff6600;
         }
+        /* Payment specific styles */
+        .payment-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .payment-header h1 {
+            color: #fff;
+            font-size: 36px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .payment-header h1 i {
+            color: #2ecc71;
+        }
+
+        .payment-header p {
+            color: #bdc3c7;
+            font-size: 16px;
+        }
+
+        /* Payment steps */
+        .payment-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            position: relative;
+        }
+
+        .step.active .step-icon {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .step.completed .step-icon {
+            background: #3498db;
+        }
+
+        .step-text {
+            color: #bdc3c7;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .step.active .step-text {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .step-line {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            flex: 1;
+            margin-top: 30px;
+        }
+
+        /* Order summary */
+        .order-summary {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .summary-header {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-header i {
+            color: #ff6600;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-label {
+            color: #bdc3c7;
+            font-size: 16px;
+        }
+
+        .item-value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .item-value.total {
+            color: #2ecc71;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Payment methods */
+        .payment-methods {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .methods-header {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .methods-header i {
+            color: #3498db;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .method-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .method-card:hover {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .method-card.selected {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .method-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .method-name {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Payment form */
+        .payment-form {
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #2d4059;
+            border-radius: 8px;
+            background: #16213e;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.2);
+        }
+
+        /* Action buttons */
+        .payment-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn-back {
+            background: #2d4059;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-back:hover {
+            background: #3d5169;
+            transform: translateY(-3px);
+        }
+
+        .btn-pay {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 2;
+            justify-content: center;
+        }
+
+        .btn-pay:hover:not(:disabled) {
+            background: linear-gradient(135deg, #219653 0%, #27ae60 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-pay:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* Error message */
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Success message */
+        .success-message {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid #2ecc71;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .payment-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+
+            .step-line {
+                display: none;
+            }
+
+            .methods-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-actions {
+                flex-direction: column;
+            }
+
+            .btn-back, .btn-pay {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -696,12 +1064,10 @@
     <div class="header-label">
         <div class="header-container">
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-container">
-                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
-                       value="${searchKeyword != null ? searchKeyword : ''}">
+                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
                 <button type="submit" style="display:none;">Search</button>
             </form>
             <div class="header-account">
-                <!-- Các liên kết chung -->
                 <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">
                     <i class="fas fa-ticket-alt"></i> Kho vé
                 </a>
@@ -715,20 +1081,20 @@
                     </c:if>
                 </a>
 
-                <!-- Phần hiển thị trạng thái đăng nhập -->
+                <!-- User dropdown -->
                 <c:choose>
                     <c:when test="${not empty sessionScope.loggedUser}">
                         <div class="user-dropdown">
-                            <span class="header-item user-profile" id="userProfileBtn">
+                            <span class="header-item user-profile">
                                 <i class="fas fa-user-circle"></i>
                                 ${sessionScope.loggedUser.fullName}
                                 <i class="fas fa-chevron-down"></i>
                             </span>
-                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                            <div class="user-dropdown-menu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
-                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
+                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
                                     <i class="fas fa-receipt"></i> Lịch sử đặt vé
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -740,12 +1106,12 @@
                     </c:when>
                     <c:when test="${not empty sessionScope.user}">
                         <div class="user-dropdown">
-                            <span class="header-item user-profile" id="userProfileBtn">
+                            <span class="header-item user-profile">
                                 <i class="fas fa-user-circle"></i>
                                 ${sessionScope.user.fullName}
                                 <i class="fas fa-chevron-down"></i>
                             </span>
-                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                            <div class="user-dropdown-menu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
@@ -762,16 +1128,6 @@
                             </div>
                         </div>
                     </c:when>
-                    <c:otherwise>
-                        <div class="auth-buttons">
-                            <a href="${pageContext.request.contextPath}/Register.jsp" class="header-item register-btn">
-                                <i class="fas fa-user-plus"></i> Đăng ký
-                            </a>
-                            <a href="${pageContext.request.contextPath}/login.jsp" class="header-item login-btn">
-                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
-                            </a>
-                        </div>
-                    </c:otherwise>
                 </c:choose>
             </div>
         </div>
@@ -785,8 +1141,7 @@
             </a>
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="${pageContext.request.contextPath}/home"
-                       style="color: #ff6600;" class="menu-item">
+                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
                         <i class="fas fa-home"></i> TRANG CHỦ
                     </a>
                 </div>
@@ -814,13 +1169,13 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.jsp">
+                    <a class="menu-item" href="Gia-Ve.html">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.jsp">
+                    <a class="menu-item" href="Gioi-Thieu.html">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
@@ -834,336 +1189,205 @@
     </div>
 
     <!-- Main Container -->
-    <div class="main-container" id="main-container">
-        <!-- Slideshow -->
-        <div class="slideshow-container">
-            <div class="slider-container" id="mySlider">
-                <div class="slider-track">
-                    <div class="slide">
-                        <img src="${pageContext.request.contextPath}/img/anh-slideshow-1.jpg" alt="Slide 1">
+    <div class="main-container">
+        <div class="payment-container">
+            <!-- Payment Steps -->
+            <div class="payment-steps">
+                <div class="step completed">
+                    <div class="step-icon">
+                        <i class="fas fa-shopping-cart"></i>
                     </div>
+                    <div class="step-text">Giỏ hàng</div>
+                </div>
+
+                <div class="step-line"></div>
+
+                <div class="step active">
+                    <div class="step-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="step-text">Thanh toán</div>
+                </div>
+
+                <div class="step-line"></div>
+
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="step-text">Hoàn tất</div>
                 </div>
             </div>
-            <button class="slider-btn prev" id="prevBtn">❮</button>
-            <button class="slider-btn next" id="nextBtn">❯</button>
-            <div class="slider-dots" id="sliderDots"></div>
-        </div>
 
-        <!-- Search Results Message -->
-        <c:if test="${not empty searchKeyword}">
-            <div class="message info">
-                <h3><i class="fas fa-search"></i> Kết quả tìm kiếm cho: "${searchKeyword}"</h3>
-                <p>Tìm thấy ${movies != null ? movies.size() : 0} phim</p>
+            <!-- Payment Header -->
+            <div class="payment-header">
+                <h1><i class="fas fa-credit-card"></i> THANH TOÁN</h1>
+                <p>Vui lòng kiểm tra thông tin đơn hàng và chọn phương thức thanh toán</p>
             </div>
-        </c:if>
 
-        <!-- Movie Selection Tabs -->
-        <div class="movie-selection">
-            <c:set var="currentStatus" value="${empty currentStatus ? 'dang_chieu' : currentStatus}" />
-            <c:set var="statusParam" value="${empty statusParam ? 'Dang+chieu' : statusParam}" />
-
-            <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
-               class="movie-status ${currentStatus == 'dang_chieu' ? 'active' : ''}">
-                <i class="fas fa-play-circle"></i> PHIM ĐANG CHIẾU
-            </a>
-            <a href="${pageContext.request.contextPath}/home?status=Sap+chieu"
-               class="movie-status ${currentStatus == 'sap_chieu' ? 'active' : ''}">
-                <i class="fas fa-clock"></i> PHIM SẮP CHIẾU
-            </a>
-        </div>
-
-        <!-- Movies List -->
-        <c:choose>
-            <c:when test="${empty movies || movies.size() == 0}">
-                <div class="no-movies">
-                    <div class="message info">
-                        <p style="font-size: 18px; margin-bottom: 20px;">
-                            <c:choose>
-                                <c:when test="${not empty searchKeyword}">
-                                    <i class="fas fa-search"></i> Không tìm thấy phim nào cho từ khóa: "${searchKeyword}"
-                                </c:when>
-                                <c:when test="${currentStatus == 'sap_chieu'}">
-                                    <i class="fas fa-clock"></i> Hiện chưa có phim sắp chiếu nào.
-                                </c:when>
-                                <c:otherwise>
-                                    <i class="fas fa-film"></i> Hiện chưa có phim đang chiếu nào.
-                                </c:otherwise>
-                            </c:choose>
-                        </p>
-                        <a href="${pageContext.request.contextPath}/home" class="see-more-btn" style="display: inline-block;">
-                            <i class="fas fa-arrow-left"></i> Xem tất cả phim
-                        </a>
-                    </div>
+            <!-- Error/Success Messages -->
+            <c:if test="${not empty errorMessage}">
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                        ${errorMessage}
                 </div>
-            </c:when>
-            <c:otherwise>
-                <div class="movie-selection-content">
-                    <c:forEach var="movie" items="${movies}">
-                        <div class="movie-card" data-movie-id="${movie.id}">
-                            <div class="movie-poster-container">
-                                <img src="${movie.posterUrl}"
-                                     alt="${movie.title}"
-                                     onerror="this.style.display='none'; this.onerror=null;">
-                                <div class="movie-overlay">
-                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.id}"
-                                       class="movie-btn btn-detail">
-                                        <i class="fas fa-info-circle"></i> Chi Tiết
-                                    </a>
-                                    <button class="movie-btn btn-booking"
-                                            onclick="openBookingModal('${movie.title}', ${movie.id})">
-                                        <i class="fas fa-ticket-alt"></i> Đặt Vé
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="movie-info">
-                                <h3>${movie.title}</h3>
-                                <p class="movie-genre"><i class="fas fa-tags"></i> ${movie.genre}</p>
-                                <p class="movie-duration"><i class="fas fa-clock"></i> ${movie.formattedDuration}</p>
-                                <p class="movie-rating"><i class="fas fa-star"></i>
-                                    <c:choose>
-                                        <c:when test="${movie.rating > 0}">
-                                            ${movie.rating}/10
-                                        </c:when>
-                                        <c:otherwise>
-                                            Chưa có đánh giá
-                                        </c:otherwise>
-                                    </c:choose>
-                                </p>
-                                <p class="movie-status-badge">
-                                    <c:choose>
-                                        <c:when test="${movie.status == 'showing'}">
-                                            <span style="color: #2ecc71;"><i class="fas fa-play-circle"></i> Đang chiếu</span>
-                                        </c:when>
-                                        <c:when test="${movie.status == 'upcoming'}">
-                                            <span style="color: #f39c12;"><i class="fas fa-clock"></i> Sắp chiếu</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span style="color: #95a5a6;"><i class="fas fa-stop-circle"></i> ${movie.status}</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </p>
-                            </div>
+            </c:if>
+
+            <c:if test="${not empty successMessage}">
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                        ${successMessage}
+                </div>
+            </c:if>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3 class="summary-header"><i class="fas fa-receipt"></i> THÔNG TIN ĐƠN HÀNG</h3>
+
+                <c:choose>
+                    <c:when test="${not empty sessionScope.paymentData}">
+                        <!-- Single item payment (from modal) -->
+                        <div class="summary-item">
+                            <span class="item-label">Phim:</span>
+                            <span class="item-value">${sessionScope.paymentData.movieTitle}</span>
                         </div>
-                    </c:forEach>
-                </div>
-                <c:if test="${movies.size() >= 8}">
-                    <div class="see-more-container">
-                        <a href="${pageContext.request.contextPath}/list-product?status=${currentStatus == 'sap_chieu' ? 'Sap+chieu' : 'Dang+chieu'}"
-                           class="see-more-btn" role="button">
-                            <i class="fas fa-arrow-right"></i> Xem thêm
-                        </a>
+                        <div class="summary-item">
+                            <span class="item-label">Ghế:</span>
+                            <span class="item-value">${sessionScope.paymentData.seatCode}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Ngày giờ:</span>
+                            <span class="item-value">${sessionScope.paymentData.showDate} ${sessionScope.paymentData.showTime}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Phòng:</span>
+                            <span class="item-value">${sessionScope.paymentData.roomName}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Loại vé:</span>
+                            <span class="item-value">${sessionScope.paymentData.ticketTypeName}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Giá vé:</span>
+                            <span class="item-value">
+                    <fmt:formatNumber value="${sessionScope.paymentData.price}" type="currency"
+                                      currencySymbol="đ" maxFractionDigits="0"/>
+                </span>
+                        </div>
+                    </c:when>
+                    <c:when test="${not empty cart and cart.totalItems > 0}">
+                        <!-- Multiple items from cart -->
+                        <c:forEach var="item" items="${cart.items}" varStatus="status">
+                            <div class="summary-item">
+                                <span class="item-label">Vé ${status.index + 1}:</span>
+                                <span class="item-value">${item.movieTitle} - ${item.seatCode}</span>
+                            </div>
+                        </c:forEach>
+                        <div class="summary-item">
+                            <span class="item-label">Tổng số vé:</span>
+                            <span class="item-value">${cart.totalItems}</span>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- No payment data -->
+                        <div class="summary-item">
+                            <span class="item-label">Trạng thái:</span>
+                            <span class="item-value" style="color: #e74c3c;">Không có thông tin thanh toán</span>
+                        </div>
+                        <div class="summary-item">
+                            <a href="${pageContext.request.contextPath}/home" class="btn-back" style="display: block; text-align: center; margin-top: 20px;">
+                                <i class="fas fa-arrow-left"></i> QUAY LẠI TRANG CHỦ
+                            </a>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
+                <c:if test="${not empty sessionScope.paymentData or (not empty cart and cart.totalItems > 0)}">
+                    <div class="summary-item">
+                        <span class="item-label">Tổng tiền:</span>
+                        <span class="item-value total">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.paymentData}">
+                        <fmt:formatNumber value="${sessionScope.paymentData.price}" type="currency"
+                                          currencySymbol="đ" maxFractionDigits="0"/>
+                    </c:when>
+                    <c:when test="${not empty cart}">
+                        <fmt:formatNumber value="${cart.totalAmount}" type="currency"
+                                          currencySymbol="đ" maxFractionDigits="0"/>
+                    </c:when>
+                </c:choose>
+            </span>
                     </div>
                 </c:if>
-            </c:otherwise>
-        </c:choose>
-
-        <!-- News Section -->
-        <div class="news-selection-content">
-            <div class="container">
-                <div class="sec-heading">
-                    <h2 class="heading"><i class="fas fa-newspaper"></i> TIN TỨC</h2>
-                </div>
-                <div class="news-grid">
-                    <a href="Tin-tuc-chi-tiet-1.html" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://i.imgur.com/MCHyJQX.jpeg" alt="Quái Thú Vô Hình">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-type">Bình luận phim</p>
-                                <h3 class="news-title">Review Quái Thú Vô Hình: Vùng Đất Chết Chóc</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://i.imgur.com/HqIIkCx.jpeg" alt="Top 5 phim">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-type">Tin điện ảnh</p>
-                                <h3 class="news-title">Top 5 phim đáng xem nhất tháng 11</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://cdn.galaxycine.vn/media/2025/9/15/tran-chien-sau-tran-chien-500_1757909554042.jpg" alt="Trận Chiến">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-type">Bình luận phim</p>
-                                <h3 class="news-title">Review Trận Chiến Sau Trận Chiến</h3>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="see-more-container">
-                    <a href="Tin-dien-anh.html" class="see-more-btn" role="button">
-                        <i class="fas fa-arrow-right"></i> Xem thêm
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Promotion Section -->
-        <div class="promotion-selection-content">
-            <div class="container">
-                <div class="sec-heading">
-                    <h2 class="heading"><i class="fas fa-gift"></i> KHUYẾN MÃI</h2>
-                </div>
-                <div class="promotion-grid">
-                    <a href="Khuyen-mai-chi-tiet.jsp" class="promotion-link">
-                        <div class="promotion-card">
-                            <div class="promotion-poster">
-                                <img src="${pageContext.request.contextPath}/img/khuyenmai-1.png" alt="Ưu đãi U22">
-                            </div>
-                            <div class="promotion-info">
-                                <h3 class="promotion-title">ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="promotion-link">
-                        <div class="promotion-card">
-                            <div class="promotion-poster">
-                                <img src="${pageContext.request.contextPath}/img/khuyenmai-2.png" alt="Special Monday">
-                            </div>
-                            <div class="promotion-info">
-                                <h3 class="promotion-title">SPECIAL MONDAY - ĐỒNG GIÁ 50.000Đ/VÉ 2D</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="promotion-link">
-                        <div class="promotion-card">
-                            <div class="promotion-poster">
-                                <img src="${pageContext.request.contextPath}/img/khuyenmai-3.jpg" alt="Gà rán">
-                            </div>
-                            <div class="promotion-info">
-                                <h3 class="promotion-title">GÀ RÁN SIÊU MÊ LY ĐỒNG GIÁ CHỈ 79K</h3>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="see-more-container">
-                    <a href="Khuyen-mai.jsp" class="see-more-btn" role="button">
-                        <i class="fas fa-arrow-right"></i> Xem thêm
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== BOOKING MODAL ==================== -->
-    <div id="bookingModal" class="booking-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-ticket-alt"></i> ĐẶT VÉ XEM PHIM
-                </h2>
-                <button class="close-modal" onclick="closeBookingModal()">
-                    <i class="fas fa-times"></i>
-                </button>
             </div>
 
-            <!-- Thông tin phim -->
-            <div class="movie-info-section">
-                <h3 id="bookingMovieTitle"></h3>
-                <input type="hidden" id="modalMovieId">
-            </div>
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <h3 class="methods-header"><i class="fas fa-wallet"></i> PHƯƠNG THỨC THANH TOÁN</h3>
 
-            <!-- Form đặt vé -->
-            <div class="booking-form-container">
-                <!-- Step 1: Chọn phòng -->
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-door-open"></i> Chọn phòng chiếu *
-                    </label>
-                    <select id="roomSelect" class="form-select" required>
-                        <option value="">-- Chọn phòng --</option>
-                    </select>
-                </div>
-
-                <!-- Step 2: Chọn ngày -->
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-calendar-alt"></i> Chọn ngày chiếu *
-                    </label>
-                    <select id="dateSelect" class="form-select" required disabled>
-                        <option value="">-- Chọn ngày --</option>
-                    </select>
-                </div>
-
-                <!-- Step 3: Chọn giờ -->
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-clock"></i> Chọn giờ chiếu *
-                    </label>
-                    <select id="timeSelect" class="form-select" required disabled>
-                        <option value="">-- Chọn giờ --</option>
-                    </select>
-                </div>
-
-                <!-- Step 4: Chọn loại vé -->
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-tags"></i> Loại vé *
-                    </label>
-                    <select id="ticketTypeSelect" class="form-select" required disabled>
-                        <option value="">-- Chọn loại vé --</option>
-                    </select>
-                    <div id="ticketPrice" class="price-display" style="display: none;">
-                        <i class="fas fa-money-bill-wave"></i> Giá: <span id="priceValue">0 đ</span>
+                <div class="methods-grid" id="paymentMethods">
+                    <div class="method-card selected" data-method="momo">
+                        <div class="method-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="method-name">Ví MoMo</div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Step 5: Chọn ghế -->
-            <div class="seat-selection-section" id="seatSelectionSection" style="display: none;">
-                <h3 class="section-title">
-                    <i class="fas fa-couch"></i> CHỌN GHẾ NGỒI
-                </h3>
+                    <div class="method-card" data-method="zalopay">
+                        <div class="method-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="method-name">ZaloPay</div>
+                    </div>
 
-                <div class="screen">MÀN HÌNH</div>
+                    <div class="method-card" data-method="vnpay">
+                        <div class="method-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="method-name">VNPay</div>
+                    </div>
 
-                <div id="seatMap" class="seats-container">
-                    <div class="loading-state">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <p>Đang tải sơ đồ ghế...</p>
+                    <div class="method-card" data-method="cash">
+                        <div class="method-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="method-name">Tiền mặt</div>
                     </div>
                 </div>
 
-                <div class="seat-legend">
-                    <div class="legend-item">
-                        <div class="legend-box available"></div>
-                        <span>Ghế trống</span>
+                <form id="paymentForm" class="payment-form">
+                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="momo">
+
+                    <div class="form-group">
+                        <label class="form-label" for="customerNote">Ghi chú (nếu có):</label>
+                        <textarea id="customerNote" name="customerNote" class="form-input"
+                                  rows="3" placeholder="Ví dụ: Xuất hóa đơn VAT, yêu cầu đặc biệt..."></textarea>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-box selected"></div>
-                        <span>Ghế đang chọn</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box booked"></div>
-                        <span>Ghế đã đặt</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box reserved"></div>
-                        <span>Ghế đang giữ</span>
-                    </div>
-                </div>
+                </form>
             </div>
 
-            <!-- Buttons -->
-            <div class="modal-buttons">
-                <button type="button" class="btn-submit" id="addToCartBtn" disabled>
-                    <i class="fas fa-cart-plus"></i> THÊM VÀO GIỎ HÀNG
-                </button>
-                <button type="button" class="btn-payment" id="payNowBtn" onclick="payNow()" disabled>
-                    <i class="fas fa-credit-card"></i> THANH TOÁN NGAY
-                </button>
-                <button type="button" class="btn-cancel" onclick="closeBookingModal()">
-                    <i class="fas fa-times"></i> HỦY
+            <!-- Action Buttons -->
+            <div class="payment-actions">
+                <c:choose>
+                    <c:when test="${'true' eq param.fromCart}">
+                        <a href="${pageContext.request.contextPath}/cart" class="btn-back">
+                            <i class="fas fa-arrow-left"></i> QUAY LẠI GIỎ HÀNG
+                        </a>
+                    </c:when>
+                    <c:when test="${'true' eq param.payNow}">
+                        <a href="${pageContext.request.contextPath}/home" class="btn-back">
+                            <i class="fas fa-arrow-left"></i> QUAY LẠI TRANG CHỦ
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/home" class="btn-back">
+                            <i class="fas fa-arrow-left"></i> QUAY LẠI TRANG CHỦ
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+
+                <button type="button" class="btn-pay" id="btnPayNow">
+                    <i class="fas fa-lock"></i> THANH TOÁN NGAY
                 </button>
             </div>
         </div>
@@ -1198,187 +1422,153 @@
 </div>
 
 <script>
-    window.contextPath = '${pageContext.request.contextPath}';
-    console.log("📌 Context path set to:", window.contextPath);
-
-    // ========== USER DROPDOWN FUNCTIONALITY ==========
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log("✅ DOM Loaded - Initializing user dropdown");
-
-        // Khởi tạo user dropdown
-        initUserDropdown();
-    });
-
-    // Function để khởi tạo user dropdown
-    function initUserDropdown() {
-        const userProfileBtn = document.getElementById('userProfileBtn');
-        const userDropdownMenu = document.getElementById('userDropdownMenu');
-
-        if (!userProfileBtn || !userDropdownMenu) {
-            console.log("❌ User dropdown elements not found");
-            return;
-        }
-
-        console.log("✅ User dropdown elements found");
-
-        let dropdownTimeout;
-        const DROPDOWN_DELAY = 200;
-
-        // Mở dropdown khi hover vào button
-        userProfileBtn.addEventListener('mouseenter', function() {
-            console.log("🖱️ Hover on user profile");
-            clearTimeout(dropdownTimeout);
-            userDropdownMenu.classList.add('show');
-        });
-
-        // Giữ dropdown mở khi hover vào menu
-        userDropdownMenu.addEventListener('mouseenter', function() {
-            clearTimeout(dropdownTimeout);
-        });
-
-        // Đóng dropdown khi rời khỏi button hoặc menu
-        userProfileBtn.addEventListener('mouseleave', function() {
-            console.log("🚪 Mouse leaving user profile");
-            dropdownTimeout = setTimeout(function() {
-                userDropdownMenu.classList.remove('show');
-            }, DROPDOWN_DELAY);
-        });
-
-        userDropdownMenu.addEventListener('mouseleave', function() {
-            console.log("🚪 Mouse leaving dropdown menu");
-            dropdownTimeout = setTimeout(function() {
-                userDropdownMenu.classList.remove('show');
-            }, DROPDOWN_DELAY);
-        });
-
-        // Đóng dropdown khi click ra ngoài
-        document.addEventListener('click', function(e) {
-            const userDropdown = userProfileBtn.closest('.user-dropdown');
-            if (userDropdown && !userDropdown.contains(e.target)) {
-                userDropdownMenu.classList.remove('show');
-            }
-        });
-
-        // Đóng dropdown khi click vào item
-        const dropdownItems = userDropdownMenu.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function() {
-                console.log("✅ Dropdown item clicked:", this.textContent);
-                userDropdownMenu.classList.remove('show');
+    // Select payment method
+    document.querySelectorAll('.method-card').forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            document.querySelectorAll('.method-card').forEach(c => {
+                c.classList.remove('selected');
             });
+
+            // Add selected class to clicked card
+            this.classList.add('selected');
+
+            // Update hidden input
+            const method = this.dataset.method;
+            document.getElementById('paymentMethod').value = method;
         });
-
-        // Mobile: toggle dropdown khi click
-        userProfileBtn.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
-                e.stopPropagation();
-                userDropdownMenu.classList.toggle('show');
-            }
-        });
-    }
-
-    // ========== BOOKING MODAL FUNCTIONS ==========
-
-    // Hàm mở modal đặt vé
-    function openBookingModal(movieTitle, movieId) {
-        console.log("🚀 OPENING BOOKING MODAL");
-        console.log("Movie:", movieTitle, "ID:", movieId);
-
-        // Đóng dropdown user nếu đang mở
-        closeAllDropdowns();
-
-        // Set thông tin phim
-        document.getElementById('bookingMovieTitle').textContent = movieTitle;
-        document.getElementById('modalMovieId').value = movieId;
-
-        // Reset form
-        resetBookingForm();
-
-        // Load danh sách phòng
-        loadRooms(movieId);
-
-        // Hiển thị modal
-        document.getElementById('bookingModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    // Hàm đóng tất cả dropdown
-    function closeAllDropdowns() {
-        const dropdownMenus = document.querySelectorAll('.user-dropdown-menu');
-        dropdownMenus.forEach(menu => {
-            menu.classList.remove('show');
-        });
-    }
-
-    // Hàm đóng modal
-    function closeBookingModal() {
-        console.log("Closing booking modal");
-
-        // Release seat nếu đang chọn
-        if (window.selectedSeatId && window.currentShowtimeId) {
-            releaseSeat(window.currentShowtimeId, window.selectedSeatId);
-        }
-
-        document.getElementById('bookingModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        resetBookingForm();
-    }
-
-    // Hàm reset form
-    function resetBookingForm() {
-        console.log("🔄 Resetting booking form");
-
-        // Reset dropdowns
-        const roomSelect = document.getElementById('roomSelect');
-        roomSelect.value = '';
-        roomSelect.innerHTML = '<option value="">-- Chọn phòng --</option>';
-
-        const dateSelect = document.getElementById('dateSelect');
-        dateSelect.value = '';
-        dateSelect.disabled = true;
-        dateSelect.innerHTML = '<option value="">-- Chọn ngày --</option>';
-
-        const timeSelect = document.getElementById('timeSelect');
-        timeSelect.value = '';
-        timeSelect.disabled = true;
-        timeSelect.innerHTML = '<option value="">-- Chọn giờ --</option>';
-
-        const ticketTypeSelect = document.getElementById('ticketTypeSelect');
-        ticketTypeSelect.value = '';
-        ticketTypeSelect.disabled = true;
-        ticketTypeSelect.innerHTML = '<option value="">-- Chọn loại vé --</option>';
-
-        // Hide seat section
-        document.getElementById('seatSelectionSection').style.display = 'none';
-        document.getElementById('ticketPrice').style.display = 'none';
-
-        // Disable add to cart button
-        document.getElementById('addToCartBtn').disabled = true;
-
-        // Clear seat map
-        document.getElementById('seatMap').innerHTML =
-            '<div class="loading-state">' +
-            '<i class="fas fa-spinner fa-spin"></i>' +
-            '<p>Đang tải sơ đồ ghế...</p>' +
-            '</div>';
-    }
-
-    // Đóng modal khi nhấn ESC
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            const modal = document.getElementById('bookingModal');
-            if (modal && modal.style.display === 'flex') {
-                closeBookingModal();
-            }
-        }
     });
 
-    // Đóng modal khi click bên ngoài
-    document.addEventListener('click', function(event) {
-        const modal = document.getElementById('bookingModal');
-        if (modal && event.target === modal) {
-            closeBookingModal();
+    // Handle payment button click
+    document.getElementById('btnPayNow').addEventListener('click', function() {
+        const btn = this;
+        const originalText = btn.innerHTML;
+
+        // Show loading
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
+        btn.disabled = true;
+
+        // Get payment method
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const note = document.getElementById('customerNote').value;
+
+        // Determine payment type
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromCart = urlParams.get('fromCart');
+        const payNow = urlParams.get('payNow');
+
+        let paymentType = 'payNow';
+        let apiUrl = '${pageContext.request.contextPath}/api/simple-payment';
+
+        if (fromCart === 'true') {
+            paymentType = 'cart';
+        } else if (payNow === 'true') {
+            paymentType = 'payNow';
         }
+
+        // Prepare form data
+        const formData = new URLSearchParams();
+        formData.append('type', paymentType);
+        formData.append('paymentMethod', paymentMethod);
+        formData.append('note', note || '');
+
+        // If payNow from modal, add item data from session
+        if (paymentType === 'payNow' && '${not empty paymentData}') {
+            formData.append('movieId', '${paymentData.movieId}');
+            formData.append('showtimeId', '${paymentData.showtimeId}');
+            formData.append('seatId', '${paymentData.seatId}');
+            formData.append('ticketTypeId', '${paymentData.ticketTypeId}');
+        }
+
+        // Send payment request
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData.toString()
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Payment response:', data);
+
+                if (data.success) {
+                    // Show success message
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'success-message';
+                    successDiv.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <span>${data.message}</span>
+                `;
+
+                    document.querySelector('.payment-container').insertBefore(
+                        successDiv,
+                        document.querySelector('.payment-header')
+                    );
+
+                    // Update step 2 to completed and activate step 3
+                    document.querySelectorAll('.step')[1].classList.remove('active');
+                    document.querySelectorAll('.step')[1].classList.add('completed');
+                    document.querySelectorAll('.step')[2].classList.add('active');
+
+                    // Change button to redirect
+                    btn.innerHTML = '<i class="fas fa-ticket-alt"></i> XEM VÉ ĐÃ MUA';
+                    btn.disabled = false;
+                    btn.onclick = function() {
+                        window.location.href = '${pageContext.request.contextPath}/ticket-warehouse?paymentSuccess=true';
+                    };
+
+                    // Auto redirect after 5 seconds
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/ticket-warehouse?paymentSuccess=true';
+                    }, 5000);
+
+                } else {
+                    // Show error message
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>${data.message}</span>
+                `;
+
+                    document.querySelector('.payment-container').insertBefore(
+                        errorDiv,
+                        document.querySelector('.payment-header')
+                    );
+
+                    // Restore button
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+
+                    // Remove error message after 5 seconds
+                    setTimeout(() => {
+                        if (errorDiv.parentNode) {
+                            errorDiv.parentNode.removeChild(errorDiv);
+                        }
+                    }, 5000);
+                }
+            })
+            .catch(error => {
+                console.error('Payment error:', error);
+
+                // Show error message
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Lỗi kết nối. Vui lòng thử lại.</span>
+            `;
+
+                document.querySelector('.payment-container').insertBefore(
+                    errorDiv,
+                    document.querySelector('.payment-header')
+                );
+
+                // Restore button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
     });
 </script>
 </body>
