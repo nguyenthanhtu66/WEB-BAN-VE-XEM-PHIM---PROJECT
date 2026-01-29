@@ -14,17 +14,11 @@ public class Banner implements Serializable {
     private Integer createdBy;
 
     // Constructors
-    public Banner() {}
-
-    public Banner(int id, String title, String imageUrl, String linkUrl,
-                  int displayOrder, boolean isActive) {
-        this.id = id;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.linkUrl = linkUrl;
-        this.displayOrder = displayOrder;
-        this.isActive = isActive;
+    public Banner() {
         this.createdAt = LocalDateTime.now();
+        this.displayOrder = 0;
+        this.isActive = true;
+        this.createdBy = 1; // Default admin ID
     }
 
     // Getters and Setters

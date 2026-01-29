@@ -346,6 +346,27 @@
     .fa-credit-card{
         color: #fff;
     }
+    .movie-detail .section-title {
+        color: #ff6600 !important;
+        font-size: 24px !important;
+        font-weight: 700 !important;
+        margin: 25px 0 15px 0 !important;
+        padding-bottom: 10px !important;
+        border-bottom: 2px solid #ff6600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        text-align: left !important; /* QUAN TRỌNG: không căn giữa */
+        display: block !important;
+    }
+
+
+    .booking-modal .section-title {
+        color: #fff !important;
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
 
     .btn-payment {
         background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);

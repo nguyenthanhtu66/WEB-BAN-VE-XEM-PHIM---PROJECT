@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.edu.hcmuaf.fit.demo1.model.Movie;
 import vn.edu.hcmuaf.fit.demo1.model.User;
+import vn.edu.hcmuaf.fit.demo1.model.Banner;
 import vn.edu.hcmuaf.fit.demo1.service.MovieService;
+import vn.edu.hcmuaf.fit.demo1.service.BannerService;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 public class HomeController extends HttpServlet {
 
     private final MovieService movieService = new MovieService();
+    private final BannerService bannerService = new BannerService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,6 +61,11 @@ public class HomeController extends HttpServlet {
             }
         }
 
+        // ========== LẤY BANNER CHO SLIDESHOW ==========
+        List<Banner> banners = bannerService.getActiveBannersForHome();
+        System.out.println("📊 Loaded " + banners.size() + " banners for slideshow");
+        request.setAttribute("banners", banners);
+
         String statusParam = request.getParameter("status");
         String searchKeyword = request.getParameter("search");
 
@@ -77,6 +85,12 @@ public class HomeController extends HttpServlet {
         request.setAttribute("fromServlet", true);
 
         request.getRequestDispatcher("/index.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 
     // ========== CÁC PHƯƠNG THỨC HỖ TRỢ ==========

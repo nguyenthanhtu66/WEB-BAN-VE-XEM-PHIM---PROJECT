@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BannerDao extends BaseDao {
 
-    // RowMapper cho Banner
+    // RowMapper cho Banner - SỬA LẠI
     private static class BannerMapper implements RowMapper<Banner> {
         @Override
         public Banner map(ResultSet rs, StatementContext ctx) throws SQLException {
@@ -30,14 +30,23 @@ public class BannerDao extends BaseDao {
                 banner.setCreatedAt(createdAt.toLocalDateTime());
             }
 
+            // Xử lý created_by - CHỈ lấy nếu có trong ResultSet
+            try {
+                Integer createdBy = rs.getObject("created_by", Integer.class);
+                banner.setCreatedBy(createdBy);
+            } catch (SQLException e) {
+                // Nếu không có cột created_by trong query, bỏ qua
+                banner.setCreatedBy(null);
+            }
+
             return banner;
         }
     }
 
-    // Lấy tất cả banner đang active
+    // Lấy tất cả banner đang active - SỬA SQL
     public List<Banner> getAllActiveBanners() {
         String sql = """
-            SELECT id, title, image_url, link_url, display_order, is_active, created_at
+            SELECT id, title, image_url, link_url, display_order, is_active, created_at, created_by
             FROM banners 
             WHERE is_active = TRUE
             ORDER BY display_order ASC, created_at DESC
@@ -50,10 +59,10 @@ public class BannerDao extends BaseDao {
         );
     }
 
-    // Lấy banner theo số lượng giới hạn (cho slideshow)
+    // Lấy banner theo số lượng giới hạn (cho slideshow) - SỬA SQL
     public List<Banner> getActiveBannersWithLimit(int limit) {
         String sql = """
-            SELECT id, title, image_url, link_url, display_order, is_active, created_at
+            SELECT id, title, image_url, link_url, display_order, is_active, created_at, created_by
             FROM banners 
             WHERE is_active = TRUE
             ORDER BY display_order ASC, created_at DESC
@@ -68,10 +77,10 @@ public class BannerDao extends BaseDao {
         );
     }
 
-    // Lấy banner theo ID
+    // Lấy banner theo ID - SỬA SQL
     public Banner getBannerById(int id) {
         String sql = """
-            SELECT id, title, image_url, link_url, display_order, is_active, created_at
+            SELECT id, title, image_url, link_url, display_order, is_active, created_at, created_by
             FROM banners 
             WHERE id = :id AND is_active = TRUE
             """;
@@ -100,7 +109,7 @@ public class BannerDao extends BaseDao {
                             .bind("linkUrl", banner.getLinkUrl())
                             .bind("displayOrder", banner.getDisplayOrder())
                             .bind("active", banner.isActive())
-                            .bind("createdBy", 1) // Giả sử admin ID = 1
+                            .bind("createdBy", banner.getCreatedBy() != null ? banner.getCreatedBy() : 1)
                             .execute()
             );
             return rows > 0;
@@ -151,5 +160,20 @@ public class BannerDao extends BaseDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // Lấy tất cả banner (cho admin) - THÊM PHƯƠNG THỨC NÀY
+    public List<Banner> getAllBanners() {
+        String sql = """
+            SELECT id, title, image_url, link_url, display_order, is_active, created_at, created_by
+            FROM banners 
+            ORDER BY display_order ASC, created_at DESC
+            """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .map(new BannerMapper())
+                        .list()
+        );
     }
 }

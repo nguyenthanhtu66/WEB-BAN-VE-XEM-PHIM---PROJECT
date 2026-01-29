@@ -524,7 +524,7 @@
                     </a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact">
+                    <a class="menu-item" href="con">
                         <i class="fas fa-phone"></i> LIÊN HỆ
                     </a>
                 </div>

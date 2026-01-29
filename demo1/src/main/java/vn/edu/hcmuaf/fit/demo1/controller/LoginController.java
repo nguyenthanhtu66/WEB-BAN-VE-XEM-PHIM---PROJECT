@@ -16,8 +16,7 @@ import java.util.Map;
 public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Forward đến trang login
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/login.jsp").forward(request,response);
     }
 
     @Override
@@ -47,13 +46,13 @@ public class LoginController extends HttpServlet {
         }
 
         HttpSession session = request.getSession();
-        // CHỈ SET MỘT ATTRIBUTE DUY NHẤT
-        session.setAttribute("loggedUser", user);
-        // Xóa attribute cũ nếu có
-        session.removeAttribute("user");
-
-        System.out.println("✅ User logged in: " + user.getEmail() + " - ID: " + user.getId());
-
-        response.sendRedirect("home");
+        session.setAttribute("user", user);
+        session.setAttribute("role", user.getRole());
+//        response.sendRedirect("home");
+        if (user.getRole().equals("admin")) {
+            response.sendRedirect(request.getContextPath() + "/admin-users");
+        } else {
+            response.sendRedirect("home");
+        }
     }
 }

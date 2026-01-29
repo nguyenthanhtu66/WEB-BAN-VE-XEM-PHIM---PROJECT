@@ -218,8 +218,8 @@
                         <h2>QUẢN LÝ</h2>
                         <ul>
                             <li><a href="${pageContext.request.contextPath}/admin/movies">Phim</a></li>
-                            <li><a class="active" href="${pageContext.request.contextPath}/admin/contacts">Liên hệ</a></li>
-                            <li><a href="${pageContext.request.contextPath}/admin/orders">Đặt vé</a></li>
+                            <li><a href="${pageContext.request.contextPath}/admin/banners" >Banner</a></li>
+                            <li><a href="${pageContext.request.contextPath}/admin/contacts" class="active">Liên hệ</a></li>
                             <li><a href="${pageContext.request.contextPath}/admin/users">Người dùng</a></li>
                         </ul>
                     </aside>
