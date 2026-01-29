@@ -7,6 +7,7 @@ import vn.edu.hcmuaf.fit.demo1.model.Movie;
 import vn.edu.hcmuaf.fit.demo1.service.MovieService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/list-product")
@@ -40,6 +41,9 @@ public class ListProduct extends HttpServlet {
 
             System.out.println("DEBUG: statusParam = " + statusParam);
             System.out.println("DEBUG: searchKeyword = " + searchKeyword);
+            System.out.println("DEBUG: genre = " + genre);
+            System.out.println("DEBUG: duration = " + duration);
+            System.out.println("DEBUG: age = " + age);
 
             List<Movie> movies;
             int page = 1;
@@ -66,20 +70,47 @@ public class ListProduct extends HttpServlet {
                     }
                 }
 
-                // Tính tổng số trang
-                int totalMovies = movieService.countMoviesByStatus(status);
-                totalPages = (int) Math.ceil((double) totalMovies / PAGE_SIZE);
+                // LẤY TẤT CẢ PHIM THEO STATUS TRƯỚC
+                List<Movie> allMovies = movieService.getMoviesByStatus(status);
+                System.out.println("DEBUG: Found " + allMovies.size() + " movies with status: " + status);
+
+                // ÁP DỤNG FILTERS TUẦN TỰ
+                List<Movie> filteredMovies = new ArrayList<>(allMovies);
+
+                // Filter theo thể loại
+                if (genre != null && !genre.trim().isEmpty()) {
+                    filteredMovies = filterByGenre(filteredMovies, genre);
+                    System.out.println("DEBUG: After genre filter: " + filteredMovies.size() + " movies");
+                }
+
+                // Filter theo thời lượng
+                if (duration != null && !duration.trim().isEmpty()) {
+                    filteredMovies = filterByDuration(filteredMovies, duration);
+                    System.out.println("DEBUG: After duration filter: " + filteredMovies.size() + " movies");
+                }
+
+                // Filter theo độ tuổi
+                if (age != null && !age.trim().isEmpty()) {
+                    filteredMovies = filterByAgeRating(filteredMovies, age);
+                    System.out.println("DEBUG: After age filter: " + filteredMovies.size() + " movies");
+                }
+
+                // Tính tổng số trang sau khi filter
+                totalPages = (int) Math.ceil((double) filteredMovies.size() / PAGE_SIZE);
                 if (totalPages < 1) totalPages = 1;
                 if (page > totalPages) page = totalPages;
 
-                // Lấy phim theo trang
-                movies = movieService.getMoviesWithPagination(status, page, PAGE_SIZE);
-                System.out.println("DEBUG: Found " + movies.size() + " movies with status: " + status);
+                // Lấy phim cho trang hiện tại (phân trang)
+                int fromIndex = (page - 1) * PAGE_SIZE;
+                int toIndex = Math.min(fromIndex + PAGE_SIZE, filteredMovies.size());
 
-                // Áp dụng filters nếu có
-                if (genre != null && !genre.isEmpty()) {
-                    movies = movieService.getMoviesByGenreAndStatus(genre, status);
+                if (fromIndex < filteredMovies.size()) {
+                    movies = filteredMovies.subList(fromIndex, toIndex);
+                } else {
+                    movies = new ArrayList<>();
                 }
+
+                System.out.println("DEBUG: Pagination - page " + page + ", showing " + movies.size() + " movies");
             }
 
             // Đặt attributes
@@ -105,6 +136,59 @@ public class ListProduct extends HttpServlet {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi hệ thống: " + e.getMessage());
         }
+    }
+
+    // ========== CÁC PHƯƠNG THỨC FILTER HELPER ==========
+
+    private List<Movie> filterByGenre(List<Movie> movies, String genre) {
+        List<Movie> filtered = new ArrayList<>();
+        String genreLower = genre.toLowerCase().trim();
+
+        for (Movie movie : movies) {
+            if (movie.getGenre() != null &&
+                    movie.getGenre().toLowerCase().contains(genreLower)) {
+                filtered.add(movie);
+            }
+        }
+        return filtered;
+    }
+
+    private List<Movie> filterByDuration(List<Movie> movies, String duration) {
+        List<Movie> filtered = new ArrayList<>();
+        String durationLower = duration.toLowerCase().trim();
+
+        for (Movie movie : movies) {
+            int movieDuration = movie.getDuration();
+
+            switch (durationLower) {
+                case "short":
+                    if (movieDuration < 90) filtered.add(movie);
+                    break;
+                case "medium":
+                    if (movieDuration >= 90 && movieDuration <= 120) filtered.add(movie);
+                    break;
+                case "long":
+                    if (movieDuration > 120 && movieDuration <= 150) filtered.add(movie);
+                    break;
+                case "very_long":
+                    if (movieDuration > 150) filtered.add(movie);
+                    break;
+            }
+        }
+        return filtered;
+    }
+
+    private List<Movie> filterByAgeRating(List<Movie> movies, String age) {
+        List<Movie> filtered = new ArrayList<>();
+        String ageUpper = age.trim().toUpperCase();
+
+        for (Movie movie : movies) {
+            String movieAgeRating = movie.getAgeRating();
+            if (movieAgeRating != null && movieAgeRating.equalsIgnoreCase(ageUpper)) {
+                filtered.add(movie);
+            }
+        }
+        return filtered;
     }
 
     // Kiểm tra xem có phải là file tĩnh không
