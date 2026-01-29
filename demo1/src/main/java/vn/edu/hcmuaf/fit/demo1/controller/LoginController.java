@@ -12,11 +12,11 @@ import vn.edu.hcmuaf.fit.demo1.validation.LoginValidate;
 import java.io.IOException;
 import java.util.Map;
 
-@WebServlet(name = "Login", value = "/Login")
+@WebServlet(name = "Login", value = "/login")
 public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.getRequestDispatcher("/login.jsp").forward(request,response);
     }
 
     @Override
@@ -46,7 +46,13 @@ public class LoginController extends HttpServlet {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("loggedUser", user);
-        response.sendRedirect("home");
+        session.setAttribute("user", user);
+        session.setAttribute("role", user.getRole());
+//        response.sendRedirect("home");
+        if (user.getRole().equals("admin")) {
+            response.sendRedirect(request.getContextPath() + "/admin-users");
+        } else {
+            response.sendRedirect("home");
+        }
     }
 }

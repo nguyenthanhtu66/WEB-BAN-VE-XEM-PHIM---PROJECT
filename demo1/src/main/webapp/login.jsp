@@ -9,6 +9,11 @@
   <link rel="stylesheet" href="css/login-style.css">
 </head>
 <body>
+<c:if test="${param.register == 'success'}">
+  <script>
+    alert("Đăng ký thành công! Vui lòng đăng nhập.");
+  </script>
+</c:if>
 <div id="app" class="app">
   <!-- Header Label với Search -->
   <div class="header-label">
@@ -70,7 +75,7 @@
   </div>
   <div class="main-container" id="main-container">
     <div class ="login">
-      <form action="Login" class="login-form" method="post">
+      <form action="${pageContext.request.contextPath}/login" class="login-form" method="post">
         <h2>Đăng Nhập</h2>
         <c:if test="${loginError != null}">
           <p class="error">${loginError}</p>

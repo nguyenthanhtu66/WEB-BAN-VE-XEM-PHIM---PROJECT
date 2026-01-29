@@ -9,8 +9,8 @@ import vn.edu.hcmuaf.fit.demo1.model.User;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/profile","/orders","/checkout"})
-public class AuthFilter implements Filter {
+@WebFilter(urlPatterns = {"/admin/*"})
+public class AdminFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
     }
@@ -31,6 +31,12 @@ public class AuthFilter implements Filter {
             res.sendRedirect(req.getContextPath() + "/login");
             return;
         }
+
+        if (!"admin".equalsIgnoreCase(user.getRole())) {
+            res.sendRedirect(req.getContextPath() + "/404.jsp");
+            return;
+        }
+
         chain.doFilter(request, response);
     }
 }
