@@ -21,4 +21,7 @@ public class UserService {
     public User getUserById(int id){
         return userDao.getUserById(id);
     }
+    public List<User> searchUsers(String keyword, String role) {
+        return userDao.searchUsers(keyword, role);
+    }
 }

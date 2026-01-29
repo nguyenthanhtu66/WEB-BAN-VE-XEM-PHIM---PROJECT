@@ -16,7 +16,7 @@
 <body>
     <header>
         <div class="content-header">
-            <div> <a href="index.html">Đăng Xuất</a></div>
+            <div> <a href="${pageContext.request.contextPath}/logout">Đăng Xuất</a></div>
             <div><i><b>Xin chào admin!</b></i></div>
         </div>
     </header>
@@ -29,7 +29,7 @@
                 <ul>
                     <li><a href="admin-movies.html">Phim</a></li>
                     <li><a href="admin-orders.html">Đặt Vé</a></li>
-                    <li><a href="admin-news.html">Tin Tức & Ưu Đãi</a></li>
+                    <li><a href="admin-news.jsp">Tin Tức & Ưu Đãi</a></li>
                     <li><a class="active" href="${pageContext.request.contextPath}/admin-users">Người Dùng</a></li>
                 </ul>
             </nav>
@@ -42,6 +42,29 @@
                     <button onclick="openAddModal()" class="btn-add">
                         <i class="fa-solid fa-user-plus"></i> Thêm User
                     </button>
+                </div>
+                <div class="search-container" style="margin-bottom: 20px; background: #f1f1f1; padding: 15px; border-radius: 8px;">
+                    <form action="admin-users" method="get" style="display: flex; gap: 10px; align-items: center;">
+
+                        <input type="text" name="keyword"
+                               value="${savedKeyword}"
+                               placeholder="Tìm theo tên hoặc email..."
+                               style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; flex: 1;">
+
+                        <select name="roleFilter" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                            <option value="">-- Tất cả quyền --</option>
+                            <option value="admin" ${savedRole == 'admin' ? 'selected' : ''}>Admin</option>
+                            <option value="user" ${savedRole == 'user' ? 'selected' : ''}>User</option>
+                        </select>
+
+                        <button type="submit" style="padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            <i class="fa-solid fa-search"></i> Tìm kiếm
+                        </button>
+
+                        <a href="admin-users" style="padding: 8px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </a>
+                    </form>
                 </div>
                 <table class="tb-list-users">
                     <thead>
@@ -83,21 +106,19 @@
                             <td>${u.createdAt}</td>
 
                             <td class="actions">
-                                <!-- Edit -->
-                                <button onclick="openEditModal(${u.id})" class="btn-action edit">
+                                <a href="admin-users?action=edit&id=${u.id}" class="btn-action edit">
                                     <i class="fa-solid fa-pen"></i>
-                                </button>
+                                </a>
 
-                                <!-- Delete -->
-                                <button onclick="deleteUser(${u.id})" class="btn-action delete">
+                                <a href="admin-users?action=delete&id=${u.id}"
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa user này không?')"
+                                   class="btn-action delete">
                                     <i class="fa-solid fa-trash"></i>
-                                </button>
+                                </a>
 
-                                <!-- Ban -->
-                                <button onclick="toggleBan(${u.id})" class="btn-action ban">
+                                <a href="admin-users?action=ban&id=${u.id}" class="btn-action ban">
                                     <i class="fa-solid ${u.active ? 'fa-user-lock' : 'fa-lock-open'}"></i>
-                                </button>
-
+                                </a>
                             </td>
                         </tr>
                     </c:forEach>
@@ -106,48 +127,49 @@
             </section>
         </main>
     </div>
-    <div class="modal" id="user-modal">
-
+    <div class="modal" id="user-modal" style="display: ${showModal ? 'flex' : 'none'};">
         <div class="modal-content">
+            <a href="admin-users" class="close-modal">&times;</a>
 
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">${userToEdit != null ? 'Cập nhật User' : 'Thêm User'}</h2>
 
-            <h2 id="modal-title">Thêm User</h2>
+            <form action="${pageContext.request.contextPath}/admin-users" method="post">
 
-            <form id="user-form">
+                <input type="hidden" name="action" value="${userToEdit != null ? 'update' : 'add'}">
 
-                <input type="hidden" id="user-id" name="id">
+                <c:if test="${userToEdit != null}">
+                    <input type="hidden" name="id" value="${userToEdit.id}">
+                </c:if>
 
                 <label>Họ tên</label>
-                <input id="user-fullname" name="fullName" required>
+                <input name="fullName" value="${userToEdit.fullName}" required>
 
                 <label>Email</label>
-                <input id="user-email" name="email" type="email" required>
+                <input name="email" type="email" value="${userToEdit.email}" required>
 
-                <label>Mật khẩu</label>
-                <input id="user-password" name="password" type="password">
+                <c:if test="${userToEdit == null}">
+                    <label>Mật khẩu</label>
+                    <input name="password" type="password" required>
+                </c:if>
 
                 <label>Giới tính</label>
-                <select id="user-gender" name="gender">
-                    <option value="male">Nam</option>
-                    <option value="female">Nữ</option>
+                <select name="gender">
+                    <option value="male" ${userToEdit.gender == 'male' ? 'selected' : ''}>Nam</option>
+                    <option value="female" ${userToEdit.gender == 'female' ? 'selected' : ''}>Nữ</option>
                 </select>
 
                 <label>Ngày sinh</label>
-                <input id="user-birthdate" name="birthDate" type="date">
+                <input name="birthDate" type="date" value="${userToEdit.birthDate}">
 
                 <label>Quyền</label>
-                <select id="user-role" name="role">
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
+                <select name="role">
+                    <option value="user" ${userToEdit.role == 'user' ? 'selected' : ''}>User</option>
+                    <option value="admin" ${userToEdit.role == 'admin' ? 'selected' : ''}>Admin</option>
                 </select>
 
-                <button type="submit">Lưu</button>
-
+                <button type="submit" class="btn-save">Lưu</button>
             </form>
-
         </div>
-
     </div>
 <style>
     /* Title bar */
@@ -263,74 +285,32 @@
     }
 </style>
     <script>
-        let isEdit = false;
 
         function openAddModal() {
-            isEdit = false;
+            // Xóa sạch các ô input cũ nếu có
+            document.querySelectorAll('#user-modal input').forEach(input => input.value = '');
+            document.querySelector('input[name="action"]').value = "add";
             document.getElementById("modal-title").innerText = "Thêm User";
-            document.getElementById("user-form").reset();
-            document.getElementById("user-id").value = "";
+
+            // Hiện ô mật khẩu (vì form edit có thể đã ẩn nó đi, ta cần logic JS để hiện lại nếu muốn kỹ hơn)
+            // Nhưng đơn giản nhất: Redirect về trang gốc cho sạch
+            // window.location.href = "admin-users"; // Cách này an toàn nhất để reset form
+
+            // Hoặc chỉ đơn giản hiện modal lên:
             document.getElementById("user-modal").style.display = "flex";
         }
 
-        function openEditModal(id) {
-            isEdit = true;
-
-            fetch(`${contextPath}/admin-users?action=get&id=` + id)
-                .then(res => res.json())
-                .then(u => {
-                    document.getElementById("modal-title").innerText = "Sửa User";
-                    document.getElementById("user-id").value = u.id;
-                    document.getElementById("user-fullname").value = u.fullName;
-                    document.getElementById("user-email").value = u.email;
-                    document.getElementById("user-gender").value = u.gender;
-                    document.getElementById("user-birthdate").value = u.birthDate;
-                    document.getElementById("user-role").value = u.role;
-                    document.getElementById("user-modal").style.display = "flex";
-                });
-        }
-
-        function deleteUser(id) {
-            if (!confirm("Xóa user?")) return;
-
-            let data = new FormData();
-            data.append("action", "delete");
-            data.append("id", id);
-
-            fetch(`${contextPath}/admin-users`, {
-                method: "POST",
-                body: data
-            }).then(() => location.reload());
-        }
-
-        function toggleBan(id) {
-            let data = new FormData();
-            data.append("action", "ban");
-            data.append("id", id);
-
-            fetch(`${contextPath}/admin-users`, {
-                method: "POST",
-                body: data
-            }).then(() => location.reload());
+        // Nếu người dùng bấm vào vùng đen bên ngoài modal thì đóng lại (redirect về trang gốc)
+        window.onclick = function(event) {
+            let modal = document.getElementById("user-modal");
+            if (event.target == modal) {
+                window.location.href = "admin-users";
+            }
         }
 
         function closeModal() {
             document.getElementById("user-modal").style.display = "none";
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("user-form").addEventListener("submit", function(e){
-                e.preventDefault();
-
-                let data = new FormData(this);
-                data.append("action", isEdit ? "edit" : "add");
-
-                fetch(`${contextPath}/admin-users`, {
-                    method: "POST",
-                    body: data
-                })
-                    .then(() => location.reload());
-            });
-        });
     </script>
 </body>

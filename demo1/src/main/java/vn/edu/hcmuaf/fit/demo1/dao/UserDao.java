@@ -81,7 +81,17 @@ public class UserDao extends BaseDao {
     }
     public User getUserById(int id){
         return get().withHandle(handle ->
-                handle.createQuery("SELECT * FROM users WHERE id = :id")
+                handle.createQuery("""
+                SELECT 
+                    id, 
+                    full_name AS fullName, 
+                    email, 
+                    gender, 
+                    birth_date AS birthDate, 
+                    role, 
+                    is_active AS active 
+                FROM users WHERE id = :id
+            """)
                         .bind("id", id)
                         .mapToBean(User.class)
                         .one()
@@ -125,5 +135,42 @@ public class UserDao extends BaseDao {
                         .bind("id", id)
                         .execute()
         );
+    }
+    public List<User> searchUsers(String keyword, String roleFilter) {
+        return get().withHandle(handle -> {
+            StringBuilder sql = new StringBuilder("""
+            SELECT 
+              id,
+              full_name   AS fullName,
+              email,
+              gender,
+              birth_date  AS birthDate,
+              role,
+              is_active   AS active,
+              created_at  AS createdAt
+            FROM users
+            WHERE 1=1 
+        """);
+
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                sql.append(" AND (full_name LIKE :keyword OR email LIKE :keyword) ");
+            }
+
+            if (roleFilter != null && !roleFilter.trim().isEmpty()) {
+                sql.append(" AND role = :role ");
+            }
+
+            sql.append(" ORDER BY id DESC");
+
+            var query = handle.createQuery(sql.toString());
+
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                query.bind("keyword", "%" + keyword + "%");
+            }
+            if (roleFilter != null && !roleFilter.trim().isEmpty()) {
+                query.bind("role", roleFilter);
+            }
+            return query.mapToBean(User.class).list();
+        });
     }
 }

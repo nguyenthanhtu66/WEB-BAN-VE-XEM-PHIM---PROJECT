@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -5,13 +8,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DTN Ticket Movie Seller</title>
-    <link rel="stylesheet" href="style/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
 </head>
 
 <body>
     <header>
         <div class="content-header">
-            <div> <a href="index.html">Đăng Xuất</a></div>
+            <div> <a href="../../../../../webapp/index.html">Đăng Xuất</a></div>
             <div><i><b>Xin chào admin!</b></i></div>
         </div>
     </header>
@@ -22,10 +25,10 @@
             <h2>QUẢN LÝ</h2>
             <nav>
                 <ul>
-                    <li><a href="admin-movies.html">Phim</a></li>
-                    <li><a href="admin-orders.html">Đặt Vé</a></li>
+                    <li><a href="../../../../../webapp/admin-movies.html">Phim</a></li>
+                    <li><a href="../../../../../webapp/admin-orders.html">Đặt Vé</a></li>
                     <li><a class="active" href="#">Tin Tức & Ưu Đãi</a></li>
-                    <li><a href="admin-users.html">Người Dùng</a></li>
+                    <li><a href="../../../../../webapp/admin-users.html">Người Dùng</a></li>
                 </ul>
             </nav>
         </aside>

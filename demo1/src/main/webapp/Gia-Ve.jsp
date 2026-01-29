@@ -1,0 +1,149 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DTN Ticket Movie Seller</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/price.css">
+</head>
+<body>
+<div id="app" class="app">
+    <!-- Header Label với Search -->
+    <div class="header-label" id="header-label">
+        <div class="header-container">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
+            </div>
+            <div class="header-account">
+                <a href="ticket-warehouse.html" class="header-item">Kho vé</a>
+                <a href="Khuyen-mai.html" class="header-item">Khuyến mãi</a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class="header-menu">
+        <div class="menu-container">
+            <a href="index.html" class="logo">
+                <img src="image/231601886-Photoroom.png" alt="dtn logo">
+            </a>
+
+            <nav class="menu-nav">
+                <div class="menu-item-wrapper">
+                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">PHIM</div>
+                    <div class="dropdown-menu">
+                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim đang chiếu</a>
+                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim sắp chiếu</a>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">TIN TỨC</div>
+                    <div class="dropdown-menu">
+                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none; color: #ff6600;" href="Gia-Ve.html">GIÁ VÉ</a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none;" href="Gioi-Thieu.html">GIỚI THIỆU</a>
+                </div>
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none;" href="contact.html">LIÊN HỆ</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="main-container" id="main-container">
+        <h1>BẢNG GIÁ VÉ XEM PHIM</h1>
+        <table>
+            <caption>GIÁ VÉ NGƯỜI LỚN</caption>
+            <thead>
+            <tr>
+                <th>Loại Vé</th>
+                <th>Ngày Thường (Thứ 2 - Thứ 5)</th>
+                <th>Cuối Tuần (Thứ 6 - Chủ Nhật)</th>
+                <th>Ngày Lễ / Tết</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Vé 2D</td>
+                <td>80.000 VNĐ</td>
+                <td>100.000 VNĐ</td>
+                <td>120.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Vé 3D</td>
+                <td>100.000 VNĐ</td>
+                <td>130.000 VNĐ</td>
+                <td>150.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Vé VIP</td>
+                <td>120.000 VNĐ</td>
+                <td>150.000 VNĐ</td>
+                <td>180.000 VNĐ</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <table>
+            <caption>GIÁ VÉ TRẺ EM VÀ NGƯỜI CAO TUỔI</caption>
+            <thead>
+            <tr>
+                <th>Đối Tượng</th>
+                <th>Giá Vé (Mọi suất chiếu)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Trẻ em (&lt; 1.2m)</td>
+                <td>50.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Người cao tuổi (&gt; 60 tuổi)</td>
+                <td>60.000 VNĐ</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-top">
+            <ul class="footer-menu">
+                <li><a href="Chinh-sach.html">Chính sách</a></li>
+                <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
+                <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
+                <li><a href="Tin-dien-anh.html">Tin tức</a></li>
+                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+            </ul>
+            <div class="footer-apps">
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
+            <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
+            <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
