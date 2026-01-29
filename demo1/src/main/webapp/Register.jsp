@@ -83,7 +83,7 @@
 
                 <div class = "field-input">
                     <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="Nhập email. VD: you@example.com" >
+                    <input type="text" id="email" name="email" placeholder="Nhập email. VD: you@example.com" value="${form.email}">
 
                     <c:if test="${errors.email != null}">
                         <small class="error">${errors.email}</small>
@@ -93,7 +93,7 @@
 
                 <div class = "field-input">
                     <label for="phone">Số điện thoại</label>
-                    <input type="tel" id ="phone" name="phoneNumber" placeholder="Nhập số điện thoại" >
+                    <input type="tel" id ="phone" name="phoneNumber" placeholder="Nhập số điện thoại" value="${form.phone}">
                     <c:if test="${errors.phone != null}">
                         <small class="error">${errors.phone}</small>
                     </c:if>
@@ -187,16 +187,10 @@
                 <button type="submit" class = "register-button">Đăng ký</button>
 
                 <div class = "register-login">
-                    Bạn đã có tài khoản?<a href="Login.html"> Đăng nhập</a>
+                    Bạn đã có tài khoản?<a href="login.jsp"> Đăng nhập</a>
 
                 </div>
-                <c:if test="${registerSuccess}">
-                    <script>
-                        if (confirm("Đăng ký thành công! Bạn có muốn đăng nhập ngay không?")) {
-                            window.location.href = "login.jsp";
-                        }
-                    </script>
-                </c:if>
+
             </form>
         </div>
     </div>
@@ -230,24 +224,5 @@
     </div>
 </div>
 </body>
-<%--<script>--%>
-<%--    document.querySelector(".register-form").addEventListener("submit", function(e) {--%>
-<%--        let email = document.getElementById("email").value.trim();--%>
-<%--        let emailError = document.getElementById("emailError");--%>
 
-<%--        emailError.innerText = "";--%>
-
-<%--        if (email === "") {--%>
-<%--            emailError.innerText = "Email không được để trống";--%>
-<%--            e.preventDefault();--%>
-<%--            return;--%>
-<%--        }--%>
-
-<%--        let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;--%>
-<%--        if (!regex.test(email)) {--%>
-<%--            emailError.innerText = "Email không hợp lệ";--%>
-<%--            e.preventDefault();--%>
-<%--        }--%>
-<%--    });--%>
-<%--</script>--%>
 </html>

@@ -822,6 +822,91 @@
         .countdown-animation {
             animation: countdown 1s infinite;
         }
+        /* USER DROPDOWN WRAPPER */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Header item (nút user) dùng chung style với menu-item */
+        .user-dropdown .header-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+            font-weight: 500;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .user-dropdown .header-item:hover {
+            color: #ff6600;
+            background-color: rgba(255, 102, 0, 0.1);
+        }
+
+        /* Mũi tên ▼ */
+        .user-dropdown .header-item::after {
+            content: '▼';
+            font-size: 10px;
+            margin-left: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Lật mũi tên khi hover */
+        .user-dropdown:hover .header-item::after {
+            transform: rotate(180deg);
+        }
+
+        /* DROPDOWN MENU Style giống .dropdown-menu */
+        .user-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0; /* Menu user mở sang phải */
+            background: #1e1e1e;
+            min-width: 180px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            z-index: 200; /* cao hơn menu thường */
+        }
+
+        /* Hiển thị khi hover */
+        .user-dropdown:hover .user-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* ITEM TRONG MENU */
+        .user-dropdown-menu .dropdown-item {
+            padding: 12px 20px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        /* Hover giống kiểu bạn đang dùng */
+        .user-dropdown-menu .dropdown-item:hover {
+            background-color: #4c4c4c;
+            color: #ff6600;
+            padding-left: 25px;
+        }
+
+        .user-dropdown-menu .dropdown-item i {
+            color: #bbb;
+            font-size: 15px;
+        }
+
     </style>
 </head>
 
@@ -852,7 +937,7 @@
                     <c:when test="${not empty sessionScope.user}">
                         <div class="user-dropdown">
                             <span class="header-item">
-                                <i class="fas fa-user"></i> ${user.fullName} ▼
+                                <i class="fas fa-user"></i> ${user.fullName}
                             </span>
                             <div class="user-dropdown-menu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
@@ -940,7 +1025,7 @@
             <div class="slider-container" id="mySlider">
                 <div class="slider-track">
                     <div class="slide">
-                        <img src="${pageContext.request.contextPath}/image/anh-slideshow-3.jpg" alt="Slide 1">
+                        <img src="${pageContext.request.contextPath}/img/anh-slideshow-3.jpg" alt="Slide 1">
                     </div>
                 </div>
             </div>
@@ -1115,43 +1200,50 @@
                     <h2 class="heading"><i class="fas fa-newspaper"></i> TIN TỨC</h2>
                 </div>
                 <div class="news-grid">
-                    <a href="Tin-tuc-chi-tiet-1.html" class="news-link">
+                    <c:forEach var="n" items="${newsList}">
+                    <a href="Tin-tuc-chi-tiet-?id=${n.id}" class="news-link">
                         <div class="news-card">
                             <div class="news-poster">
-                                <img src="https://i.imgur.com/MCHyJQX.jpeg" alt="Quái Thú Vô Hình">
+                                <img src="${pageContext.request.contextPath}/img/${n.image_url}" alt="${n.title}">
                             </div>
                             <div class="news-info">
-                                <p class="news-type">Bình luận phim</p>
-                                <h3 class="news-title">Review Quái Thú Vô Hình: Vùng Đất Chết Chóc</h3>
+                                <p class="news-type">
+                                    <c:choose>
+                                        <c:when test="${n.category == 'movie_review'}">Bình luận phim</c:when>
+                                        <c:otherwise>Tin điện ảnh</c:otherwise>
+                                    </c:choose>
+                                </p>
+                                <h3 class="news-title">${n.title}</h3>
                             </div>
                         </div>
                     </a>
-                    <a href="#" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://i.imgur.com/HqIIkCx.jpeg" alt="Top 5 phim">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-type">Tin điện ảnh</p>
-                                <h3 class="news-title">Top 5 phim đáng xem nhất tháng 11</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://cdn.galaxycine.vn/media/2025/9/15/tran-chien-sau-tran-chien-500_1757909554042.jpg" alt="Trận Chiến">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-type">Bình luận phim</p>
-                                <h3 class="news-title">Review Trận Chiến Sau Trận Chiến</h3>
-                            </div>
-                        </div>
-                    </a>
+                    </c:forEach>
+<%--                    <a href="#" class="news-link">--%>
+<%--                        <div class="news-card">--%>
+<%--                            <div class="news-poster">--%>
+<%--                                <img src="https://i.imgur.com/HqIIkCx.jpeg" alt="Top 5 phim">--%>
+<%--                            </div>--%>
+<%--                            <div class="news-info">--%>
+<%--                                <p class="news-type">Tin điện ảnh</p>--%>
+<%--                                <h3 class="news-title">Top 5 phim đáng xem nhất tháng 11</h3>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </a>--%>
+<%--                    <a href="#" class="news-link">--%>
+<%--                        <div class="news-card">--%>
+<%--                            <div class="news-poster">--%>
+<%--                                <img src="https://cdn.galaxycine.vn/media/2025/9/15/tran-chien-sau-tran-chien-500_1757909554042.jpg" alt="Trận Chiến">--%>
+<%--                            </div>--%>
+<%--                            <div class="news-info">--%>
+<%--                                <p class="news-type">Bình luận phim</p>--%>
+<%--                                <h3 class="news-title">Review Trận Chiến Sau Trận Chiến</h3>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </a>--%>
                 </div>
 
                 <div class="see-more-container">
-                    <a href="Tin-dien-anh.html" class="see-more-btn" role="button">
+                    <a href="${pageContext.request.contextPath}/tin-dien-anh" class="see-more-btn" role="button">
                         <i class="fas fa-arrow-right"></i> Xem thêm
                     </a>
                 </div>
