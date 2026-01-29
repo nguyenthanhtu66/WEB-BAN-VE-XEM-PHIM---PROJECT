@@ -25,7 +25,7 @@
     <script src="${pageContext.request.contextPath}/js/booking-modal.js" defer></script>
     <meta name="context-path" content="${pageContext.request.contextPath}">
     <style>
-        /* ========== FIX CHO MOVIE CARD ========== */
+        /* Fix cho movie card trên trang chủ */
         .movie-poster-container {
             height: 400px;
             position: relative;
@@ -94,41 +94,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-
-        .fa-credit-card {
-            color: #fff;
-        }
-
-        .btn-payment {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-payment:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
-        }
-
-        .btn-payment:disabled {
-            background: #666;
-            cursor: not-allowed;
-            opacity: 0.6;
-            transform: none !important;
-            box-shadow: none !important;
         }
 
         .modal-title i {
@@ -336,6 +301,7 @@
             position: relative;
         }
 
+        /* Seat Status Colors */
         /* SEAT COLORS */
         .seat.available {
             background: #3498db !important; /* 🔵 Xanh dương - trống */
@@ -366,6 +332,7 @@
             opacity: 0.8;
         }
 
+        /* QUAN TRỌNG: Seat đang giữ (reserved) */
         .seat.reserved {
             background: #f39c12 !important; /* 🟠 Cam - đang giữ */
             border: 2px solid #d68910 !important;
@@ -373,6 +340,7 @@
             opacity: 0.9;
         }
 
+        /* Seat của tôi đang giữ (my_reserved) */
         .seat.my_reserved {
             background: #27ae60 !important; /* 🟢 Xanh lá - tôi đang giữ */
             border: 2px solid #219653 !important;
@@ -384,10 +352,12 @@
         .legend-box.available { background: #3498db !important; }
         .legend-box.selected { background: #2ecc71 !important; }
         .legend-box.booked { background: #e74c3c !important; }
-        .legend-box.reserved { background: #f39c12 !important; }
+        .legend-box.reserved { background: #f39c12 !important; } /* 🟠 Cam */
 
+
+        /* Thêm hover chỉ cho seat available và selected */
         .seat:not(.available):not(.selected):not(.reserved):not(.my_reserved):not(.booked) {
-            background: #95a5a6 !important;
+            background: #95a5a6 !important; /* Xám cho các trạng thái khác */
             border-color: #7f8c8d !important;
         }
 
@@ -545,149 +515,6 @@
         .modal-content::-webkit-scrollbar-thumb:hover {
             background: #ff6600;
         }
-
-        /* ========== USER DROPDOWN FIX ========== */
-        .user-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .header-item.user-profile {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-        }
-
-        .header-item.user-profile:hover {
-            background-color: rgba(255, 102, 0, 0.2);
-        }
-
-        /* Dropdown menu */
-        .user-dropdown-menu {
-            position: absolute;
-            top: calc(100% + 5px);
-            right: 0;
-            background: #1e1e1e;
-            min-width: 200px;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            padding: 8px 0;
-            z-index: 1000;
-            border: 1px solid #4c4c4c;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: block !important;
-            margin-top: 5px;
-        }
-
-        /* Tạo đường dẫn cho chuột để hover mượt mà */
-        .user-dropdown-menu::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: transparent;
-        }
-
-        .user-dropdown-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            padding: 12px 20px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-        }
-
-        .dropdown-item:hover {
-            background-color: rgba(255, 102, 0, 0.1);
-            color: #ff6600;
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background: #4c4c4c;
-            margin: 8px 0;
-            width: 100%;
-        }
-
-        .logout-item {
-            color: #ff6b6b;
-        }
-
-        .logout-item:hover {
-            color: #ff4444;
-            background-color: rgba(255, 107, 107, 0.1);
-        }
-
-        /* ========== MENU DROPDOWN STYLES ========== */
-        .menu-item-wrapper {
-            position: relative;
-        }
-
-        .menu-item.has-dropdown {
-            cursor: pointer;
-        }
-
-        .menu-item-wrapper .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #1e1e1e;
-            min-width: 180px;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            padding: 10px 0;
-            z-index: 999;
-            border: 1px solid #4c4c4c;
-            display: none;
-        }
-
-        .menu-item-wrapper:hover .dropdown-menu {
-            display: block;
-        }
-
-        .menu-item-wrapper .dropdown-item {
-            padding: 10px 20px;
-            color: #fff;
-            font-size: 14px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .menu-item-wrapper .dropdown-item:hover {
-            background-color: rgba(255, 102, 0, 0.1);
-            color: #ff6600;
-        }
     </style>
 </head>
 <body>
@@ -701,7 +528,6 @@
                 <button type="submit" style="display:none;">Search</button>
             </form>
             <div class="header-account">
-                <!-- Các liên kết chung -->
                 <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">
                     <i class="fas fa-ticket-alt"></i> Kho vé
                 </a>
@@ -710,67 +536,33 @@
                 </a>
                 <a href="${pageContext.request.contextPath}/cart" class="header-item">
                     <i class="fas fa-shopping-cart"></i> Giỏ hàng
-                    <c:if test="${not empty sessionScope.cart and sessionScope.cart.totalItems > 0}">
-                        <span class="cart-badge">${sessionScope.cart.totalItems}</span>
+                    <c:if test="${not empty cart and cart.totalItems > 0}">
+                        <span class="cart-badge">${cart.totalItems}</span>
                     </c:if>
                 </a>
-
-                <!-- Phần hiển thị trạng thái đăng nhập -->
                 <c:choose>
-                    <c:when test="${not empty sessionScope.loggedUser}">
+                    <c:when test="${not empty user}">
                         <div class="user-dropdown">
-                            <span class="header-item user-profile" id="userProfileBtn">
-                                <i class="fas fa-user-circle"></i>
-                                ${sessionScope.loggedUser.fullName}
-                                <i class="fas fa-chevron-down"></i>
+                            <span class="header-item">
+                                <i class="fas fa-user"></i> ${user.fullName} ▼
                             </span>
-                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                            <div class="user-dropdown-menu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
-                                    <i class="fas fa-user"></i> Hồ sơ cá nhân
-                                </a>
-                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
-                                    <i class="fas fa-receipt"></i> Lịch sử đặt vé
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item logout-item">
-                                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                                </a>
-                            </div>
-                        </div>
-                    </c:when>
-                    <c:when test="${not empty sessionScope.user}">
-                        <div class="user-dropdown">
-                            <span class="header-item user-profile" id="userProfileBtn">
-                                <i class="fas fa-user-circle"></i>
-                                ${sessionScope.user.fullName}
-                                <i class="fas fa-chevron-down"></i>
-                            </span>
-                            <div class="user-dropdown-menu" id="userDropdownMenu">
-                                <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
-                                    <i class="fas fa-user"></i> Hồ sơ cá nhân
+                                    <i class="fas fa-id-card"></i> Hồ sơ
                                 </a>
                                 <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
-                                    <i class="fas fa-receipt"></i> Lịch sử đặt vé
+                                    <i class="fas fa-receipt"></i> Đơn hàng
                                 </a>
-                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
-                                    <i class="fas fa-ticket-alt"></i> Vé của tôi
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item logout-item">
+                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item">
                                     <i class="fas fa-sign-out-alt"></i> Đăng xuất
                                 </a>
                             </div>
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="auth-buttons">
-                            <a href="${pageContext.request.contextPath}/Register.jsp" class="header-item register-btn">
-                                <i class="fas fa-user-plus"></i> Đăng ký
-                            </a>
-                            <a href="${pageContext.request.contextPath}/login.jsp" class="header-item login-btn">
-                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
-                            </a>
-                        </div>
+                        <a href="${pageContext.request.contextPath}/login" class="header-item">
+                            <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                        </a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -814,13 +606,13 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.jsp">
+                    <a class="menu-item" href="Gia-Ve.html">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.jsp">
+                    <a class="menu-item" href="Gioi-Thieu.html">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
@@ -840,7 +632,7 @@
             <div class="slider-container" id="mySlider">
                 <div class="slider-track">
                     <div class="slide">
-                        <img src="${pageContext.request.contextPath}/img/anh-slideshow-1.jpg" alt="Slide 1">
+                        <img src="${pageContext.request.contextPath}/image/anh-slideshow-3.jpg" alt="Slide 1">
                     </div>
                 </div>
             </div>
@@ -903,7 +695,7 @@
                             <div class="movie-poster-container">
                                 <img src="${movie.posterUrl}"
                                      alt="${movie.title}"
-                                     onerror="this.style.display='none'; this.onerror=null;">
+                                     onerror="this.src='${pageContext.request.contextPath}/img/default-poster.jpg'">
                                 <div class="movie-overlay">
                                     <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.id}"
                                        class="movie-btn btn-detail">
@@ -1128,6 +920,7 @@
                 <div class="screen">MÀN HÌNH</div>
 
                 <div id="seatMap" class="seats-container">
+                    <!-- Seat map sẽ được tạo động bằng JavaScript -->
                     <div class="loading-state">
                         <i class="fas fa-spinner fa-spin"></i>
                         <p>Đang tải sơ đồ ghế...</p>
@@ -1158,9 +951,6 @@
             <div class="modal-buttons">
                 <button type="button" class="btn-submit" id="addToCartBtn" disabled>
                     <i class="fas fa-cart-plus"></i> THÊM VÀO GIỎ HÀNG
-                </button>
-                <button type="button" class="btn-payment" id="payNowBtn" onclick="payNow()" disabled>
-                    <i class="fas fa-credit-card"></i> THANH TOÁN NGAY
                 </button>
                 <button type="button" class="btn-cancel" onclick="closeBookingModal()">
                     <i class="fas fa-times"></i> HỦY
@@ -1201,91 +991,10 @@
     window.contextPath = '${pageContext.request.contextPath}';
     console.log("📌 Context path set to:", window.contextPath);
 
-    // ========== USER DROPDOWN FUNCTIONALITY ==========
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log("✅ DOM Loaded - Initializing user dropdown");
-
-        // Khởi tạo user dropdown
-        initUserDropdown();
-    });
-
-    // Function để khởi tạo user dropdown
-    function initUserDropdown() {
-        const userProfileBtn = document.getElementById('userProfileBtn');
-        const userDropdownMenu = document.getElementById('userDropdownMenu');
-
-        if (!userProfileBtn || !userDropdownMenu) {
-            console.log("❌ User dropdown elements not found");
-            return;
-        }
-
-        console.log("✅ User dropdown elements found");
-
-        let dropdownTimeout;
-        const DROPDOWN_DELAY = 200;
-
-        // Mở dropdown khi hover vào button
-        userProfileBtn.addEventListener('mouseenter', function() {
-            console.log("🖱️ Hover on user profile");
-            clearTimeout(dropdownTimeout);
-            userDropdownMenu.classList.add('show');
-        });
-
-        // Giữ dropdown mở khi hover vào menu
-        userDropdownMenu.addEventListener('mouseenter', function() {
-            clearTimeout(dropdownTimeout);
-        });
-
-        // Đóng dropdown khi rời khỏi button hoặc menu
-        userProfileBtn.addEventListener('mouseleave', function() {
-            console.log("🚪 Mouse leaving user profile");
-            dropdownTimeout = setTimeout(function() {
-                userDropdownMenu.classList.remove('show');
-            }, DROPDOWN_DELAY);
-        });
-
-        userDropdownMenu.addEventListener('mouseleave', function() {
-            console.log("🚪 Mouse leaving dropdown menu");
-            dropdownTimeout = setTimeout(function() {
-                userDropdownMenu.classList.remove('show');
-            }, DROPDOWN_DELAY);
-        });
-
-        // Đóng dropdown khi click ra ngoài
-        document.addEventListener('click', function(e) {
-            const userDropdown = userProfileBtn.closest('.user-dropdown');
-            if (userDropdown && !userDropdown.contains(e.target)) {
-                userDropdownMenu.classList.remove('show');
-            }
-        });
-
-        // Đóng dropdown khi click vào item
-        const dropdownItems = userDropdownMenu.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function() {
-                console.log("✅ Dropdown item clicked:", this.textContent);
-                userDropdownMenu.classList.remove('show');
-            });
-        });
-
-        // Mobile: toggle dropdown khi click
-        userProfileBtn.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
-                e.stopPropagation();
-                userDropdownMenu.classList.toggle('show');
-            }
-        });
-    }
-
-    // ========== BOOKING MODAL FUNCTIONS ==========
-
-    // Hàm mở modal đặt vé
+    // Hàm mở modal đặt vé - được gọi từ button trong movie card
     function openBookingModal(movieTitle, movieId) {
         console.log("🚀 OPENING BOOKING MODAL");
         console.log("Movie:", movieTitle, "ID:", movieId);
-
-        // Đóng dropdown user nếu đang mở
-        closeAllDropdowns();
 
         // Set thông tin phim
         document.getElementById('bookingMovieTitle').textContent = movieTitle;
@@ -1300,14 +1009,6 @@
         // Hiển thị modal
         document.getElementById('bookingModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
-    }
-
-    // Hàm đóng tất cả dropdown
-    function closeAllDropdowns() {
-        const dropdownMenus = document.querySelectorAll('.user-dropdown-menu');
-        dropdownMenus.forEach(menu => {
-            menu.classList.remove('show');
-        });
     }
 
     // Hàm đóng modal
@@ -1363,22 +1064,25 @@
             '</div>';
     }
 
-    // Đóng modal khi nhấn ESC
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
+    // Khởi tạo event listeners khi DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Đóng modal khi click bên ngoài
+        document.addEventListener('click', function(event) {
             const modal = document.getElementById('bookingModal');
-            if (modal && modal.style.display === 'flex') {
+            if (modal && event.target === modal) {
                 closeBookingModal();
             }
-        }
-    });
+        });
 
-    // Đóng modal khi click bên ngoài
-    document.addEventListener('click', function(event) {
-        const modal = document.getElementById('bookingModal');
-        if (modal && event.target === modal) {
-            closeBookingModal();
-        }
+        // Đóng modal khi nhấn ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('bookingModal');
+                if (modal && modal.style.display === 'flex') {
+                    closeBookingModal();
+                }
+            }
+        });
     });
 </script>
 </body>

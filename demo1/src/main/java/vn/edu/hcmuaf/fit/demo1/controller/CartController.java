@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpSession;
 import vn.edu.hcmuaf.fit.demo1.model.Cart;
 import vn.edu.hcmuaf.fit.demo1.model.CartItem;
 import vn.edu.hcmuaf.fit.demo1.dao.BookedSeatDao;
-import vn.edu.hcmuaf.fit.demo1.dao.OrderDetailDao;
 
 import java.io.IOException;
 

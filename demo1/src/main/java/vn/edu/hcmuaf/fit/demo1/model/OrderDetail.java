@@ -61,6 +61,11 @@ public class OrderDetail implements Serializable {
         this.price = price;
     }
 
+    // Helper method
+    public String getFormattedPrice() {
+        return String.format("%,.0f đ", price);
+    }
+
     @Override
     public String toString() {
         return "OrderDetail{" +
