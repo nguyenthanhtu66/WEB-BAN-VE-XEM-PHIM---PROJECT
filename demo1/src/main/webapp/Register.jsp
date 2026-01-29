@@ -12,49 +12,41 @@
 
 <body>
 <div id="app" class="app">
-    <!-- Header Label với Search -->
+    <!-- Include Header from index.jsp -->
     <div class="header-label">
         <div class="header-container">
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-container">
-                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
-                       value="${searchKeyword != null ? searchKeyword : ''}">
+                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
                 <button type="submit" style="display:none;">Search</button>
             </form>
             <div class="header-account">
-                <!-- Các liên kết chung -->
                 <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">
                     <i class="fas fa-ticket-alt"></i> Kho vé
                 </a>
                 <a href="${pageContext.request.contextPath}/khuyen-mai" class="header-item">
                     <i class="fas fa-gift"></i> Khuyến mãi
                 </a>
-                <a href="${pageContext.request.contextPath}/cart" class="header-item">
+                <a href="${pageContext.request.contextPath}/Gio-hang.jsp" class="header-item">
                     <i class="fas fa-shopping-cart"></i> Giỏ hàng
                     <c:if test="${not empty sessionScope.cart and sessionScope.cart.totalItems > 0}">
                         <span class="cart-badge">${sessionScope.cart.totalItems}</span>
                     </c:if>
                 </a>
 
-                <!-- Phần hiển thị trạng thái đăng nhập -->
                 <c:choose>
-                    <%-- Kiểm tra session attribute --%>
                     <c:when test="${not empty sessionScope.loggedUser}">
-                        <%-- Người dùng đăng nhập từ LoginController --%>
                         <div class="user-dropdown">
-                        <span class="header-item user-profile">
-                            <i class="fas fa-user-circle"></i>
-                            ${sessionScope.loggedUser.fullName}
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                            <div class="user-dropdown-menu">
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.loggedUser.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
-                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
-                                    <i class="fas fa-receipt"></i> Lịch sử đặt vé
-                                </a>
                                 <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
-                                    <i class="fas fa-ticket-alt"></i> Vé của tôi
+                                    <i class="fas fa-receipt"></i> Lịch sử đặt vé
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a href="${pageContext.request.contextPath}/logout" class="dropdown-item logout-item">
@@ -64,14 +56,13 @@
                         </div>
                     </c:when>
                     <c:when test="${not empty sessionScope.user}">
-                        <%-- Người dùng đăng nhập từ LoginBeforePaymentController --%>
                         <div class="user-dropdown">
-                        <span class="header-item user-profile">
-                            <i class="fas fa-user-circle"></i>
-                            ${sessionScope.user.fullName}
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                            <div class="user-dropdown-menu">
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.user.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
@@ -89,7 +80,6 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <%-- Chưa đăng nhập --%>
                         <div class="auth-buttons">
                             <a href="${pageContext.request.contextPath}/Register.jsp" class="header-item register-btn">
                                 <i class="fas fa-user-plus"></i> Đăng ký
@@ -104,7 +94,7 @@
         </div>
     </div>
 
-    <!-- Header Menu -->
+    <!-- Menu -->
     <div class="header-menu">
         <div class="menu-container">
             <a href="${pageContext.request.contextPath}/home" class="logo">
@@ -112,8 +102,7 @@
             </a>
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="${pageContext.request.contextPath}/home"
-                       style="color: #ff6600;" class="menu-item">
+                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
                         <i class="fas fa-home"></i> TRANG CHỦ
                     </a>
                 </div>
@@ -141,18 +130,18 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.html">
+                    <a class="menu-item" href="Gia-ve.jsp">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.html">
+                    <a class="menu-item" href="Gioi-thieu.jsp">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact.html">
+                    <a class="menu-item" href="contact">
                         <i class="fas fa-phone"></i> LIÊN HỆ
                     </a>
                 </div>

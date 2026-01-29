@@ -1,15 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Miss Nhung
-  Date: 1/4/2026
-  Time: 9:42 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/question.css">
+    <title>DTN Ticket Movie Seller</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/policy.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <style>
@@ -294,182 +290,135 @@
             </nav>
         </div>
     </div>
-
-    <!-- Menu -->
-    <div class="header-menu">
-        <div class="menu-container">
-            <a href="${pageContext.request.contextPath}/home" class="logo">
-                <img src="${pageContext.request.contextPath}/img/231601886-Photoroom.png" alt="dtn logo">
-            </a>
-            <nav class="menu-nav">
-                <div class="menu-item-wrapper">
-                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
-                        <i class="fas fa-home"></i> TRANG CHỦ
-                    </a>
-                </div>
-
-                <div class="menu-item-wrapper">
-                    <div class="menu-item has-dropdown">
-                        <i class="fas fa-film"></i> PHIM
-                    </div>
-                    <div class="dropdown-menu">
-                        <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
-                           class="dropdown-item">Phim đang chiếu</a>
-                        <a href="${pageContext.request.contextPath}/home?status=Sap+chieu"
-                           class="dropdown-item">Phim sắp chiếu</a>
-                    </div>
-                </div>
-
-                <div class="menu-item-wrapper">
-                    <div class="menu-item has-dropdown">
-                        <i class="fas fa-newspaper"></i> TIN TỨC
-                    </div>
-                    <div class="dropdown-menu">
-                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
-                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
-                    </div>
-                </div>
-
-                <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-ve.jsp">
-                        <i class="fas fa-tag"></i> GIÁ VÉ
-                    </a>
-                </div>
-
-                <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-thieu.jsp">
-                        <i class="fas fa-info-circle"></i> GIỚI THIỆU
-                    </a>
-                </div>
-                <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact">
-                        <i class="fas fa-phone"></i> LIÊN HỆ
-                    </a>
-                </div>
-            </nav>
-        </div>
-    </div>
     <div class="main-container" id="main-container">
-        <div class="faq-section">
-            <div class="faq-title-container">
-                <h1 class="faq-main-title">CÂU HỎI THƯỜNG GẶP</h1>
+        <div class="policy-header">
+            <h1>CHÍNH SÁCH & QUY ĐỊNH</h1>
+            <p>Vui lòng đọc kỹ các chính sách và quy định dưới đây trước khi sử dụng dịch vụ của chúng tôi</p>
+        </div>
+
+        <!-- Chính sách mua vé -->
+        <div class="policy-section">
+            <h2>Chính Sách Mua Vé</h2>
+            <div class="policy-content">
+                <ul>
+                    <li>Khách hàng phải mua vé trước khi vào phòng chiếu</li>
+                    <li>Vé chỉ có giá trị cho suất chiếu, phòng chiếu và ghế ngồi được ghi trên vé</li>
+                    <li>Không được mang vé của rạp khác vào sử dụng</li>
+                    <li>Vui lòng giữ vé để kiểm tra khi có yêu cầu từ nhân viên</li>
+                    <li>Mỗi vé chỉ cho phép một người vào xem</li>
+                    <li>Vé đã mua không được chuyển nhượng cho người khác</li>
+                </ul>
             </div>
+        </div>
 
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Thủ tục đặt vé online và phương thức thanh toán như thế nào?</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Để đặt vé online, bạn có thể làm theo các bước sau:</p>
-                            <p>1. Truy cập website hoặc ứng dụng của rạp</p>
-                            <p>2. Chọn phim, suất chiếu và ghế ngồi</p>
-                            <p>3. Điền thông tin cá nhân và chọn phương thức thanh toán</p>
-                            <p>4. Xác nhận đơn hàng và nhận mã vé qua email/SMS</p>
-                            <br>
-                            <p><strong>Phương thức thanh toán:</strong></p>
-                            <p>• Thẻ ATM nội địa (Internet Banking)</p>
-                            <p>• Thẻ tín dụng quốc tế (Visa, MasterCard)</p>
-                            <p>• Ví điện tử (Momo, ZaloPay, VNPay)</p>
-                            <p>• Thanh toán tại quầy (với một số rạp)</p>
-                        </div>
-                    </div>
+        <!-- Chính sách hoàn đổi -->
+        <div class="policy-section">
+            <h2>Chính Sách Hoàn/Đổi Vé</h2>
+            <div class="policy-content">
+                <div class="policy-highlight">
+                    <strong>Lưu ý quan trọng:</strong> Không hoàn tiền hoặc đổi vé đã mua trong mọi trường hợp
                 </div>
+                <ul>
+                    <li>Vé mua online không được hủy sau khi thanh toán thành công</li>
+                    <li>Khách hàng vui lòng kiểm tra kỹ thông tin trước khi thanh toán</li>
+                    <li>Trường hợp rạp hủy suất chiếu, khách hàng sẽ được hoàn tiền 100%</li>
+                    <li>Thời gian hoàn tiền từ 5-7 ngày làm việc</li>
+                    <li>Không chịu trách nhiệm nếu khách hàng đến muộn hoặc nhầm suất chiếu</li>
+                </ul>
+            </div>
+        </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Làm sao để được cấp thẻ thành viên?</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Để đăng ký thẻ thành viên, bạn có thể:</p>
-                            <p>• Đăng ký trực tuyến trên website/app của rạp</p>
-                            <p>• Đăng ký trực tiếp tại quầy vé của rạp</p>
-                            <p>• Cung cấp thông tin cá nhân: Họ tên, số điện thoại, email, ngày sinh</p>
-                            <br>
-                            <p><strong>Quyền lợi thành viên:</strong></p>
-                            <p>• Tích điểm mỗi lần mua vé và đồ ăn</p>
-                            <p>• Nhận ưu đãi giảm giá và khuyến mãi đặc biệt</p>
-                            <p>• Được ưu tiên đặt vé sớm cho các phim hot</p>
-                            <p>• Quà tặng sinh nhật và các dịp đặc biệt</p>
-                        </div>
-                    </div>
+        <!-- Quy định độ tuổi -->
+        <div class="policy-section">
+            <h2>Quy Định Độ Tuổi Xem Phim</h2>
+            <div class="policy-content">
+                <p style="margin-bottom: 20px;">Phim được phân loại theo quy định của Cục Điện ảnh:</p>
+                <ul>
+                    <li><span class="age-rating">P</span> Phổ biến - Phù hợp với mọi lứa tuổi</li>
+                    <li><span class="age-rating">K</span> Trẻ em - Phù hợp với trẻ em dưới 13 tuổi</li>
+                    <li><span class="age-rating">T13</span> Cấm khán giả dưới 13 tuổi</li>
+                    <li><span class="age-rating">T16</span> Cấm khán giả dưới 16 tuổi</li>
+                    <li><span class="age-rating">T18</span> Cấm khán giả dưới 18 tuổi</li>
+                    <li><span class="age-rating">C</span> Phim đặc biệt - Xem cùng cha mẹ hoặc người giám hộ</li>
+                </ul>
+                <div class="policy-highlight" style="margin-top: 20px;">
+                    <strong>Lưu ý:</strong> Nhân viên có quyền yêu cầu xuất trình giấy tờ tùy thân để xác minh độ tuổi
                 </div>
+            </div>
+        </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Lợi ích khi tham gia thẻ thành viên là gì?</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><strong>Tích điểm thưởng:</strong></p>
-                            <p>• Mỗi 1.000đ chi tiêu = 1 điểm</p>
-                            <p>• Đổi điểm lấy vé xem phim miễn phí</p>
-                            <p>• Đổi điểm lấy combo bắp nước</p>
-                            <br>
-                            <p><strong>Ưu đãi độc quyền:</strong></p>
-                            <p>• Giảm giá 10-20% vào các ngày đặc biệt</p>
-                            <p>• Mua 1 tặng 1 vào thứ 3 hàng tuần (với một số rạp)</p>
-                            <p>• Ưu tiên đặt chỗ cho suất chiếu sớm</p>
-                            <p>• Tham gia các sự kiện gặp gỡ diễn viên, đạo diễn</p>
-                            <br>
-                            <p><strong>Quà tặng đặc biệt:</strong></p>
-                            <p>• Vé xem phim miễn phí vào ngày sinh nhật</p>
-                            <p>• Quà tặng bất ngờ vào các dịp lễ lớn</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Quy định đồ ăn thức uống -->
+        <div class="policy-section">
+            <h2>Quy Định Mang Đồ Ăn, Thức Uống</h2>
+            <div class="policy-content">
+                <ul>
+                    <li>Không được mang đồ ăn, thức uống từ bên ngoài vào rạp</li>
+                    <li>Chỉ được sử dụng đồ ăn, thức uống mua tại quầy của rạp</li>
+                    <li>Không mang các loại thức ăn có mùi mạnh (sầu riêng, mắm, tôm...)</li>
+                    <li>Vui lòng bỏ rác vào thùng sau khi xem phim xong</li>
+                    <li>Không được mang đồ uống có cồn vào rạp</li>
+                </ul>
+            </div>
+        </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Làm sao để biết được số điểm đã tích lũy?</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Bạn có thể kiểm tra số điểm tích lũy qua các cách sau:</p>
-                            <br>
-                            <p><strong>Trên website/ứng dụng:</strong></p>
-                            <p>• Đăng nhập vào tài khoản thành viên</p>
-                            <p>• Vào mục "Tài khoản" hoặc "Điểm thưởng"</p>
-                            <p>• Xem chi tiết lịch sử tích điểm và sử dụng điểm</p>
-                            <br>
-                        </div>
-                    </div>
-                </div>
+        <!-- Quy định trong phòng chiếu -->
+        <div class="policy-section">
+            <h2>Quy Định Trong Phòng Chiếu</h2>
+            <div class="policy-content">
+                <ul>
+                    <li>Tắt hoặc chuyển điện thoại sang chế độ im lặng</li>
+                    <li>Không nói chuyện lớn tiếng, gây ồn ảo</li>
+                    <li>Nghiêm cấm quay phim, chụp ảnh màn hình chiếu</li>
+                    <li>Không hút thuốc, sử dụng chất kích thích trong rạp</li>
+                    <li>Không mang vũ khí, chất dễ cháy nổ vào rạp</li>
+                    <li>Giữ gìn vệ sinh chung, không vứt rác bừa bãi</li>
+                    <li>Không đặt chân lên ghế trước</li>
+                    <li>Tuân thủ hướng dẫn của nhân viên rạp</li>
+                </ul>
+            </div>
+        </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Làm thế nào để đăng nhập vào Website </span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><strong>Bước 1:</strong> Truy cập trang chủ website</p>
-                            <p><strong>Bước 2:</strong> Click vào nút "Đăng nhập" ở góc trên bên phải</p>
-                            <p><strong>Bước 3:</strong> Nhập thông tin đăng nhập:</p>
-                            <p>• Email của tài khoản</p>
-                            <p>• Mật khẩu (nếu chưa có mật khẩu, click "Quên mật khẩu" để tạo mới)</p>
-                            <br>
-                        </div>
-                    </div>
-                </div>
+        <!-- Chính sách bảo mật -->
+        <div class="policy-section">
+            <h2>Chính Sách Bảo Mật Thông Tin</h2>
+            <div class="policy-content">
+                <ul>
+                    <li>Thông tin cá nhân của khách hàng được bảo mật tuyệt đối</li>
+                    <li>Chỉ sử dụng thông tin cho mục đích đặt vé và chăm sóc khách hàng</li>
+                    <li>Không chia sẻ thông tin cho bên thứ ba khi chưa có sự đồng ý</li>
+                    <li>Khách hàng có quyền yêu cầu xóa thông tin cá nhân bất cứ lúc nào</li>
+                    <li>Thông tin thanh toán được mã hóa và bảo mật theo tiêu chuẩn quốc tế</li>
+                </ul>
+            </div>
+        </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Project của nhóm 33</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><strong>Project Web Bán Vé Xem Phim</strong> là project kết thúc môn học lập trình Web của trường Đại Học Nông Lâm Tp.HCM.</p>
-                            <br>
-                        </div>
-                    </div>
+        <!-- Chính sách giá vé -->
+        <div class="policy-section">
+            <h2>Chính Sách Giá Vé & Khuyến Mãi</h2>
+            <div class="policy-content">
+                <ul>
+                    <li>Giá vé có thể thay đổi tùy theo ngày, giờ chiếu và loại phim</li>
+                    <li>Giá vé áp dụng cho các suất chiếu đặc biệt có thể khác với giá thông thường</li>
+                    <li>Các chương trình khuyến mãi có thời hạn nhất định</li>
+                    <li>Không áp dụng đồng thời nhiều chương trình khuyến mãi</li>
+                    <li>Mã giảm giá chỉ sử dụng được một lần và không hoàn lại</li>
+                    <li>Rạp có quyền thay đổi giá vé và điều kiện khuyến mãi mà không cần báo trước</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Liên hệ -->
+        <div class="policy-section">
+            <h2>Liên Hệ & Hỗ Trợ</h2>
+            <div class="policy-content">
+                <p style="margin-bottom: 15px;">Nếu bạn có bất kỳ thắc mắc nào về chính sách, vui lòng liên hệ:</p>
+                <ul>
+                    <li>Hotline: 123456789 (8:00 - 22:00 hàng ngày)</li>
+                    <li>Email: nhom33@gmail.com</li>
+                    <li>Fanpage: fb.com/nhom33</li>
+                </ul>
+                <div class="policy-highlight" style="margin-top: 20px;">
+                    Chính sách này có hiệu lực từ ngày 01/01/2025 và có thể được cập nhật theo thời gian
                 </div>
             </div>
         </div>
@@ -502,22 +451,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    function toggleFAQ(element) {
-        const faqItem = element.parentElement;
-        const isActive = faqItem.classList.contains('active');
-
-        // Đóng tất cả các FAQ items khác
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.classList.remove('active');
-        });
-
-        // Mở FAQ item được click (nếu nó chưa được mở)
-        if (!isActive) {
-            faqItem.classList.add('active');
-        }
-    }
-</script>
 </body>
 </html>

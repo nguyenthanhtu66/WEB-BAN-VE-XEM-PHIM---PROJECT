@@ -1,15 +1,14 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Miss Nhung
-  Date: 1/4/2026
-  Time: 9:42 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <title>Title</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/question.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTN Ticket Movie Seller</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Contact.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <style>
@@ -295,195 +294,143 @@
         </div>
     </div>
 
-    <!-- Menu -->
-    <div class="header-menu">
-        <div class="menu-container">
-            <a href="${pageContext.request.contextPath}/home" class="logo">
-                <img src="${pageContext.request.contextPath}/img/231601886-Photoroom.png" alt="dtn logo">
-            </a>
-            <nav class="menu-nav">
-                <div class="menu-item-wrapper">
-                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
-                        <i class="fas fa-home"></i> TRANG CHỦ
-                    </a>
-                </div>
+    <div class="content">
+        <h1>LIÊN HỆ QUẢNG CÁO TẠI RẠP / MUA VÉ NHÓM /
+            THUÊ RẠP TỔ CHỨC SỰ KIỆN / MUA PHIẾU QUÀ TẶNG</h1>
 
-                <div class="menu-item-wrapper">
-                    <div class="menu-item has-dropdown">
-                        <i class="fas fa-film"></i> PHIM
-                    </div>
-                    <div class="dropdown-menu">
-                        <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
-                           class="dropdown-item">Phim đang chiếu</a>
-                        <a href="${pageContext.request.contextPath}/home?status=Sap+chieu"
-                           class="dropdown-item">Phim sắp chiếu</a>
-                    </div>
-                </div>
+        <div class="infomation">
+            <div class="avatar">
+                <img style="object-fit: cover; margin: 0px; width: 100%; height: 100%;"
+                     src="${pageContext.request.contextPath}/img/anh-rap-phim.jpg" alt="#">
+            </div>
 
-                <div class="menu-item-wrapper">
-                    <div class="menu-item has-dropdown">
-                        <i class="fas fa-newspaper"></i> TIN TỨC
-                    </div>
-                    <div class="dropdown-menu">
-                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
-                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
-                    </div>
-                </div>
-
-                <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-ve.jsp">
-                        <i class="fas fa-tag"></i> GIÁ VÉ
-                    </a>
-                </div>
-
-                <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-thieu.jsp">
-                        <i class="fas fa-info-circle"></i> GIỚI THIỆU
-                    </a>
-                </div>
-                <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact">
-                        <i class="fas fa-phone"></i> LIÊN HỆ
-                    </a>
-                </div>
-            </nav>
+            <div class="text">
+                Bạn có nhu cầu quảng cáo trên màn hình cực lớn tại rạp, tiếp cận đông đảo khách xem phim tại
+                rạp <br>
+                Bạn cần tăng cường nhận diện thương hiệu, tạo ra doanh thu lợi nhuận cho công ty <br>
+                Bạn cần thưởng thức các bộ phim bom tấn riêng tư cùng gia đình, bạn bè, đồng nghiệp <br>
+                Bạn cần một địa điểm tổ chức sự kiện, họp báo ra mắt dự án, tổ chức fan offline, đào tạo tập
+                trung <br>
+                Bạn đang tìm kiếm quà tặng gửi tới người thân yêu <br>
+                Hãy liên hệ với chúng tôi ngay hôm nay để được hỗ trợ ngay: <br>
+                Email: nhom33@gmail.com - Hotline: 123456789
+            </div>
         </div>
-    </div>
-    <div class="main-container" id="main-container">
-        <div class="faq-section">
-            <div class="faq-title-container">
-                <h1 class="faq-main-title">CÂU HỎI THƯỜNG GẶP</h1>
-            </div>
 
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Thủ tục đặt vé online và phương thức thanh toán như thế nào?</span>
-                        <span class="faq-icon">▼</span>
+
+        <section class="form-section">
+            <h2 class="form-title">LẬP KẾ HOẠCH CÙNG CHÚNG TÔI NGAY</h2>
+
+            <c:if test="${not empty error}">
+                <p style="color:red;position: relative;top: -20px; text-align:center">${error}</p>
+            </c:if>
+
+            <c:if test="${not empty success}">
+                <p style="color:rgb(45, 189, 45); position: relative;top: -20px; text-align:center">
+                        ${success}</p>
+            </c:if>
+
+
+            <form action="${pageContext.request.contextPath}/contact" method="post">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="ho-ten">Họ tên</label>
+                        <input type="text" id="ho-ten" name="hoTen" value="${contact.hoTen}"
+                               placeholder="Nhập Họ Tên" required>
                     </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Để đặt vé online, bạn có thể làm theo các bước sau:</p>
-                            <p>1. Truy cập website hoặc ứng dụng của rạp</p>
-                            <p>2. Chọn phim, suất chiếu và ghế ngồi</p>
-                            <p>3. Điền thông tin cá nhân và chọn phương thức thanh toán</p>
-                            <p>4. Xác nhận đơn hàng và nhận mã vé qua email/SMS</p>
-                            <br>
-                            <p><strong>Phương thức thanh toán:</strong></p>
-                            <p>• Thẻ ATM nội địa (Internet Banking)</p>
-                            <p>• Thẻ tín dụng quốc tế (Visa, MasterCard)</p>
-                            <p>• Ví điện tử (Momo, ZaloPay, VNPay)</p>
-                            <p>• Thanh toán tại quầy (với một số rạp)</p>
-                        </div>
+
+                    <div class="form-group">
+                        <label for="so-dien-thoai">Số điện thoại</label>
+                        <input type="tel" id="so-dien-thoai" name="soDienThoai"
+                               value="${contact.soDienThoai}" placeholder="Nhập Điện Thoại" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="${contact.email}"
+                               placeholder="Nhập Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chon-dich-vu">Chọn dịch vụ</label>
+                        <select id="chon-dich-vu" name="dichVu" required>
+                            <option value="" disabled selected hidden>CHỌN DỊCH VỤ</option>
+                            <option value="thue-rap" ${contact.dichVu=='thue-rap' ? 'selected' : '' }>
+                                THUÊ RẠP TỔ CHỨC SỰ KIỆN
+                            </option>
+
+                            <option value="quang-cao" ${contact.dichVu=='quang-cao' ? 'selected' : '' }>
+                                QUẢNG CÁO TẠI RẠP
+                            </option>
+                            <option value="mua-phieu-qua-tang" ${contact.dichVu=='mua-phieu-qua-tang'
+                                    ? 'selected' : '' }>
+                                MUA PHIẾU QUÀ TẶNG / E-CODE
+
+                            </option>
+                            <option value="mua-ve-nhom" ${contact.dichVu=='mua-ve-nhom' ? 'selected' : '' }>
+                                MUA VÉ NHÓM
+                            </option>
+
+                        </select>
                     </div>
                 </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Làm sao để được cấp thẻ thành viên?</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Để đăng ký thẻ thành viên, bạn có thể:</p>
-                            <p>• Đăng ký trực tuyến trên website/app của rạp</p>
-                            <p>• Đăng ký trực tiếp tại quầy vé của rạp</p>
-                            <p>• Cung cấp thông tin cá nhân: Họ tên, số điện thoại, email, ngày sinh</p>
-                            <br>
-                            <p><strong>Quyền lợi thành viên:</strong></p>
-                            <p>• Tích điểm mỗi lần mua vé và đồ ăn</p>
-                            <p>• Nhận ưu đãi giảm giá và khuyến mãi đặc biệt</p>
-                            <p>• Được ưu tiên đặt vé sớm cho các phim hot</p>
-                            <p>• Quà tặng sinh nhật và các dịp đặc biệt</p>
-                        </div>
-                    </div>
+                <div class="form-group full-width">
+                    <label for="thong-tin-chi-tiet">Thông tin chi tiết</label>
+                    <textarea id="thong-tin-chi-tiet" name="chiTiet"  rows="3"
+                              placeholder="Thông Tin Chi Tiết">${contact.chiTiet}</textarea>
                 </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Lợi ích khi tham gia thẻ thành viên là gì?</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><strong>Tích điểm thưởng:</strong></p>
-                            <p>• Mỗi 1.000đ chi tiêu = 1 điểm</p>
-                            <p>• Đổi điểm lấy vé xem phim miễn phí</p>
-                            <p>• Đổi điểm lấy combo bắp nước</p>
-                            <br>
-                            <p><strong>Ưu đãi độc quyền:</strong></p>
-                            <p>• Giảm giá 10-20% vào các ngày đặc biệt</p>
-                            <p>• Mua 1 tặng 1 vào thứ 3 hàng tuần (với một số rạp)</p>
-                            <p>• Ưu tiên đặt chỗ cho suất chiếu sớm</p>
-                            <p>• Tham gia các sự kiện gặp gỡ diễn viên, đạo diễn</p>
-                            <br>
-                            <p><strong>Quà tặng đặc biệt:</strong></p>
-                            <p>• Vé xem phim miễn phí vào ngày sinh nhật</p>
-                            <p>• Quà tặng bất ngờ vào các dịp lễ lớn</p>
-                        </div>
-                    </div>
+                <div class="form-check full-width">
+                    <input type="checkbox" id="dong-y" name="dy">
+                    <label for="dong-y">Tôi đồng ý cung cấp các thông tin liên lạc như
+                        trên để phục vụ nhu cầu đăng ký dịch vụ tại rạp của tôi.</label>
                 </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Làm sao để biết được số điểm đã tích lũy?</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p>Bạn có thể kiểm tra số điểm tích lũy qua các cách sau:</p>
-                            <br>
-                            <p><strong>Trên website/ứng dụng:</strong></p>
-                            <p>• Đăng nhập vào tài khoản thành viên</p>
-                            <p>• Vào mục "Tài khoản" hoặc "Điểm thưởng"</p>
-                            <p>• Xem chi tiết lịch sử tích điểm và sử dụng điểm</p>
-                            <br>
-                        </div>
-                    </div>
+                <button type="submit" class="submit-button">Gửi</button>
+            </form>
+        </section>
+        <div style="margin: 40px 0px 40px;">
+            <h3 class="title-description">Giới Thiệu Về Các Dịch Vụ</h3>
+            <div class="description">
+                <div class="service-description">
+                    <h4>Thuê Rạp Tổ Chức Sự Kiện:</h4>
+                    <p>Đặt trọn không gian rạp chiếu phim cho sự kiện của bạn.
+                        Lý tưởng cho các buổi hội thảo, ra mắt sản phẩm,
+                        hoặc những buổi tiệc riêng tư đáng nhớ với màn hình cực lớn.</p>
                 </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Làm thế nào để đăng nhập vào Website </span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><strong>Bước 1:</strong> Truy cập trang chủ website</p>
-                            <p><strong>Bước 2:</strong> Click vào nút "Đăng nhập" ở góc trên bên phải</p>
-                            <p><strong>Bước 3:</strong> Nhập thông tin đăng nhập:</p>
-                            <p>• Email của tài khoản</p>
-                            <p>• Mật khẩu (nếu chưa có mật khẩu, click "Quên mật khẩu" để tạo mới)</p>
-                            <br>
-                        </div>
-                    </div>
+                <div class="service-description">
+                    <h4>Quảng Cáo Tại Rạp:</h4>
+                    <p>Tiếp cận hàng ngàn khách hàng tiềm năng ngay tại rạp.
+                        Đưa thương hiệu của bạn lên màn ảnh rộng
+                        và các vị trí đắc địa tại sảnh chờ để thu hút sự chú ý tối đa.</p>
                 </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Project của nhóm 33</span>
-                        <span class="faq-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <div class="faq-answer-content">
-                            <p><strong>Project Web Bán Vé Xem Phim</strong> là project kết thúc môn học lập trình Web của trường Đại Học Nông Lâm Tp.HCM.</p>
-                            <br>
-                        </div>
-                    </div>
+                <div class="service-description">
+                    <h4>Mua Phiếu Quà Tặng / E-Code:</h4>
+                    <p>ĐMón quà hoàn hảo cho mọi dịp.
+                        Mua phiếu quà tặng hoặc E-code tiện lợi để bạn bè,
+                        đối tác và người thân tự do lựa chọn bộ phim và suất chiếu yêu thích.</p>
+                </div>
+                <div class="service-description">
+                    <h4>Mua Vé Nhóm:</h4>
+                    <p>Càng đông càng vui! Tận hưởng mức giá ưu đãi đặc biệt khi đặt vé số lượng lớn cho
+                        công ty,
+                        trường học hoặc các buổi họp mặt, gắn kết cùng bạn bè.</p>
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Footer -->
     <div class="footer">
         <div class="footer-top">
             <ul class="footer-menu">
-                <li><a href="Chinh-sach.html">Chính sách</a></li>
-                <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
-                <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
-                <li><a href="Tin-dien-anh.html">Tin tức</a></li>
-                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
-                <li><a href="contact.html">Liên hệ</a></li>
+                <li><a href="Chinh-sach.html"><i class="fas fa-file-contract"></i> Chính sách</a></li>
+                <li><a href="${pageContext.request.contextPath}/home?status=Dang+chieu"><i class="fas fa-film"></i> Phim đang chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/home?status=Sap+chieu"><i class="fas fa-clock"></i> Phim sắp chiếu</a></li>
+                <li><a href="Tin-dien-anh.html"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+                <li><a href="Hoi-Dap.jsp"><i class="fas fa-question-circle"></i> Hỏi đáp</a></li>
+                <li><a href="contact.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
             </ul>
             <div class="footer-apps">
                 <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
@@ -496,28 +443,11 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
-            <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
-            <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+            <p><i class="fas fa-info-circle"></i> Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim.</p>
+            <p><i class="fas fa-copyright"></i> 2025 DTN Movie Ticket Seller. All rights reserved.</p>
         </div>
     </div>
 </div>
-
-<script>
-    function toggleFAQ(element) {
-        const faqItem = element.parentElement;
-        const isActive = faqItem.classList.contains('active');
-
-        // Đóng tất cả các FAQ items khác
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.classList.remove('active');
-        });
-
-        // Mở FAQ item được click (nếu nó chưa được mở)
-        if (!isActive) {
-            faqItem.classList.add('active');
-        }
-    }
-</script>
 </body>
+
 </html>

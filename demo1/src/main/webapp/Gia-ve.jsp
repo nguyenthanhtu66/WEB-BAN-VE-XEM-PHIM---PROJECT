@@ -1,14 +1,156 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>DTN Ticket Movie Seller</title>
-    <link rel="stylesheet" href="css/login-style.css">
+    <title>Title</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/price.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<style>
+    /* ========== USER DROPDOWN FIX ========== */
+    .user-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .header-item.user-profile {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
+
+    .header-item.user-profile:hover {
+        background-color: rgba(255, 102, 0, 0.2);
+    }
+
+    /* Dropdown menu */
+    .user-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 5px);
+        right: 0;
+        background: #1e1e1e;
+        min-width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 8px 0;
+        z-index: 1000;
+        border: 1px solid #4c4c4c;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: block !important;
+        margin-top: 5px;
+    }
+
+    /* Tạo đường dẫn cho chuột để hover mượt mà */
+    .user-dropdown-menu::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: transparent;
+    }
+
+    .user-dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-item {
+        padding: 12px 20px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+    }
+
+    .dropdown-item:hover {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: #4c4c4c;
+        margin: 8px 0;
+        width: 100%;
+    }
+
+    .logout-item {
+        color: #ff6b6b;
+    }
+
+    .logout-item:hover {
+        color: #ff4444;
+        background-color: rgba(255, 107, 107, 0.1);
+    }
+
+    /* ========== MENU DROPDOWN STYLES ========== */
+    .menu-item-wrapper {
+        position: relative;
+    }
+
+    .menu-item.has-dropdown {
+        cursor: pointer;
+    }
+
+    .menu-item-wrapper .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #1e1e1e;
+        min-width: 180px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 10px 0;
+        z-index: 999;
+        border: 1px solid #4c4c4c;
+        display: none;
+    }
+
+    .menu-item-wrapper:hover .dropdown-menu {
+        display: block;
+    }
+
+    .menu-item-wrapper .dropdown-item {
+        padding: 10px 20px;
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .menu-item-wrapper .dropdown-item:hover {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+    }
+</style>
 <body>
 <div id="app" class="app">
     <!-- Include Header from index.jsp -->
@@ -148,44 +290,60 @@
         </div>
     </div>
     <div class="main-container" id="main-container">
-        <div class ="login">
-            <form action="login" class="login-form" method="post">
-                <h2>Đăng Nhập</h2>
-                <c:if test="${loginError != null}">
-                    <p class="error">${loginError}</p>
-                </c:if>
-                <div class = "field-input">
-                    <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="Nhập email đăng nhập" value="${email != null ? email : ''}">
-                </div>
-                <c:if test="${errors.email != null}">
-                    <small class="error">${errors.email}</small>
-                </c:if>
-                <div class = "field-input">
-                    <label for="password">Mật khẩu</label>
-                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" >
-                    <c:if test="${errors.password != null}">
-                        <small class="error">${errors.password}</small>
-                    </c:if>
-                </div>
+        <h1>BẢNG GIÁ VÉ XEM PHIM</h1>
+        <table>
+            <caption>GIÁ VÉ NGƯỜI LỚN</caption>
+            <thead>
+            <tr>
+                <th>Loại Vé</th>
+                <th>Ngày Thường (Thứ 2 - Thứ 5)</th>
+                <th>Cuối Tuần (Thứ 6 - Chủ Nhật)</th>
+                <th>Ngày Lễ / Tết</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Vé 2D</td>
+                <td>80.000 VNĐ</td>
+                <td>100.000 VNĐ</td>
+                <td>120.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Vé 3D</td>
+                <td>100.000 VNĐ</td>
+                <td>130.000 VNĐ</td>
+                <td>150.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Vé VIP</td>
+                <td>120.000 VNĐ</td>
+                <td>150.000 VNĐ</td>
+                <td>180.000 VNĐ</td>
+            </tr>
+            </tbody>
+        </table>
 
-                <div class ="login-option">
-                    <label>
-                        <input type="checkbox">Ghi nhớ đăng nhập
-                    </label>
-                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
-                </div>
-
-                <button type="submit" class = "login-button">Đăng nhập</button>
-
-                <div class = "login-register">
-                    Bạn chưa có tài khoản? <a href="Register.jsp">Đăng ký</a>
-
-                </div>
-            </form>
-        </div>
+        <br>
+        <table>
+            <caption>GIÁ VÉ TRẺ EM VÀ NGƯỜI CAO TUỔI</caption>
+            <thead>
+            <tr>
+                <th>Đối Tượng</th>
+                <th>Giá Vé (Mọi suất chiếu)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Trẻ em (&lt; 1.2m)</td>
+                <td>50.000 VNĐ</td>
+            </tr>
+            <tr>
+                <td>Người cao tuổi (&gt; 60 tuổi)</td>
+                <td>60.000 VNĐ</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
     <!-- Footer -->
     <div class="footer">
         <div class="footer-top">

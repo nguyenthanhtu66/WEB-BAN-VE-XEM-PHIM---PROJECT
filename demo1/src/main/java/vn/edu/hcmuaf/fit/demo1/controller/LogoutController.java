@@ -18,16 +18,17 @@ public class LogoutController extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
-            // Xóa thông tin user khỏi session
+            // Xóa CẢ HAI attributes
+            session.removeAttribute("loggedUser");
             session.removeAttribute("user");
 
-            // Có thể xóa cart hoặc giữ lại tùy yêu cầu
-            // session.removeAttribute("cart");
+            // Có thể xóa cart
+            session.removeAttribute("cart");
 
             // Hủy session
             session.invalidate();
 
-            System.out.println("✅ User logged out");
+            System.out.println("✅ User logged out successfully");
         }
 
         // Chuyển hướng về trang chủ

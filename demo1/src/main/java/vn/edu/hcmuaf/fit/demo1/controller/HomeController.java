@@ -1,4 +1,3 @@
-
 package vn.edu.hcmuaf.fit.demo1.controller;
 
 import jakarta.servlet.ServletException;
@@ -32,21 +31,27 @@ public class HomeController extends HttpServlet {
 
         System.out.println("====== TRANG CHỦ ĐƯỢC GỌI ======");
 
-        // Lấy user từ session
+        // Lấy user từ session - CHỈ KIỂM TRA loggedUser
         HttpSession session = request.getSession(false);
         User loggedUser = null;
 
         if (session != null) {
-            // Thử lấy với tên "loggedUser" (từ LoginController)
             loggedUser = (User) session.getAttribute("loggedUser");
 
-            // Nếu không có, thử với tên "user" (từ LoginBeforePaymentController)
+            // Nếu không có loggedUser, kiểm tra user cũ
             if (loggedUser == null) {
                 loggedUser = (User) session.getAttribute("user");
+                if (loggedUser != null) {
+                    // Migrate từ user cũ sang loggedUser
+                    session.setAttribute("loggedUser", loggedUser);
+                    session.removeAttribute("user");
+                    System.out.println("🔄 Migrated user attribute to loggedUser");
+                }
             }
 
             if (loggedUser != null) {
                 System.out.println("✅ Người dùng đã đăng nhập: " + loggedUser.getEmail());
+                // CHỈ SET MỘT ATTRIBUTE DUY NHẤT
                 request.setAttribute("user", loggedUser);
             } else {
                 System.out.println("❌ Không có người dùng đăng nhập");

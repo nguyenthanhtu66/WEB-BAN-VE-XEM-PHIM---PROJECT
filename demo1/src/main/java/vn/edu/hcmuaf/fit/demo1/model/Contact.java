@@ -11,7 +11,7 @@ public class Contact {
     private String status;
 
     public Contact(String hoTen, String soDienThoai, String email, String dichVu, String chiTiet, String dy,
-            String status) {
+                   String status) {
         this.hoTen = hoTen;
         this.soDienThoai = soDienThoai;
         this.email = email;
@@ -22,18 +22,18 @@ public class Contact {
     }
 
     public Contact(
-        String hoTen,
-        String soDienThoai,
-        String email,
-        String dichVu,
-        String chiTiet
-) {
-    this.hoTen = hoTen;
-    this.soDienThoai = soDienThoai;
-    this.email = email;
-    this.dichVu = dichVu;
-    this.chiTiet = chiTiet;
-}
+            String hoTen,
+            String soDienThoai,
+            String email,
+            String dichVu,
+            String chiTiet
+    ) {
+        this.hoTen = hoTen;
+        this.soDienThoai = soDienThoai;
+        this.email = email;
+        this.dichVu = dichVu;
+        this.chiTiet = chiTiet;
+    }
 
 
     public String getHoTen() {
