@@ -1250,39 +1250,25 @@
                     <h2 class="heading"><i class="fas fa-newspaper"></i> TIN TỨC</h2>
                 </div>
                 <div class="news-grid">
-                    <a href="Tin-tuc-chi-tiet-1.html" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://i.imgur.com/MCHyJQX.jpeg" alt="Quái Thú Vô Hình">
+                    <c:forEach var="n" items="${newsList}">
+                        <a href="Tin-tuc-chi-tiet-?id=${n.id}" class="news-link">
+                            <div class="news-card">
+                                <div class="news-poster">
+                                    <img src="${pageContext.request.contextPath}/img/${n.image_url}" alt="${n.title}">
+                                </div>
+                                <div class="news-info">
+                                    <p class="news-type">
+                                        <c:choose>
+                                            <c:when test="${n.category == 'movie_review'}">Bình luận phim</c:when>
+                                            <c:otherwise>Tin điện ảnh</c:otherwise>
+                                        </c:choose>
+                                    </p>
+                                    <h3 class="news-title">${n.title}</h3>
+                                </div>
                             </div>
-                            <div class="news-info">
-                                <p class="news-type">Bình luận phim</p>
-                                <h3 class="news-title">Review Quái Thú Vô Hình: Vùng Đất Chết Chóc</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://i.imgur.com/HqIIkCx.jpeg" alt="Top 5 phim">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-type">Tin điện ảnh</p>
-                                <h3 class="news-title">Top 5 phim đáng xem nhất tháng 11</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="https://cdn.galaxycine.vn/media/2025/9/15/tran-chien-sau-tran-chien-500_1757909554042.jpg" alt="Trận Chiến">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-type">Bình luận phim</p>
-                                <h3 class="news-title">Review Trận Chiến Sau Trận Chiến</h3>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    </c:forEach>
+
                 </div>
 
                 <div class="see-more-container">
@@ -1300,40 +1286,22 @@
                     <h2 class="heading"><i class="fas fa-gift"></i> KHUYẾN MÃI</h2>
                 </div>
                 <div class="promotion-grid">
-                    <a href="Khuyen-mai-chi-tiet.jsp" class="promotion-link">
-                        <div class="promotion-card">
-                            <div class="promotion-poster">
-                                <img src="${pageContext.request.contextPath}/img/khuyenmai-1.png" alt="Ưu đãi U22">
+                    <c:forEach var="p" items="${promsList}">
+                        <a href="Khuyen-mai-chi-tiet?id=${p.id}" class="promotion-link">
+                            <div class="promotion-card">
+                                <div class="promotion-poster">
+                                    <img src="${pageContext.request.contextPath}/img/${p.imageUrl}">
+                                </div>
+                                <div class="promotion-info">
+                                    <h3 class="promotion-title">${p.title}</h3>
+                                </div>
                             </div>
-                            <div class="promotion-info">
-                                <h3 class="promotion-title">ƯU ĐÃI GIÁ VÉ 55.000Đ/VÉ 2D CHO THÀNH VIÊN U22</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="promotion-link">
-                        <div class="promotion-card">
-                            <div class="promotion-poster">
-                                <img src="${pageContext.request.contextPath}/img/khuyenmai-2.png" alt="Special Monday">
-                            </div>
-                            <div class="promotion-info">
-                                <h3 class="promotion-title">SPECIAL MONDAY - ĐỒNG GIÁ 50.000Đ/VÉ 2D</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="promotion-link">
-                        <div class="promotion-card">
-                            <div class="promotion-poster">
-                                <img src="${pageContext.request.contextPath}/img/khuyenmai-3.jpg" alt="Gà rán">
-                            </div>
-                            <div class="promotion-info">
-                                <h3 class="promotion-title">GÀ RÁN SIÊU MÊ LY ĐỒNG GIÁ CHỈ 79K</h3>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    </c:forEach>
                 </div>
 
                 <div class="see-more-container">
-                    <a href="Khuyen-mai.jsp" class="see-more-btn" role="button">
+                    <a href="${pageContext.request.contextPath}/khuyen-mai" class="see-more-btn" role="button">
                         <i class="fas fa-arrow-right"></i> Xem thêm
                     </a>
                 </div>

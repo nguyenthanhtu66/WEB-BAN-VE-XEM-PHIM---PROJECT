@@ -12,7 +12,17 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+<style>
+    .content-header a {
+        color: #f5b301;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
+    .content-header a:hover {
+        text-decoration: underline;
+    }
+</style>
 <body>
     <header>
         <div class="content-header">
