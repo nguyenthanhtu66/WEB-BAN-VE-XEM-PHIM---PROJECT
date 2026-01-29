@@ -6,11 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import vn.edu.hcmuaf.fit.demo1.model.*;
+import vn.edu.hcmuaf.fit.demo1.model.Movie;
+import vn.edu.hcmuaf.fit.demo1.model.User;
+import vn.edu.hcmuaf.fit.demo1.model.Banner;
 import vn.edu.hcmuaf.fit.demo1.service.MovieService;
 import vn.edu.hcmuaf.fit.demo1.service.BannerService;
-import vn.edu.hcmuaf.fit.demo1.service.NewsService;
-import vn.edu.hcmuaf.fit.demo1.service.PromoteService;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,8 +20,7 @@ public class HomeController extends HttpServlet {
 
     private final MovieService movieService = new MovieService();
     private final BannerService bannerService = new BannerService();
-    private final NewsService newsService = new NewsService();
-    private final PromoteService promoteService = new PromoteService();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -80,12 +79,6 @@ public class HomeController extends HttpServlet {
         } else {
             movies = movieService.getMoviesByStatusForHome(normalizedStatus);
         }
-
-        List<News> newsList = newsService.getActiveNews();
-        request.setAttribute("newsList", newsList);
-
-        List<Promote> promsList = promoteService.getActiveProm();
-        request.setAttribute("promsList", promsList);
 
         request.setAttribute("movies", movies);
         request.setAttribute("currentStatus", currentStatus);
