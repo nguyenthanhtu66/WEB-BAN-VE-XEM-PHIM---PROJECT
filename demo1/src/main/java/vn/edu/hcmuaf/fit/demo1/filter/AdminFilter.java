@@ -1,42 +1,48 @@
 package vn.edu.hcmuaf.fit.demo1.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.*;
+
 import vn.edu.hcmuaf.fit.demo1.model.User;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/admin/*"})
+@WebFilter("/admin/*")
 public class AdminFilter implements Filter {
 
-    public void init(FilterConfig config) throws ServletException {
-    }
-
-    public void destroy() {
-    }
-
     @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
 
-        HttpSession session = req.getSession(false);
-        User user = (session != null) ? (User) session.getAttribute("user") : null;
+        // Lấy session (không tạo mới)
+        HttpSession session = request.getSession(false);
+
+        // ===== CHƯA LOGIN =====
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
+        // Lấy user từ session
+        User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            res.sendRedirect(req.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
-        if (!"admin".equalsIgnoreCase(user.getRole())) {
-            res.sendRedirect(req.getContextPath() + "/404.jsp");
+        // ===== KIỂM TRA QUYỀN ADMIN =====
+        if ("admin".equalsIgnoreCase(user.getRole())) {
+            chain.doFilter(req, res); // Cho phép truy cập
             return;
         }
 
-        chain.doFilter(request, response);
+        // ===== KHÔNG PHẢI ADMIN =====
+        response.sendRedirect(request.getContextPath() + "/403.jsp");
+
     }
 }
