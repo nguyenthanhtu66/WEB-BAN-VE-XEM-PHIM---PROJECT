@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class Seat implements Serializable {
     private int id;
     private int roomId;
-    private String seatCode; // A01, B05, C12
-    private String rowNumber; // A, B, C
-    private int seatNumber; // 1, 2, 3
-    private String seatType; // normal, vip
+    private String seatCode;
+    private String rowNumber;
+    private int seatNumber;
+    private String seatType;
     private boolean isActive;
 
     public Seat() {}
@@ -25,24 +25,72 @@ public class Seat implements Serializable {
     }
 
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public int getRoomId() { return roomId; }
-    public void setRoomId(int roomId) { this.roomId = roomId; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getSeatCode() { return seatCode; }
-    public void setSeatCode(String seatCode) { this.seatCode = seatCode; }
+    public int getRoomId() {
+        return roomId;
+    }
 
-    public String getRowNumber() { return rowNumber; }
-    public void setRowNumber(String rowNumber) { this.rowNumber = rowNumber; }
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
 
-    public int getSeatNumber() { return seatNumber; }
-    public void setSeatNumber(int seatNumber) { this.seatNumber = seatNumber; }
+    public String getSeatCode() {
+        return seatCode;
+    }
 
-    public String getSeatType() { return seatType; }
-    public void setSeatType(String seatType) { this.seatType = seatType; }
+    public void setSeatCode(String seatCode) {
+        this.seatCode = seatCode;
+    }
 
-    public boolean getIsActive() { return isActive; }
-    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+    public String getRowNumber() {
+        return rowNumber;
+    }
+
+    public void setRowNumber(String rowNumber) {
+        this.rowNumber = rowNumber;
+    }
+
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public String getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Seat{" +
+                "id=" + id +
+                ", roomId=" + roomId +
+                ", seatCode='" + seatCode + '\'' +
+                ", rowNumber='" + rowNumber + '\'' +
+                ", seatNumber=" + seatNumber +
+                ", seatType='" + seatType + '\'' +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

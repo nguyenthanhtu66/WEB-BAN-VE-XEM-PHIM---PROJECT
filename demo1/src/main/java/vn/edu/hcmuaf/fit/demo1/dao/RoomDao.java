@@ -18,91 +18,82 @@ public class RoomDao extends BaseDao {
             room.setRoomName(rs.getString("room_name"));
             room.setTotalSeats(rs.getInt("total_seats"));
             room.setRoomType(rs.getString("room_type"));
-            room.setIsActive(rs.getBoolean("is_active"));
+            room.setActive(rs.getBoolean("is_active"));
             return room;
         }
     }
 
-    // Lấy phòng theo ID
-    public Room getRoomById(int roomId) {
-        String sql = "SELECT * FROM rooms WHERE id = :roomId";
-
-        return get().withHandle(handle ->
-                handle.createQuery(sql)
-                        .bind("roomId", roomId)
-                        .map(new RoomMapper())
-                        .findOne()
-                        .orElse(null)
-        );
-    }
-
-    // Lấy phòng theo tên
-    public Room getRoomByName(String roomName) {
-        String sql = "SELECT * FROM rooms WHERE room_name = :roomName AND is_active = TRUE";
-
-        return get().withHandle(handle ->
-                handle.createQuery(sql)
-                        .bind("roomName", roomName)
-                        .map(new RoomMapper())
-                        .findOne()
-                        .orElse(null)
-        );
-    }
-
-    // Kiểm tra phòng có sẵn sàng cho suất chiếu
-    public boolean isRoomAvailable(int roomId, String date, String time) {
-        String sql = """
-            SELECT COUNT(*) FROM showtimes 
-            WHERE room_id = :roomId 
-            AND show_date = :date 
-            AND show_time = :time
-            AND is_active = TRUE
-            """;
-
-        int count = get().withHandle(handle ->
-                handle.createQuery(sql)
-                        .bind("roomId", roomId)
-                        .bind("date", date)
-                        .bind("time", time)
-                        .mapTo(Integer.class)
-                        .one()
-        );
-
-        return count == 0;
-    }
-    // Lấy phòng có suất chiếu cho phim cụ thể
-    public List<Room> getRoomsForMovie(int movieId) {
-        String sql = """
-        SELECT DISTINCT r.* 
-        FROM rooms r
-        JOIN showtimes st ON r.id = st.room_id
-        WHERE st.movie_id = :movieId
-        AND st.is_active = TRUE
-        AND st.show_date >= CURDATE()
-        AND r.is_active = TRUE
-        ORDER BY r.room_name
-        """;
-
-        return get().withHandle(handle ->
-                handle.createQuery(sql)
-                        .bind("movieId", movieId)
-                        .map(new RoomMapper())
-                        .list()
-        );
-    }
-
     // Lấy tất cả phòng đang hoạt động
     public List<Room> getAllActiveRooms() {
-        String sql = """
-        SELECT * FROM rooms 
-        WHERE is_active = TRUE 
-        ORDER BY room_name
-        """;
+        String sql = "SELECT * FROM rooms WHERE is_active = true ORDER BY room_name";
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
                         .map(new RoomMapper())
                         .list()
         );
+    }
+
+    // Lấy phòng theo ID
+    public Room getRoomById(int id) {
+        String sql = "SELECT * FROM rooms WHERE id = :id";
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("id", id)
+                        .map(new RoomMapper())
+                        .findOne()
+                        .orElse(null)
+        );
+    }
+
+    // Lấy các phòng có suất chiếu cho phim cụ thể
+    public List<Room> getRoomsByMovieId(int movieId) {
+        System.out.println("RoomDao.getRoomsByMovieId - movieId: " + movieId);
+
+        String sql = """
+            SELECT DISTINCT r.*
+            FROM rooms r
+            INNER JOIN showtimes s ON r.id = s.room_id
+            INNER JOIN movies m ON s.movie_id = m.id
+            WHERE s.movie_id = :movieId 
+              AND s.is_active = true
+              AND s.show_date >= CURDATE()
+              AND r.is_active = true
+            ORDER BY r.room_name
+            """;
+
+        try {
+            List<Room> rooms = get().withHandle(handle ->
+                    handle.createQuery(sql)
+                            .bind("movieId", movieId)
+                            .map(new RoomMapper())
+                            .list()
+            );
+
+            System.out.println("RoomDao.getRoomsByMovieId - query executed, found " +
+                    (rooms != null ? rooms.size() : 0) + " rooms");
+            return rooms;
+
+        } catch (Exception e) {
+            System.err.println("Error in RoomDao.getRoomsByMovieId: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Kiểm tra phòng có tồn tại và active không
+    public boolean isRoomActive(int roomId) {
+        String sql = "SELECT is_active FROM rooms WHERE id = :id";
+
+        Boolean isActive = get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .bind("id", roomId)
+                        .mapTo(Boolean.class)
+                        .findOne()
+                        .orElse(false)
+        );
+
+        return isActive;
     }
 }
