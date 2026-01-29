@@ -2,23 +2,18 @@ package vn.edu.hcmuaf.fit.demo1.dao;
 
 import vn.edu.hcmuaf.fit.demo1.model.User;
 
-import java.util.Optional;
+import java.util.List;
 
 public class UserDao extends BaseDao {
 
-    // Thêm user mới
-    public void insert(User user) {
+    public void insert(User user){
         get().useHandle(handle ->
                 handle.createUpdate("""
-            INSERT INTO users(
-              email, password, full_name, phone, gender, 
-              birth_date, city, avatar_url, role, is_active,
-              created_at, updated_at
+            insert into users(
+              email, password, full_name, phone, gender, birth_date, role, is_active
             )
-            VALUES (
-              :email, :password, :fullName, :phone, :gender,
-              :birthDate, :city, :avatarUrl, :role, :isActive,
-              :createdAt, :updatedAt
+            values (
+              :email, :password, :fullName, :phone, :gender, :birthDate, :role, :active
             )
         """)
                         .bindBean(user)
@@ -26,8 +21,7 @@ public class UserDao extends BaseDao {
         );
     }
 
-    // Tìm user bằng email
-    public User findByEmail(String email) {
+    public User findByEmail(String email){
         return get().withHandle(handle ->
                 handle.createQuery("SELECT * FROM users WHERE email = :email")
                         .bind("email", email)
@@ -37,8 +31,8 @@ public class UserDao extends BaseDao {
         );
     }
 
-    // Tìm user bằng ID
-    public User findById(int id) {
+    // ===== THÊM MỚI =====
+    public User findById(int id){
         return get().withHandle(handle ->
                 handle.createQuery("SELECT * FROM users WHERE id = :id")
                         .bind("id", id)
@@ -48,92 +42,30 @@ public class UserDao extends BaseDao {
         );
     }
 
-    // Kiểm tra email đã tồn tại chưa
-    public boolean emailExists(String email) {
-        return get().withHandle(handle ->
-                handle.createQuery("SELECT COUNT(*) FROM users WHERE email = :email")
-                        .bind("email", email)
-                        .mapTo(Integer.class)
-                        .one() > 0
-        );
-    }
+    public void updateProfile(int id,
+                              String fullName,
+                              String phone,
+                              String email,
+                              String gender,
+                              String birthDate) {
 
-    // Cập nhật thông tin user
-    public void update(User user) {
         get().useHandle(handle ->
                 handle.createUpdate("""
-            UPDATE users SET
-              full_name = :fullName,
-              phone = :phone,
-              gender = :gender,
-              birth_date = :birthDate,
-              city = :city,
-              avatar_url = :avatarUrl,
-              role = :role,
-              is_active = :isActive,
-              updated_at = :updatedAt,
-              last_login = :lastLogin,
-              last_logout = :lastLogout
-            WHERE id = :id
-        """)
-                        .bindBean(user)
-                        .execute()
-        );
-    }
-
-    // Cập nhật mật khẩu
-    public void updatePassword(int userId, String hashedPassword) {
-        get().useHandle(handle ->
-                handle.createUpdate("UPDATE users SET password = :password WHERE id = :id")
-                        .bind("password", hashedPassword)
-                        .bind("id", userId)
-                        .execute()
-        );
-    }
-
-    // Cập nhật thời gian đăng nhập cuối
-    public void updateLastLogin(int userId) {
-        get().useHandle(handle ->
-                handle.createUpdate("UPDATE users SET last_login = NOW() WHERE id = :id")
-                        .bind("id", userId)
-                        .execute()
-        );
-    }
-
-    // Cập nhật thời gian đăng xuất cuối
-    public void updateLastLogout(int userId) {
-        get().useHandle(handle ->
-                handle.createUpdate("UPDATE users SET last_logout = NOW() WHERE id = :id")
-                        .bind("id", userId)
-                        .execute()
-        );
-    }
-
-    // Xóa user (soft delete - đánh dấu không active)
-    public void deactivateUser(int userId) {
-        get().useHandle(handle ->
-                handle.createUpdate("UPDATE users SET is_active = false WHERE id = :id")
-                        .bind("id", userId)
-                        .execute()
-        );
-    }
-
-    // Lấy số lượng user
-    public int countUsers() {
-        return get().withHandle(handle ->
-                handle.createQuery("SELECT COUNT(*) FROM users")
-                        .mapTo(Integer.class)
-                        .one()
-        );
-    }
-
-    // Lấy số lượng user theo role
-    public int countUsersByRole(String role) {
-        return get().withHandle(handle ->
-                handle.createQuery("SELECT COUNT(*) FROM users WHERE role = :role AND is_active = true")
-                        .bind("role", role)
-                        .mapTo(Integer.class)
-                        .one()
+                    UPDATE users
+                    SET full_name  = :fullName,
+                        phone      = :phone,
+                        email      = :email,
+                        gender     = :gender,
+                        birth_date = :birthDate
+                    WHERE id = :id
+                """)
+                .bind("id", id)
+                .bind("fullName", fullName)
+                .bind("phone", phone)
+                .bind("email", email)
+                .bind("gender", gender)
+                .bind("birthDate", birthDate)
+                .execute()
         );
     }
 }
