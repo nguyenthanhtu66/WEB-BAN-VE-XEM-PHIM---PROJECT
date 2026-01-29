@@ -27,10 +27,11 @@
             <h2>QUẢN LÝ</h2>
             <nav>
                 <ul>
-                    <li><a href="admin-movies.html">Phim</a></li>
-                    <li><a href="admin-orders.html">Đặt Vé</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/movies">Phim</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/banners" >Banner</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/contacts">Liên hệ</a></li>
                     <li><a href="admin-news.html">Tin Tức & Ưu Đãi</a></li>
-                    <li><a class="active" href="${pageContext.request.contextPath}/admin-users">Người Dùng</a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin-users" class="active">Người Dùng</a></li>
                 </ul>
             </nav>
         </aside>

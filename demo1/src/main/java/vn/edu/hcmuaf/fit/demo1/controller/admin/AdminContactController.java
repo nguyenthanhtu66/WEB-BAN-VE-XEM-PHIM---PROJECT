@@ -19,7 +19,7 @@ public class AdminContactController extends HttpServlet {
             throws ServletException, IOException {
 
         req.setAttribute("contacts", service.getAll());
-        req.getRequestDispatcher("admin/contacts.jsp").forward(req, resp);
+        req.getRequestDispatcher("/admin/admin-contacts.jsp").forward(req, resp);
     }
 
     @Override

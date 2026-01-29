@@ -478,12 +478,12 @@
     <div class="footer">
         <div class="footer-top">
             <ul class="footer-menu">
-                <li><a href="Chinh-sach.html">Chính sách</a></li>
-                <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
-                <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
-                <li><a href="Tin-dien-anh.html">Tin tức</a></li>
-                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
-                <li><a href="contact.html">Liên hệ</a></li>
+                <li><a href="Chinh-sach.html"><i class="fas fa-file-contract"></i> Chính sách</a></li>
+                <li><a href="${pageContext.request.contextPath}/list-product?status=Dang+chieu"><i class="fas fa-film"></i> Phim đang chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"><i class="fas fa-clock"></i> Phim sắp chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/tin-dien-anh"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+                <li><a href="Hoi-Dap.jsp"><i class="fas fa-question-circle"></i> Hỏi đáp</a></li>
+                <li><a href="contact.jsp"><i class="fas fa-phone"></i> Liên hệ</a></li>
             </ul>
             <div class="footer-apps">
                 <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
@@ -496,9 +496,8 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
-            <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
-            <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+            <p><i class="fas fa-info-circle"></i> Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim.</p>
+            <p><i class="fas fa-copyright"></i> 2025 DTN Movie Ticket Seller. All rights reserved.</p>
         </div>
     </div>
 </div>

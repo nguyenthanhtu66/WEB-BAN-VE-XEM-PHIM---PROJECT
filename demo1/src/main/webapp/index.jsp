@@ -1083,8 +1083,8 @@
                         <i class="fas fa-newspaper"></i> TIN TỨC
                     </div>
                     <div class="dropdown-menu">
-                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
-                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+                        <a href="{pageContext.request.contextPath}/tin-dien-anh" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="{pageContext.request.contextPath}/binh-luan-phim" class="dropdown-item">Bình luận phim</a>
                     </div>
                 </div>
 
@@ -1462,7 +1462,7 @@
                 <li><a href="Chinh-sach.html"><i class="fas fa-file-contract"></i> Chính sách</a></li>
                 <li><a href="${pageContext.request.contextPath}/list-product?status=Dang+chieu"><i class="fas fa-film"></i> Phim đang chiếu</a></li>
                 <li><a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"><i class="fas fa-clock"></i> Phim sắp chiếu</a></li>
-                <li><a href="Tin-dien-anh.html"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+                <li><a href="${pageContext.request.contextPath}/tin-dien-anh"><i class="fas fa-newspaper"></i> Tin tức</a></li>
                 <li><a href="Hoi-Dap.jsp"><i class="fas fa-question-circle"></i> Hỏi đáp</a></li>
                 <li><a href="contact.jsp"><i class="fas fa-phone"></i> Liên hệ</a></li>
             </ul>

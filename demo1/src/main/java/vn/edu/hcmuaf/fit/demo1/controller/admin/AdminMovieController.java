@@ -42,7 +42,7 @@ public class AdminMovieController extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("/WEB-INF/views/admin/admin-movies.jsp")
+        request.getRequestDispatcher("/admin/admin-movies.jsp")
                 .forward(request, response);
     }
 

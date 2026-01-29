@@ -48,7 +48,7 @@ public class AdminEditMovieController extends HttpServlet {
         }
 
         request.setAttribute("movie", movie);
-        request.getRequestDispatcher("/WEB-INF/views/admin/admin-movies.jsp")
+        request.getRequestDispatcher("/admin/admin-movies.jsp")
                 .forward(request, response);
     }
 

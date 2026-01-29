@@ -253,7 +253,7 @@ header {
                             <li><a href="${pageContext.request.contextPath}/admin/movies" class="active">Phim</a></li>
                             <li><a href="${pageContext.request.contextPath}/admin/banners" >Banner</a></li>
                             <li><a href="${pageContext.request.contextPath}/admin/contacts" >Liên hệ</a></li>
-                            <li><a href="${pageContext.request.contextPath}/admin/users">Người dùng</a></li>
+                            <li><a href="${pageContext.request.contextPath}/admin-users">Người Dùng</a></li>
                         </ul>
                     </aside>
 
