@@ -1083,8 +1083,8 @@
                         <i class="fas fa-newspaper"></i> TIN TỨC
                     </div>
                     <div class="dropdown-menu">
-                        <a href="{pageContext.request.contextPath}/tin-dien-anh" class="dropdown-item">Tin điện ảnh</a>
-                        <a href="{pageContext.request.contextPath}/binh-luan-phim" class="dropdown-item">Bình luận phim</a>
+                        <a href="${pageContext.request.contextPath}/tin-dien-anh" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="${pageContext.request.contextPath}/binh-luan-phim" class="dropdown-item">Bình luận phim</a>
                     </div>
                 </div>
 
@@ -1286,7 +1286,7 @@
                 </div>
 
                 <div class="see-more-container">
-                    <a href="Tin-dien-anh.html" class="see-more-btn" role="button">
+                    <a href="${pageContext.request.contextPath}/tin-dien-anh" class="see-more-btn" role="button">
                         <i class="fas fa-arrow-right"></i> Xem thêm
                     </a>
                 </div>

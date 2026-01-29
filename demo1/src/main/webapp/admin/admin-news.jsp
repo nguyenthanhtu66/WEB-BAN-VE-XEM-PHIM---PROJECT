@@ -11,8 +11,8 @@
 <body>
     <header>
         <div class="content-header">
-            <div> <a href="index.html">Đăng Xuất</a></div>
-            <div><i><b>Xin chào admin!</b></i></div>
+            <a href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
+            <b>Xin chào ${sessionScope.admin.username}</b>
         </div>
     </header>
 
