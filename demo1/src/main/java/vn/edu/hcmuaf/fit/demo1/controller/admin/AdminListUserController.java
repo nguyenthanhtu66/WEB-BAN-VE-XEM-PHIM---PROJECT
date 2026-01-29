@@ -1,9 +1,8 @@
-package vn.edu.hcmuaf.fit.demo1.controller;
+package vn.edu.hcmuaf.fit.demo1.controller.admin;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import vn.edu.hcmuaf.fit.demo1.dao.UserDao;
 import vn.edu.hcmuaf.fit.demo1.model.User;
 import vn.edu.hcmuaf.fit.demo1.service.UserService;
 
@@ -81,7 +80,7 @@ public class AdminListUserController extends HttpServlet {
             u.setEmail(request.getParameter("email"));
             u.setPassword(request.getParameter("password"));
             u.setGender(request.getParameter("gender"));
-            u.setBirthDate(LocalDate.parse(request.getParameter("birthDate")));
+            u.setBirthDate(java.sql.Date.valueOf(LocalDate.parse(request.getParameter("birthDate"))));
             u.setRole(request.getParameter("role"));
             u.setActive(true);
 
@@ -97,7 +96,7 @@ public class AdminListUserController extends HttpServlet {
             u.setFullName(request.getParameter("fullName"));
             u.setEmail(request.getParameter("email"));
             u.setGender(request.getParameter("gender"));
-            u.setBirthDate(LocalDate.parse(request.getParameter("birthDate")));
+            u.setBirthDate(java.sql.Date.valueOf(LocalDate.parse(request.getParameter("birthDate"))));
             u.setRole(request.getParameter("role"));
 
             userService.update(u);
@@ -122,4 +121,4 @@ public class AdminListUserController extends HttpServlet {
         System.out.println("PASS = " + request.getParameter("password"));
         response.getWriter().write("success");
     }
-    }
+}

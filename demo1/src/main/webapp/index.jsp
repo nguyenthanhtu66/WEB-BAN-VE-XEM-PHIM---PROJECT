@@ -379,6 +379,176 @@
             cursor: not-allowed !important;
             opacity: 0.9;
         }
+        /* ========== TOAST NOTIFICATION SYSTEM ========== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .toast {
+            padding: 15px 20px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.hide {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+
+        .toast::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left: 5px solid #28a745;
+        }
+
+        .toast-success::before {
+            background: #28a745;
+        }
+
+        .toast-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border-left: 5px solid #dc3545;
+        }
+
+        .toast-error::before {
+            background: #dc3545;
+        }
+
+        .toast-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border-left: 5px solid #17a2b8;
+        }
+
+        .toast-info::before {
+            background: #17a2b8;
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left: 5px solid #ffc107;
+        }
+
+        .toast-warning::before {
+            background: #ffc107;
+        }
+
+        .toast-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .toast-success .toast-icon {
+            color: #28a745;
+        }
+
+        .toast-error .toast-icon {
+            color: #dc3545;
+        }
+
+        .toast-info .toast-icon {
+            color: #17a2b8;
+        }
+
+        .toast-warning .toast-icon {
+            color: #ffc107;
+        }
+
+        .toast-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 0 0 10px;
+            transition: color 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: #333;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.2);
+            width: 100%;
+            transform-origin: left;
+            animation: progress 5s linear forwards;
+        }
+
+        @keyframes progress {
+            from {
+                transform: scaleX(1);
+            }
+            to {
+                transform: scaleX(0);
+            }
+        }
+
+        /* Responsive toast */
+        @media (max-width: 768px) {
+            .toast-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            .toast {
+                padding: 12px 15px;
+            }
+        }
 
         /* LEGEND BOX COLORS */
         .legend-box.available { background: #3498db !important; }
@@ -688,20 +858,127 @@
             background-color: rgba(255, 102, 0, 0.1);
             color: #ff6600;
         }
+        /* ========== SEARCH RESULTS MESSAGE ========== */
+        .message.info {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.15) 0%, rgba(41, 128, 185, 0.15) 100%);
+            border: 1px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message.info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: #3498db;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .message.info h3 {
+            color: #3498db;
+            font-size: 20px;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .message.info h3 i {
+            color: #2980b9;
+            font-size: 22px;
+        }
+
+        .message.info p {
+            color: #2c3e50;
+            font-size: 16px;
+            margin: 0;
+            padding: 8px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .message.info .search-keyword {
+            color: #e74c3c;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .message.info .results-count {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Animation for search results */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.info {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .message.info {
+                padding: 15px;
+                margin: 15px 0;
+            }
+
+            .message.info h3 {
+                font-size: 18px;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .message.info p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message.info {
+                padding: 12px;
+            }
+
+            .message.info h3 {
+                font-size: 16px;
+            }
+
+            .message.info h3 i {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
 <div id="app" class="app">
-    <!-- Header Label with Search -->
+    <!-- Include Header from index.jsp -->
     <div class="header-label">
         <div class="header-container">
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-container">
-                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
-                       value="${searchKeyword != null ? searchKeyword : ''}">
+                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
                 <button type="submit" style="display:none;">Search</button>
             </form>
             <div class="header-account">
-                <!-- Các liên kết chung -->
                 <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">
                     <i class="fas fa-ticket-alt"></i> Kho vé
                 </a>
@@ -715,7 +992,6 @@
                     </c:if>
                 </a>
 
-                <!-- Phần hiển thị trạng thái đăng nhập -->
                 <c:choose>
                     <c:when test="${not empty sessionScope.loggedUser}">
                         <div class="user-dropdown">
@@ -777,7 +1053,7 @@
         </div>
     </div>
 
-    <!-- Header Menu -->
+    <!-- Menu -->
     <div class="header-menu">
         <div class="menu-container">
             <a href="${pageContext.request.contextPath}/home" class="logo">
@@ -785,8 +1061,7 @@
             </a>
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="${pageContext.request.contextPath}/home"
-                       style="color: #ff6600;" class="menu-item">
+                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
                         <i class="fas fa-home"></i> TRANG CHỦ
                     </a>
                 </div>
@@ -796,9 +1071,9 @@
                         <i class="fas fa-film"></i> PHIM
                     </div>
                     <div class="dropdown-menu">
-                        <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
+                        <a href="${pageContext.request.contextPath}/list-product?status=Dang+chieu"
                            class="dropdown-item">Phim đang chiếu</a>
-                        <a href="${pageContext.request.contextPath}/home?status=Sap+chieu"
+                        <a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"
                            class="dropdown-item">Phim sắp chiếu</a>
                     </div>
                 </div>
@@ -814,18 +1089,18 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.jsp">
+                    <a class="menu-item" href="Gia-ve.jsp">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.jsp">
+                    <a class="menu-item" href="Gioi-thieu.jsp">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact.html">
+                    <a class="menu-item" href="contact.jsp">
                         <i class="fas fa-phone"></i> LIÊN HỆ
                     </a>
                 </div>
@@ -839,9 +1114,20 @@
         <div class="slideshow-container">
             <div class="slider-container" id="mySlider">
                 <div class="slider-track">
-                    <div class="slide">
-                        <img src="${pageContext.request.contextPath}/img/anh-slideshow-1.jpg" alt="Slide 1">
-                    </div>
+                    <c:forEach var="banner" items="${banners}">
+                        <div class="slide">
+                            <c:choose>
+                                <c:when test="${not empty banner.linkUrl}">
+                                    <a href="${banner.linkUrl}" target="_blank">
+                                        <img src="${pageContext.request.contextPath}${banner.imageUrl}" alt="${banner.title}">
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}${banner.imageUrl}" alt="${banner.title}">
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
             <button class="slider-btn prev" id="prevBtn">❮</button>
@@ -1174,11 +1460,11 @@
         <div class="footer-top">
             <ul class="footer-menu">
                 <li><a href="Chinh-sach.html"><i class="fas fa-file-contract"></i> Chính sách</a></li>
-                <li><a href="${pageContext.request.contextPath}/home?status=Dang+chieu"><i class="fas fa-film"></i> Phim đang chiếu</a></li>
-                <li><a href="${pageContext.request.contextPath}/home?status=Sap+chieu"><i class="fas fa-clock"></i> Phim sắp chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/list-product?status=Dang+chieu"><i class="fas fa-film"></i> Phim đang chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/list-product?status=Sap+chieu"><i class="fas fa-clock"></i> Phim sắp chiếu</a></li>
                 <li><a href="Tin-dien-anh.html"><i class="fas fa-newspaper"></i> Tin tức</a></li>
                 <li><a href="Hoi-Dap.jsp"><i class="fas fa-question-circle"></i> Hỏi đáp</a></li>
-                <li><a href="contact.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
+                <li><a href="contact.jsp"><i class="fas fa-phone"></i> Liên hệ</a></li>
             </ul>
             <div class="footer-apps">
                 <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
@@ -1263,7 +1549,7 @@
         const dropdownItems = userDropdownMenu.querySelectorAll('.dropdown-item');
         dropdownItems.forEach(item => {
             item.addEventListener('click', function() {
-                console.log("✅ Dropdown item clicked:", this.textContent);
+                console.log("Dropdown item clicked:", this.textContent);
                 userDropdownMenu.classList.remove('show');
             });
         });
@@ -1276,6 +1562,207 @@
             }
         });
     }
+    // ========== SLIDESHOW FUNCTION - FIXED ==========
+    function initSlideshow() {
+        console.log('Initializing slideshow...');
+
+        const sliderTrack = document.querySelector('.slider-track');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('sliderDots');
+
+        console.log('Found', slides.length, 'slides');
+
+        // Nếu không có slides hoặc chỉ có 1 slide
+        if (!slides || slides.length <= 1) {
+            console.log('Only 1 slide or no slides, hiding navigation');
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            if (dotsContainer) dotsContainer.style.display = 'none';
+            return;
+        }
+
+        // QUAN TRỌNG: Chờ tất cả ảnh load xong
+        const images = sliderTrack.querySelectorAll('img');
+        let imagesLoaded = 0;
+
+        function checkAllImagesLoaded() {
+            imagesLoaded++;
+            console.log(`Image ${imagesLoaded}/${images.length} loaded`);
+
+            if (imagesLoaded === images.length) {
+                console.log('All images loaded, starting slideshow');
+                startSlideshow();
+            }
+        }
+
+        // Nếu không có ảnh, start ngay
+        if (images.length === 0) {
+            startSlideshow();
+        } else {
+            // Theo dõi từng ảnh
+            images.forEach(img => {
+                if (img.complete) {
+                    checkAllImagesLoaded();
+                } else {
+                    img.addEventListener('load', checkAllImagesLoaded);
+                    img.addEventListener('error', checkAllImagesLoaded); // Ngay cả khi lỗi
+                }
+            });
+        }
+
+        function startSlideshow() {
+            console.log('🎬 Starting slideshow...');
+
+            // QUAN TRỌNG: Tính toán width SAU KHI ảnh đã load
+            const slideCount = slides.length;
+            const containerWidth = document.querySelector('.slideshow-container').offsetWidth;
+
+            console.log('Container width:', containerWidth);
+            console.log('Slide count:', slideCount);
+
+            // Set width cho slider track
+            sliderTrack.style.width = `${slideCount * 100}%`;
+
+            // Set width cho mỗi slide
+            slides.forEach(slide => {
+                slide.style.width = `${containerWidth}px`;
+                slide.style.flexShrink = '0';
+            });
+
+            console.log('Slider track width set to:', sliderTrack.style.width);
+
+            let currentIndex = 0;
+            let slideInterval;
+            const SLIDE_INTERVAL = 5000; // 5 giây cho test
+
+            // Tạo dots
+            if (dotsContainer) {
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < slideCount; i++) {
+                    const dot = document.createElement('button');
+                    dot.classList.add('slider-dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => goToSlide(i));
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            const dots = document.querySelectorAll('.slider-dot');
+
+            // Hàm cập nhật vị trí slideshow
+            function updateSliderPosition() {
+                // Tính toán vị trí translateX
+                const translateX = - (currentIndex * containerWidth);
+
+                console.log(`Moving to slide ${currentIndex + 1}/${slideCount}, translateX: ${translateX}px`);
+
+                // Áp dụng transform
+                sliderTrack.style.transform = `translateX(${translateX}px)`;
+
+                // Cập nhật dots
+                dots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            // Chuyển đến slide cụ thể
+            function goToSlide(index) {
+                if (index < 0 || index >= slideCount) return;
+
+                console.log(`Going to slide ${index + 1}`);
+                currentIndex = index;
+                updateSliderPosition();
+                resetInterval();
+            }
+
+            // Slide tiếp theo
+            function nextSlide() {
+                console.log('Next slide triggered');
+                currentIndex = (currentIndex + 1) % slideCount;
+                updateSliderPosition();
+            }
+
+            // Slide trước đó
+            function prevSlide() {
+                console.log('Prev slide triggered');
+                currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+                updateSliderPosition();
+            }
+
+            // Reset interval
+            function resetInterval() {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, SLIDE_INTERVAL);
+                console.log('Interval reset');
+            }
+
+            // Event listeners cho nút điều hướng
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    prevSlide();
+                    resetInterval();
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nextSlide();
+                    resetInterval();
+                });
+            }
+
+            // Pause on hover
+            sliderTrack.addEventListener('mouseenter', function() {
+                console.log('Slideshow paused');
+                clearInterval(slideInterval);
+            });
+
+            sliderTrack.addEventListener('mouseleave', function() {
+                console.log('Slideshow resumed');
+                resetInterval();
+            });
+
+            // Bắt đầu slideshow
+            updateSliderPosition(); // Set vị trí ban đầu
+            resetInterval(); // Bắt đầu interval
+
+            console.log('Slideshow started successfully');
+            console.log('Container width:', containerWidth, 'px');
+            console.log('Slider track width:', sliderTrack.offsetWidth, 'px');
+
+            // Force recalc sau 100ms
+            setTimeout(() => {
+                console.log('=== FINAL CHECK ===');
+                console.log('Slider track actual width:', sliderTrack.offsetWidth);
+                console.log('Transform:', sliderTrack.style.transform);
+
+                // Test manual
+                console.log('Test command:');
+                console.log('document.querySelector(".slider-track").style.transform = "translateX(-' + containerWidth + 'px)"');
+            }, 100);
+        }
+    }
+
+    // ========== INITIALIZE ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 DOM Content Loaded');
+
+        // Initialize slideshow
+        initSlideshow();
+
+        // Initialize user dropdown
+        initUserDropdown();
+    });
 
     // ========== BOOKING MODAL FUNCTIONS ==========
 

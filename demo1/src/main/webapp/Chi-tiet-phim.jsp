@@ -52,14 +52,6 @@
         position: relative;
         display: inline-block;
     }
-    .movie-content {
-        line-height: 1.9;
-        font-size: 16px;
-        color: #fff;
-        text-align: left;         /* Căn trái bình thường */
-        margin-left: 15px;
-    }
-
     .header-item.user-profile {
         background: none;
         border: none;
@@ -103,6 +95,176 @@
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
+    }
+    /* ========== TOAST NOTIFICATION SYSTEM ========== */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 400px;
+    }
+
+    .toast {
+        padding: 15px 20px;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transform: translateX(120%);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .toast.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .toast.hide {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+
+    .toast::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 5px;
+    }
+
+    .toast-success {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-left: 5px solid #28a745;
+    }
+
+    .toast-success::before {
+        background: #28a745;
+    }
+
+    .toast-error {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        border-left: 5px solid #dc3545;
+    }
+
+    .toast-error::before {
+        background: #dc3545;
+    }
+
+    .toast-info {
+        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+        border-left: 5px solid #17a2b8;
+    }
+
+    .toast-info::before {
+        background: #17a2b8;
+    }
+
+    .toast-warning {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border-left: 5px solid #ffc107;
+    }
+
+    .toast-warning::before {
+        background: #ffc107;
+    }
+
+    .toast-icon {
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .toast-success .toast-icon {
+        color: #28a745;
+    }
+
+    .toast-error .toast-icon {
+        color: #dc3545;
+    }
+
+    .toast-info .toast-icon {
+        color: #17a2b8;
+    }
+
+    .toast-warning .toast-icon {
+        color: #ffc107;
+    }
+
+    .toast-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .toast-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .toast-message {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    .toast-close {
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 0 0 0 10px;
+        transition: color 0.3s;
+        flex-shrink: 0;
+    }
+
+    .toast-close:hover {
+        color: #333;
+    }
+
+    .toast-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: rgba(0, 0, 0, 0.2);
+        width: 100%;
+        transform-origin: left;
+        animation: progress 5s linear forwards;
+    }
+
+    @keyframes progress {
+        from {
+            transform: scaleX(1);
+        }
+        to {
+            transform: scaleX(0);
+        }
+    }
+
+    /* Responsive toast */
+    @media (max-width: 768px) {
+        .toast-container {
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+        }
+
+        .toast {
+            padding: 12px 15px;
+        }
     }
 
     .dropdown-item {
@@ -183,6 +345,27 @@
     }
     .fa-credit-card{
         color: #fff;
+    }
+    .movie-detail .section-title {
+        color: #ff6600 !important;
+        font-size: 24px !important;
+        font-weight: 700 !important;
+        margin: 25px 0 15px 0 !important;
+        padding-bottom: 10px !important;
+        border-bottom: 2px solid #ff6600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        text-align: left !important; /* QUAN TRỌNG: không căn giữa */
+        display: block !important;
+    }
+
+
+    .booking-modal .section-title {
+        color: #fff !important;
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .btn-payment {
@@ -670,45 +853,40 @@
 </style>
 <body>
 <div id="app" class="app">
-    <!-- Header Label with Search -->
+    <!-- Include Header from index.jsp -->
     <div class="header-label">
         <div class="header-container">
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-container">
-                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
-                       value="${searchKeyword != null ? searchKeyword : ''}">
+                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
                 <button type="submit" style="display:none;">Search</button>
             </form>
             <div class="header-account">
-                <!-- Các liên kết chung -->
                 <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">
                     <i class="fas fa-ticket-alt"></i> Kho vé
                 </a>
                 <a href="${pageContext.request.contextPath}/khuyen-mai" class="header-item">
                     <i class="fas fa-gift"></i> Khuyến mãi
                 </a>
-                <a href="${pageContext.request.contextPath}/cart" class="header-item">
+                <a href="${pageContext.request.contextPath}/Gio-hang.jsp" class="header-item">
                     <i class="fas fa-shopping-cart"></i> Giỏ hàng
                     <c:if test="${not empty sessionScope.cart and sessionScope.cart.totalItems > 0}">
                         <span class="cart-badge">${sessionScope.cart.totalItems}</span>
                     </c:if>
                 </a>
 
-                <!-- Phần hiển thị trạng thái đăng nhập -->
                 <c:choose>
-                    <%-- Kiểm tra session attribute --%>
                     <c:when test="${not empty sessionScope.loggedUser}">
-                        <%-- Người dùng đăng nhập từ LoginController --%>
                         <div class="user-dropdown">
-                        <span class="header-item user-profile">
-                            <i class="fas fa-user-circle"></i>
-                            ${sessionScope.loggedUser.fullName}
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                            <div class="user-dropdown-menu">
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.loggedUser.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
-                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
+                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
                                     <i class="fas fa-receipt"></i> Lịch sử đặt vé
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -719,14 +897,13 @@
                         </div>
                     </c:when>
                     <c:when test="${not empty sessionScope.user}">
-                        <%-- Người dùng đăng nhập từ LoginBeforePaymentController --%>
                         <div class="user-dropdown">
-                        <span class="header-item user-profile">
-                            <i class="fas fa-user-circle"></i>
-                            ${sessionScope.user.fullName}
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                            <div class="user-dropdown-menu">
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.user.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
@@ -744,7 +921,6 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <%-- Chưa đăng nhập --%>
                         <div class="auth-buttons">
                             <a href="${pageContext.request.contextPath}/Register.jsp" class="header-item register-btn">
                                 <i class="fas fa-user-plus"></i> Đăng ký
@@ -759,7 +935,7 @@
         </div>
     </div>
 
-    <!-- Header Menu -->
+    <!-- Menu -->
     <div class="header-menu">
         <div class="menu-container">
             <a href="${pageContext.request.contextPath}/home" class="logo">
@@ -767,8 +943,7 @@
             </a>
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="${pageContext.request.contextPath}/home"
-                       style="color: #ff6600;" class="menu-item">
+                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
                         <i class="fas fa-home"></i> TRANG CHỦ
                     </a>
                 </div>
@@ -796,18 +971,18 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.html">
+                    <a class="menu-item" href="Gia-ve.jsp">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.html">
+                    <a class="menu-item" href="Gioi-thieu.jsp">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact.html">
+                    <a class="menu-item" href="contact">
                         <i class="fas fa-phone"></i> LIÊN HỆ
                     </a>
                 </div>
@@ -823,7 +998,6 @@
                     <div class="age-rating">${movie.ageRating}</div>
                     <img src="${movie.posterUrl}" alt="${movie.title}"
                          onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'">
-                    <!-- Thay đổi: gọi hàm openBookingModal -->
                     <button class="book-ticket-btn" onclick="openBookingModal('${movie.title}', ${movie.id})">
                         <i class="fas fa-ticket-alt"></i> ĐẶT VÉ NGAY
                     </button>

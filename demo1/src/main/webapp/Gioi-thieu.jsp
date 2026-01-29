@@ -1,14 +1,156 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>DTN Ticket Movie Seller</title>
-    <link rel="stylesheet" href="css/login-style.css">
+    <title>Title</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/introduce.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<style>
+    /* ========== USER DROPDOWN FIX ========== */
+    .user-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .header-item.user-profile {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
+
+    .header-item.user-profile:hover {
+        background-color: rgba(255, 102, 0, 0.2);
+    }
+
+    /* Dropdown menu */
+    .user-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 5px);
+        right: 0;
+        background: #1e1e1e;
+        min-width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 8px 0;
+        z-index: 1000;
+        border: 1px solid #4c4c4c;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: block !important;
+        margin-top: 5px;
+    }
+
+    /* Tạo đường dẫn cho chuột để hover mượt mà */
+    .user-dropdown-menu::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: transparent;
+    }
+
+    .user-dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-item {
+        padding: 12px 20px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+    }
+
+    .dropdown-item:hover {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: #4c4c4c;
+        margin: 8px 0;
+        width: 100%;
+    }
+
+    .logout-item {
+        color: #ff6b6b;
+    }
+
+    .logout-item:hover {
+        color: #ff4444;
+        background-color: rgba(255, 107, 107, 0.1);
+    }
+
+    /* ========== MENU DROPDOWN STYLES ========== */
+    .menu-item-wrapper {
+        position: relative;
+    }
+
+    .menu-item.has-dropdown {
+        cursor: pointer;
+    }
+
+    .menu-item-wrapper .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #1e1e1e;
+        min-width: 180px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 10px 0;
+        z-index: 999;
+        border: 1px solid #4c4c4c;
+        display: none;
+    }
+
+    .menu-item-wrapper:hover .dropdown-menu {
+        display: block;
+    }
+
+    .menu-item-wrapper .dropdown-item {
+        padding: 10px 20px;
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .menu-item-wrapper .dropdown-item:hover {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+    }
+</style>
 <body>
 <div id="app" class="app">
     <!-- Include Header from index.jsp -->
@@ -147,42 +289,114 @@
             </nav>
         </div>
     </div>
-    <div class="main-container" id="main-container">
-        <div class ="login">
-            <form action="login" class="login-form" method="post">
-                <h2>Đăng Nhập</h2>
-                <c:if test="${loginError != null}">
-                    <p class="error">${loginError}</p>
-                </c:if>
-                <div class = "field-input">
-                    <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="Nhập email đăng nhập" value="${email != null ? email : ''}">
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">DTN MOVIE TICKET SELLER</h1>
+        <p class="hero-subtitle">Nền tảng đặt vé xem phim trực tuyến hiện đại, mang đến trải nghiệm giải trí đỉnh cao cho mọi khách hàng</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- About Section -->
+        <div class="section">
+            <h2 class="section-title">Về Chúng Tôi</h2>
+            <div class="about-content">
+                <p>
+                    <strong>DTN Movie Ticket Seller</strong> là nền tảng đặt vé xem phim trực tuyến hàng đầu tại Việt Nam, được xây dựng với sứ mệnh số hóa hoàn toàn quy trình mua vé và nâng cao trải nghiệm giải trí cho khách hàng.
+                </p>
+                <p>
+                    Chúng tôi hiểu rằng thời gian của bạn vô cùng quý giá. Vì vậy, DTN Movie đã phát triển một hệ thống đặt vé thông minh, giúp bạn dễ dàng tìm kiếm phim yêu thích, chọn suất chiếu phù hợp, đặt ghế ngồi theo sở thích và thanh toán an toàn chỉ trong vài phút.
+                </p>
+                <p>
+                    Với giao diện thân thiện, tính năng hiện đại và dịch vụ khách hàng tận tâm, chúng tôi cam kết mang đến cho bạn một trải nghiệm đặt vé hoàn hảo từ đầu đến cuối.
+                </p>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500K+</div>
+                    <div class="stat-label">Vé Đã Bán</div>
                 </div>
-                <c:if test="${errors.email != null}">
-                    <small class="error">${errors.email}</small>
-                </c:if>
-                <div class = "field-input">
-                    <label for="password">Mật khẩu</label>
-                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" >
-                    <c:if test="${errors.password != null}">
-                        <small class="error">${errors.password}</small>
-                    </c:if>
+                <div class="stat-item">
+                    <div class="stat-number">100K+</div>
+                    <div class="stat-label">Khách Hàng</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Hỗ Trợ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="section">
+            <h2 class="section-title">Tính Năng Nổi Bật</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h1 class="feature-title">Thông Tin Phim Đầy Đủ</h1>
+                    <p class="feature-description">
+                        Cập nhật liên tục thông tin chi tiết về các bộ phim đang chiếu và sắp chiếu, trailer, đánh giá và lịch chiếu theo từng rạp.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h1 class="feature-title">Chọn Ghế Trực Quan</h1>
+                    <p class="feature-description">
+                        Sơ đồ ghế ngồi rõ ràng, trực quan giúp bạn dễ dàng chọn vị trí yêu thích trong rạp chiếu phim.
+                    </p>
                 </div>
 
-                <div class ="login-option">
-                    <label>
-                        <input type="checkbox">Ghi nhớ đăng nhập
-                    </label>
-                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                <div class="feature-card">
+                    <h1 class="feature-title">Thanh Toán An Toàn</h1>
+                    <p class="feature-description">
+                        Hỗ trợ đa dạng phương thức thanh toán: thẻ ngân hàng, ví điện tử, chuyển khoản với bảo mật tuyệt đối.
+                    </p>
                 </div>
 
-                <button type="submit" class = "login-button">Đăng nhập</button>
-
-                <div class = "login-register">
-                    Bạn chưa có tài khoản? <a href="Register.jsp">Đăng ký</a>
-
+                <div class="feature-card">
+                    <h1 class="feature-title">Vé Điện Tử</h1>
+                    <p class="feature-description">
+                        Nhận vé điện tử ngay sau khi thanh toán, không cần in vé, quét mã QR để vào rạp nhanh chóng.
+                    </p>
                 </div>
-            </form>
+
+                <div class="feature-card">
+                    <h1 class="feature-title">Ưu Đãi Hấp Dẫn</h1>
+                    <p class="feature-description">
+                        Nhiều chương trình khuyến mãi, giảm giá, tích điểm đổi quà dành riêng cho thành viên thân thiết.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h1 class="feature-title">Đa Nền Tảng</h1>
+                    <p class="feature-description">
+                        Sử dụng mọi lúc mọi nơi trên web, mobile app (iOS, Android) với giao diện thân thiện, dễ sử dụng.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="section">
+            <h2 class="section-title">Sứ Mệnh & Tầm Nhìn</h2>
+            <div class="mission-vision">
+                <div class="mission-card">
+                    <h3>Sứ Mệnh</h3>
+                    <p>
+                        Số hóa trải nghiệm đặt vé xem phim, mang đến sự tiện lợi tối đa cho khách hàng và hỗ trợ các rạp chiếu phim quản lý hiệu quả hơn. Chúng tôi không ngừng cải tiến công nghệ để phục vụ khách hàng tốt nhất.
+                    </p>
+                </div>
+
+                <div class="mission-card">
+                    <h3>Tầm Nhìn</h3>
+                    <p>
+                        Trở thành nền tảng đặt vé xem phim trực tuyến số 1 Việt Nam, được tin dùng bởi hàng triệu khách hàng. Phát triển hệ sinh thái giải trí toàn diện, kết nối yêu thích điện ảnh với công nghệ hiện đại.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 

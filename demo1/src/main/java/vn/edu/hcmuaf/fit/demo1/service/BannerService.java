@@ -24,6 +24,10 @@ public class BannerService {
     }
 
     public boolean addBanner(Banner banner) {
+        // Set default createdBy if null
+        if (banner.getCreatedBy() == null) {
+            banner.setCreatedBy(1); // Default admin ID
+        }
         return bannerDao.addBanner(banner);
     }
 
@@ -33,5 +37,10 @@ public class BannerService {
 
     public boolean deleteBanner(int id) {
         return bannerDao.deleteBanner(id);
+    }
+
+    // Thêm phương thức mới
+    public List<Banner> getAllBanners() {
+        return bannerDao.getAllBanners();
     }
 }

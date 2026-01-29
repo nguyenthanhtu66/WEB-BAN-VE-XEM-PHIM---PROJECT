@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.edu.hcmuaf.fit.demo1.model.Movie;
 import vn.edu.hcmuaf.fit.demo1.model.User;
+import vn.edu.hcmuaf.fit.demo1.model.Banner;
 import vn.edu.hcmuaf.fit.demo1.service.MovieService;
+import vn.edu.hcmuaf.fit.demo1.service.BannerService;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 public class HomeController extends HttpServlet {
 
     private final MovieService movieService = new MovieService();
+    private final BannerService bannerService = new BannerService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,26 +34,37 @@ public class HomeController extends HttpServlet {
 
         System.out.println("====== TRANG CHỦ ĐƯỢC GỌI ======");
 
-        // Lấy user từ session
+        // Lấy user từ session - CHỈ KIỂM TRA loggedUser
         HttpSession session = request.getSession(false);
         User loggedUser = null;
 
         if (session != null) {
-            // Thử lấy với tên "loggedUser" (từ LoginController)
             loggedUser = (User) session.getAttribute("loggedUser");
 
-            // Nếu không có, thử với tên "user" (từ LoginBeforePaymentController)
+            // Nếu không có loggedUser, kiểm tra user cũ
             if (loggedUser == null) {
                 loggedUser = (User) session.getAttribute("user");
+                if (loggedUser != null) {
+                    // Migrate từ user cũ sang loggedUser
+                    session.setAttribute("loggedUser", loggedUser);
+                    session.removeAttribute("user");
+                    System.out.println("🔄 Migrated user attribute to loggedUser");
+                }
             }
 
             if (loggedUser != null) {
                 System.out.println("✅ Người dùng đã đăng nhập: " + loggedUser.getEmail());
+                // CHỈ SET MỘT ATTRIBUTE DUY NHẤT
                 request.setAttribute("user", loggedUser);
             } else {
                 System.out.println("❌ Không có người dùng đăng nhập");
             }
         }
+
+        // ========== LẤY BANNER CHO SLIDESHOW ==========
+        List<Banner> banners = bannerService.getActiveBannersForHome();
+        System.out.println("📊 Loaded " + banners.size() + " banners for slideshow");
+        request.setAttribute("banners", banners);
 
         String statusParam = request.getParameter("status");
         String searchKeyword = request.getParameter("search");
@@ -71,6 +85,12 @@ public class HomeController extends HttpServlet {
         request.setAttribute("fromServlet", true);
 
         request.getRequestDispatcher("/index.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 
     // ========== CÁC PHƯƠNG THỨC HỖ TRỢ ==========

@@ -58,526 +58,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .movie-poster-container {
-            height: 400px;
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px 12px 0 0;
-        }
-
-        .movie-poster-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* ========== MODAL STYLES ========== */
-        .booking-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            padding: 25px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 2px solid #0f3460;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-            animation: slideUp 0.4s ease;
-            position: relative;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-header {
-            border-bottom: 2px solid #ff6600;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-
-        .fa-credit-card {
-            color: #fff;
-        }
-
-        .btn-payment {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-payment:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
-        }
-
-        .btn-payment:disabled {
-            background: #666;
-            cursor: not-allowed;
-            opacity: 0.6;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        .modal-title i {
-            color: #ff6600;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        .close-modal:hover {
-            background: rgba(255, 102, 0, 0.2);
-            transform: scale(1.1);
-        }
-
-        /* Movie Info */
-        .movie-info-section {
-            background: linear-gradient(90deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 136, 0, 0.1) 100%);
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            border-left: 4px solid #ff6600;
-        }
-
-        .movie-info-section h3 {
-            color: #ffcc00;
-            margin: 0;
-            font-size: 20px;
-        }
-
-        /* Form Container */
-        .booking-form-container {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            color: #e0e0e0;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .form-label i {
-            color: #ff6600;
-            margin-right: 8px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #2d4059;
-            border-radius: 8px;
-            background: #16213e;
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .form-select:focus {
-            outline: none;
-            border-color: #ff6600;
-            box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.2);
-        }
-
-        .form-select:disabled {
-            background: #1a1a2e;
-            color: #666;
-            cursor: not-allowed;
-        }
-
-        .price-display {
-            margin-top: 10px;
-            padding: 10px 15px;
-            background: rgba(46, 204, 113, 0.1);
-            border-radius: 8px;
-            color: #2ecc71;
-            font-weight: bold;
-            font-size: 16px;
-            border-left: 3px solid #2ecc71;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Seat Selection Section */
-        .seat-selection-section {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 12px;
-            margin: 25px 0;
-            border: 2px solid #0f3460;
-        }
-
-        .section-title {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .section-title i {
-            color: #ff6600;
-        }
-
-        /* Screen */
-        .screen {
-            background: linear-gradient(180deg, #f8f8f8 0%, #e0e0e0 100%);
-            color: #333;
-            text-align: center;
-            padding: 20px;
-            margin: 25px auto;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 20px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 80%;
-            max-width: 600px;
-            position: relative;
-        }
-
-        .screen:before {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            height: 20px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 100%);
-            border-radius: 50%;
-        }
-
-        /* Seat Map */
-        .seats-container {
-            margin: 30px 0;
-        }
-
-        .seat-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-            gap: 5px;
-        }
-
-        .row-label {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            font-size: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            margin-right: 15px;
-        }
-
-        .seat {
-            width: 45px;
-            height: 45px;
-            margin: 3px;
-            border: none;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        /* SEAT COLORS */
-        .seat.available {
-            background: #3498db !important; /* 🔵 Xanh dương - trống */
-            border: 2px solid #2980b9 !important;
-        }
-
-        .seat.available:hover {
-            background: #2980b9 !important;
-            transform: scale(1.08);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-        }
-
-        .seat.selected {
-            background: #2ecc71 !important; /* 🟢 Xanh lá - đang chọn */
-            border: 2px solid #27ae60 !important;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
-        }
-
-        .seat.selected:hover {
-            background: #27ae60 !important;
-        }
-
-        .seat.booked {
-            background: #e74c3c !important; /* 🔴 Đỏ - đã đặt */
-            border: 2px solid #c0392b !important;
-            cursor: not-allowed;
-            opacity: 0.8;
-        }
-
-        .seat.reserved {
-            background: #f39c12 !important; /* 🟠 Cam - đang giữ */
-            border: 2px solid #d68910 !important;
-            cursor: not-allowed !important;
-            opacity: 0.9;
-        }
-
-        .seat.my_reserved {
-            background: #27ae60 !important; /* 🟢 Xanh lá - tôi đang giữ */
-            border: 2px solid #219653 !important;
-            cursor: not-allowed !important;
-            opacity: 0.9;
-        }
-
-        /* LEGEND BOX COLORS */
-        .legend-box.available { background: #3498db !important; }
-        .legend-box.selected { background: #2ecc71 !important; }
-        .legend-box.booked { background: #e74c3c !important; }
-        .legend-box.reserved { background: #f39c12 !important; }
-
-        .seat:not(.available):not(.selected):not(.reserved):not(.my_reserved):not(.booked) {
-            background: #95a5a6 !important;
-            border-color: #7f8c8d !important;
-        }
-
-        /* Buttons */
-        .modal-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #2d4059;
-        }
-
-        .btn-submit {
-            background: linear-gradient(135deg, #ff6600 0%, #ff8800 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-submit:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(255, 102, 0, 0.4);
-        }
-
-        .btn-submit:disabled {
-            background: #666;
-            cursor: not-allowed;
-            opacity: 0.6;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        .btn-cancel {
-            background: #2d4059;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-cancel:hover {
-            background: #3d5169;
-            transform: translateY(-3px);
-        }
-
-        /* Loading States */
-        .loading-state {
-            text-align: center;
-            padding: 40px;
-            color: #fff;
-        }
-
-        .loading-state i {
-            font-size: 30px;
-            color: #ff6600;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .error-state {
-            text-align: center;
-            padding: 30px;
-            color: #ff6b6b;
-            background: rgba(231, 76, 60, 0.1);
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 30px;
-            color: #95a5a6;
-            background: rgba(149, 165, 166, 0.1);
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .modal-content {
-                width: 95%;
-                padding: 20px;
-                max-height: 85vh;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .modal-buttons {
-                flex-direction: column;
-            }
-
-            .btn-submit, .btn-cancel {
-                width: 100%;
-                min-width: unset;
-            }
-
-            .seat {
-                width: 40px;
-                height: 40px;
-                font-size: 11px;
-            }
-
-            .seat-legend {
-                gap: 15px;
-            }
-
-            .legend-item {
-                font-size: 11px;
-            }
-
-            .legend-box {
-                width: 18px;
-                height: 18px;
-            }
-        }
-
-        /* Scrollbar styling */
-        .modal-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .modal-content::-webkit-scrollbar-track {
-            background: #16213e;
-            border-radius: 4px;
-        }
-
-        .modal-content::-webkit-scrollbar-thumb {
-            background: #0f3460;
-            border-radius: 4px;
-        }
-
-        .modal-content::-webkit-scrollbar-thumb:hover {
-            background: #ff6600;
-        }
-
         /* ========== USER DROPDOWN FIX ========== */
         .user-dropdown {
             position: relative;
@@ -1060,7 +540,7 @@
 </head>
 <body>
 <div id="app" class="app">
-    <!-- Header Label with Search -->
+    <!-- Include Header from index.jsp -->
     <div class="header-label">
         <div class="header-container">
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-container">
@@ -1074,27 +554,26 @@
                 <a href="${pageContext.request.contextPath}/khuyen-mai" class="header-item">
                     <i class="fas fa-gift"></i> Khuyến mãi
                 </a>
-                <a href="${pageContext.request.contextPath}/cart" class="header-item">
+                <a href="${pageContext.request.contextPath}/Gio-hang.jsp" class="header-item">
                     <i class="fas fa-shopping-cart"></i> Giỏ hàng
                     <c:if test="${not empty sessionScope.cart and sessionScope.cart.totalItems > 0}">
                         <span class="cart-badge">${sessionScope.cart.totalItems}</span>
                     </c:if>
                 </a>
 
-                <!-- User dropdown -->
                 <c:choose>
                     <c:when test="${not empty sessionScope.loggedUser}">
                         <div class="user-dropdown">
-                            <span class="header-item user-profile">
+                            <span class="header-item user-profile" id="userProfileBtn">
                                 <i class="fas fa-user-circle"></i>
                                 ${sessionScope.loggedUser.fullName}
                                 <i class="fas fa-chevron-down"></i>
                             </span>
-                            <div class="user-dropdown-menu">
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
-                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
+                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
                                     <i class="fas fa-receipt"></i> Lịch sử đặt vé
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -1106,12 +585,12 @@
                     </c:when>
                     <c:when test="${not empty sessionScope.user}">
                         <div class="user-dropdown">
-                            <span class="header-item user-profile">
+                            <span class="header-item user-profile" id="userProfileBtn">
                                 <i class="fas fa-user-circle"></i>
                                 ${sessionScope.user.fullName}
                                 <i class="fas fa-chevron-down"></i>
                             </span>
-                            <div class="user-dropdown-menu">
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
@@ -1128,12 +607,22 @@
                             </div>
                         </div>
                     </c:when>
+                    <c:otherwise>
+                        <div class="auth-buttons">
+                            <a href="${pageContext.request.contextPath}/Register.jsp" class="header-item register-btn">
+                                <i class="fas fa-user-plus"></i> Đăng ký
+                            </a>
+                            <a href="${pageContext.request.contextPath}/login.jsp" class="header-item login-btn">
+                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                            </a>
+                        </div>
+                    </c:otherwise>
                 </c:choose>
             </div>
         </div>
     </div>
 
-    <!-- Header Menu -->
+    <!-- Menu -->
     <div class="header-menu">
         <div class="menu-container">
             <a href="${pageContext.request.contextPath}/home" class="logo">
@@ -1169,18 +658,18 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.html">
+                    <a class="menu-item" href="Gia-ve.jsp">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.html">
+                    <a class="menu-item" href="Gioi-thieu.jsp">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact.html">
+                    <a class="menu-item" href="contact">
                         <i class="fas fa-phone"></i> LIÊN HỆ
                     </a>
                 </div>

@@ -1,180 +1,193 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Miss Nhung
-  Date: 1/28/2026
-  Time: 8:40 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
-    <head>
-        <meta charset="UTF-8">
-        <title>DTN Ticket Movie Seller - Phim</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Ch">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    </head>
-    <style>
-        .user-dropdown {
-            position: relative;
-            display: inline-block;
-        }
+    <title>DTN Ticket Movie Seller</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/policy.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>
+    /* ========== USER DROPDOWN FIX ========== */
+    .user-dropdown {
+        position: relative;
+        display: inline-block;
+    }
 
-        .user-dropdown-menu {
-            display: none;
-            position: absolute;
-            top: calc(100% + 5px);
-            right: 0;
-            background: #1e1e1e;
-            min-width: 200px;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            padding: 8px 0;
-            z-index: 1000;
-            border: 1px solid #4c4c4c;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
+    .header-item.user-profile {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
 
-        /* Tạo đường dẫn cho chuột */
-        .user-dropdown-menu::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: transparent;
-        }
-        .user-dropdown {
-            position: relative;
-            display: inline-block;
-        }
+    .header-item.user-profile:hover {
+        background-color: rgba(255, 102, 0, 0.2);
+    }
 
-        .header-item.user-profile {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    /* Dropdown menu */
+    .user-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 5px);
+        right: 0;
+        background: #1e1e1e;
+        min-width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 8px 0;
+        z-index: 1000;
+        border: 1px solid #4c4c4c;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: block !important;
+        margin-top: 5px;
+    }
 
-        .header-item.user-profile:hover {
-            background-color: rgba(255, 102, 0, 0.2);
-        }
+    /* Tạo đường dẫn cho chuột để hover mượt mà */
+    .user-dropdown-menu::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: transparent;
+    }
 
-        .user-dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: #1e1e1e;
-            min-width: 200px;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            padding: 8px 0;
-            z-index: 1000;
-            margin-top: 5px;
-            border: 1px solid #4c4c4c;
-        }
+    .user-dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
 
-        .user-dropdown-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
+    .dropdown-item {
+        padding: 12px 20px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+    }
 
-        .dropdown-item {
-            padding: 12px 20px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: block;
-            text-decoration: none;
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-        }
+    .dropdown-item:hover {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+    }
 
-        .dropdown-item:hover {
-            background-color: rgba(255, 102, 0, 0.1);
-            color: #ff6600;
-        }
+    .dropdown-divider {
+        height: 1px;
+        background: #4c4c4c;
+        margin: 8px 0;
+        width: 100%;
+    }
 
-        .dropdown-divider {
-            height: 1px;
-            background: #4c4c4c;
-            margin: 8px 0;
-        }
+    .logout-item {
+        color: #ff6b6b;
+    }
 
-        .logout-item {
-            color: #ff6b6b;
-        }
+    .logout-item:hover {
+        color: #ff4444;
+        background-color: rgba(255, 107, 107, 0.1);
+    }
 
-        .logout-item:hover {
-            color: #ff4444;
-            background-color: rgba(255, 107, 107, 0.1);
-        }
-    </style>
+    /* ========== MENU DROPDOWN STYLES ========== */
+    .menu-item-wrapper {
+        position: relative;
+    }
+
+    .menu-item.has-dropdown {
+        cursor: pointer;
+    }
+
+    .menu-item-wrapper .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #1e1e1e;
+        min-width: 180px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 10px 0;
+        z-index: 999;
+        border: 1px solid #4c4c4c;
+        display: none;
+    }
+
+    .menu-item-wrapper:hover .dropdown-menu {
+        display: block;
+    }
+
+    .menu-item-wrapper .dropdown-item {
+        padding: 10px 20px;
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .menu-item-wrapper .dropdown-item:hover {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #ff6600;
+    }
+</style>
 <body>
 <div id="app" class="app">
-    <!-- Header Label với Search -->
+    <!-- Include Header from index.jsp -->
     <div class="header-label">
         <div class="header-container">
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-container">
-                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
-                       value="${searchKeyword != null ? searchKeyword : ''}">
+                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
                 <button type="submit" style="display:none;">Search</button>
             </form>
             <div class="header-account">
-                <!-- Các liên kết chung -->
                 <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">
                     <i class="fas fa-ticket-alt"></i> Kho vé
                 </a>
                 <a href="${pageContext.request.contextPath}/khuyen-mai" class="header-item">
                     <i class="fas fa-gift"></i> Khuyến mãi
                 </a>
-                <a href="${pageContext.request.contextPath}/cart" class="header-item">
+                <a href="${pageContext.request.contextPath}/Gio-hang.jsp" class="header-item">
                     <i class="fas fa-shopping-cart"></i> Giỏ hàng
                     <c:if test="${not empty sessionScope.cart and sessionScope.cart.totalItems > 0}">
                         <span class="cart-badge">${sessionScope.cart.totalItems}</span>
                     </c:if>
                 </a>
 
-                <!-- Phần hiển thị trạng thái đăng nhập -->
                 <c:choose>
-                    <%-- Kiểm tra session attribute --%>
                     <c:when test="${not empty sessionScope.loggedUser}">
-                        <%-- Người dùng đăng nhập từ LoginController --%>
                         <div class="user-dropdown">
-                        <span class="header-item user-profile">
-                            <i class="fas fa-user-circle"></i>
-                            ${sessionScope.loggedUser.fullName}
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                            <div class="user-dropdown-menu">
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.loggedUser.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
-                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
+                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
                                     <i class="fas fa-receipt"></i> Lịch sử đặt vé
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -185,14 +198,13 @@
                         </div>
                     </c:when>
                     <c:when test="${not empty sessionScope.user}">
-                        <%-- Người dùng đăng nhập từ LoginBeforePaymentController --%>
                         <div class="user-dropdown">
-                        <span class="header-item user-profile">
-                            <i class="fas fa-user-circle"></i>
-                            ${sessionScope.user.fullName}
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                            <div class="user-dropdown-menu">
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.user.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                     <i class="fas fa-user"></i> Hồ sơ cá nhân
                                 </a>
@@ -210,7 +222,6 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <%-- Chưa đăng nhập --%>
                         <div class="auth-buttons">
                             <a href="${pageContext.request.contextPath}/Register.jsp" class="header-item register-btn">
                                 <i class="fas fa-user-plus"></i> Đăng ký
@@ -224,7 +235,8 @@
             </div>
         </div>
     </div>
-    <!-- Header Menu -->
+
+    <!-- Menu -->
     <div class="header-menu">
         <div class="menu-container">
             <a href="${pageContext.request.contextPath}/home" class="logo">
@@ -232,8 +244,7 @@
             </a>
             <nav class="menu-nav">
                 <div class="menu-item-wrapper">
-                    <a href="${pageContext.request.contextPath}/home"
-                       style="color: #ff6600;" class="menu-item">
+                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
                         <i class="fas fa-home"></i> TRANG CHỦ
                     </a>
                 </div>
@@ -255,25 +266,24 @@
                         <i class="fas fa-newspaper"></i> TIN TỨC
                     </div>
                     <div class="dropdown-menu">
-                        <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
-                           class="dropdown-item">Tin điện ảnh</a>
-                        <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
-                           class="dropdown-item">Bình luận phim</a>
+                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+                    </div>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-Ve.jsp">
+                    <a class="menu-item" href="Gia-ve.jsp">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-Thieu.jsp">
+                    <a class="menu-item" href="Gioi-thieu.jsp">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact.html">
+                    <a class="menu-item" href="contact">
                         <i class="fas fa-phone"></i> LIÊN HỆ
                     </a>
                 </div>

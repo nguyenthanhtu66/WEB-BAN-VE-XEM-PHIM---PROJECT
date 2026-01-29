@@ -13,7 +13,7 @@ public class ContactService {
         contactDAO.insert(contact);
     }
 
-        public List<Contact> getAll() {
+    public List<Contact> getAll() {
         return contactDAO.getAll();
     }
 

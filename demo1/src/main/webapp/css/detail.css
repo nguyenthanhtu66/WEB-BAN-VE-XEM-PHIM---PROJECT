@@ -8,6 +8,14 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #2e2e2e;
 }
+.movie-detail .movie-detail-container .movie-info .movie-content,
+.movie-detail .movie-detail-container .movie-info .movie-content p,
+.movie-detail .movie-detail-container .movie-info .movie-content div,
+.movie-detail .movie-detail-container .movie-info .movie-content span {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    text-align-last: left !important;
+}
 
 .app {
     width: 100%;
@@ -328,7 +336,7 @@ body {
     line-height: 1.9;
     font-size: 16px;
     color: #fff;
-    text-align: left;
+    text-align: justify !important;
     margin-left: 15px;
 }
 

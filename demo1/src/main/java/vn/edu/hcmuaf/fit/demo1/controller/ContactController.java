@@ -29,7 +29,7 @@ public class ContactController extends HttpServlet {
             session.removeAttribute("success"); // ⭐ QUAN TRỌNG
         }
 
-        req.getRequestDispatcher("/WEB-INF/views/contact.jsp")
+        req.getRequestDispatcher("/contact.jsp")
                 .forward(req, resp);
     }
 
@@ -91,7 +91,7 @@ public class ContactController extends HttpServlet {
     private void forward(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.getRequestDispatcher("/WEB-INF/views/contact.jsp")
+        req.getRequestDispatcher("/contact.jsp")
                 .forward(req, resp);
     }
 }
