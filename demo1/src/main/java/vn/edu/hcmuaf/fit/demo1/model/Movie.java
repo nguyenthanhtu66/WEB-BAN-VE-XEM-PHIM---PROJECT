@@ -2,6 +2,9 @@ package vn.edu.hcmuaf.fit.demo1.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Movie implements Serializable {
     private int id;
@@ -35,7 +38,6 @@ public class Movie implements Serializable {
         this.status = status;
         this.ageRating = ageRating;
     }
-
     // Constructor đầy đủ
     public Movie(int id, String title, String posterUrl, String synopsis,
                  String description, String director, String cast, String genre,
@@ -238,5 +240,29 @@ public class Movie implements Serializable {
             default:
                 return "Dang+chieu";
         }
+    }
+    public String getFormattedReleaseDate() {
+        if (releaseDate == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return releaseDate.format(formatter);
+    }
+
+    // 2. Phương thức để JSP sử dụng với fmt:formatDate
+    public Date getReleaseDateAsDate() {
+        if (releaseDate == null) return null;
+        return Date.from(releaseDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    // 3. Phương thức lấy ngày tháng năm riêng lẻ (nếu cần)
+    public int getReleaseDay() {
+        return releaseDate != null ? releaseDate.getDayOfMonth() : 0;
+    }
+
+    public int getReleaseMonth() {
+        return releaseDate != null ? releaseDate.getMonthValue() : 0;
+    }
+
+    public int getReleaseYear() {
+        return releaseDate != null ? releaseDate.getYear() : 0;
     }
 }

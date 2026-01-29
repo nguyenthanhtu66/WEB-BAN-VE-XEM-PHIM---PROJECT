@@ -13,13 +13,13 @@ public class TicketTypeDao extends BaseDao {
     private static class TicketTypeMapper implements RowMapper<TicketType> {
         @Override
         public TicketType map(ResultSet rs, StatementContext ctx) throws SQLException {
-            TicketType type = new TicketType();
-            type.setId(rs.getInt("id"));
-            type.setTypeName(rs.getString("type_name"));
-            type.setDescription(rs.getString("description"));
-            type.setPrice(rs.getDouble("price"));
-            type.setIsActive(rs.getBoolean("is_active"));
-            return type;
+            TicketType ticketType = new TicketType();
+            ticketType.setId(rs.getInt("id"));
+            ticketType.setTypeName(rs.getString("type_name"));
+            ticketType.setDescription(rs.getString("description"));
+            ticketType.setPrice(rs.getBigDecimal("price"));
+            ticketType.setActive(rs.getBoolean("is_active"));
+            return ticketType;
         }
     }
 
@@ -27,8 +27,8 @@ public class TicketTypeDao extends BaseDao {
     public List<TicketType> getAllActiveTicketTypes() {
         String sql = """
             SELECT * FROM ticket_types 
-            WHERE is_active = TRUE 
-            ORDER BY id
+            WHERE is_active = true 
+            ORDER BY price DESC
             """;
 
         return get().withHandle(handle ->
@@ -38,42 +38,31 @@ public class TicketTypeDao extends BaseDao {
         );
     }
 
-    // Lấy loại vé theo ID
-    public TicketType getTicketTypeById(int typeId) {
-        String sql = "SELECT * FROM ticket_types WHERE id = :typeId";
+    // Lấy ticket type theo ID
+    public TicketType getTicketTypeById(int id) {
+        String sql = "SELECT * FROM ticket_types WHERE id = :id";
 
         return get().withHandle(handle ->
                 handle.createQuery(sql)
-                        .bind("typeId", typeId)
+                        .bind("id", id)
                         .map(new TicketTypeMapper())
                         .findOne()
                         .orElse(null)
         );
     }
 
-    // Lấy loại vé theo tên
-    public TicketType getTicketTypeByName(String typeName) {
-        String sql = "SELECT * FROM ticket_types WHERE type_name = :typeName AND is_active = TRUE";
+    // Kiểm tra ticket type có hợp lệ không
+    public boolean isTicketTypeValid(int ticketTypeId) {
+        String sql = "SELECT is_active FROM ticket_types WHERE id = :id";
 
-        return get().withHandle(handle ->
+        Boolean isActive = get().withHandle(handle ->
                 handle.createQuery(sql)
-                        .bind("typeName", typeName)
-                        .map(new TicketTypeMapper())
+                        .bind("id", ticketTypeId)
+                        .mapTo(Boolean.class)
                         .findOne()
-                        .orElse(null)
+                        .orElse(false)
         );
-    }
 
-    // Lấy giá vé theo loại
-    public double getPriceByType(String typeName) {
-        String sql = "SELECT price FROM ticket_types WHERE type_name = :typeName AND is_active = TRUE";
-
-        return get().withHandle(handle ->
-                handle.createQuery(sql)
-                        .bind("typeName", typeName)
-                        .mapTo(Double.class)
-                        .findOne()
-                        .orElse(100000.0) // Giá mặc định
-        );
+        return isActive;
     }
 }

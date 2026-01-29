@@ -1,4 +1,3 @@
-// Banner.java
 package vn.edu.hcmuaf.fit.demo1.model;
 
 import java.io.Serializable;
@@ -10,41 +9,91 @@ public class Banner implements Serializable {
     private String imageUrl;
     private String linkUrl;
     private int displayOrder;
-    private boolean active;
+    private boolean isActive;
     private LocalDateTime createdAt;
+    private Integer createdBy;
 
     // Constructors
-    public Banner() {}
-
-    public Banner(int id, String title, String imageUrl, String linkUrl,
-                  int displayOrder, boolean active) {
-        this.id = id;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.linkUrl = linkUrl;
-        this.displayOrder = displayOrder;
-        this.active = active;
+    public Banner() {
+        this.createdAt = LocalDateTime.now();
+        this.displayOrder = 0;
+        this.isActive = true;
+        this.createdBy = 1; // Default admin ID
     }
 
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getTitle() {
+        return title;
+    }
 
-    public String getLinkUrl() { return linkUrl; }
-    public void setLinkUrl(String linkUrl) { this.linkUrl = linkUrl; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public int getDisplayOrder() { return displayOrder; }
-    public void setDisplayOrder(int displayOrder) { this.displayOrder = displayOrder; }
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getLinkUrl() {
+        return linkUrl;
+    }
+
+    public void setLinkUrl(String linkUrl) {
+        this.linkUrl = linkUrl;
+    }
+
+    public int getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(int displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public String toString() {
+        return "Banner{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", displayOrder=" + displayOrder +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

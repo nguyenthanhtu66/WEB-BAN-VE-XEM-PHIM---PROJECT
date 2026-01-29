@@ -1,898 +1,689 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%-- File: webapp/Gio-hang.jsp --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<html>
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Giỏ hàng - DTN Movie</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/gio-hang.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng - DTN Ticket Movie Seller</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Modal chọn ghế */
-        .seat-modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            align-items: center;
-            justify-content: center;
+        /* ========== USER DROPDOWN FIX ========== */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
         }
 
-        .seat-modal-content {
-            background: linear-gradient(135deg, #1e1e1e 0%, #2e2e2e 100%);
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 1000px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .seat-modal-title {
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .seat-map-container {
-            background: rgba(76, 76, 76, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .screen-label {
-            background: linear-gradient(180deg, #fff 0%, #ccc 100%);
-            color: #2c3e50;
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px 10px 50% 50%;
-            margin-bottom: 30px;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .seat-row {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .seat {
-            width: 45px;
-            height: 45px;
+        .header-item.user-profile {
+            background: none;
             border: none;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
             color: #fff;
-        }
-
-        .seat.available {
-            background: #95a5a6;
-        }
-
-        .seat.available:hover {
-            background: #7f8c8d;
-            transform: scale(1.1);
-        }
-
-        .seat.selected {
-            background: #2ecc71;
-        }
-
-        .seat.booked {
-            background: #e74c3c;
-            cursor: not-allowed;
-        }
-
-        .seat.reserved {
-            background: #f39c12;
-            cursor: not-allowed;
-        }
-
-        .seat-legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .legend-item {
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+        }
+
+        .header-item.user-profile:hover {
+            background-color: rgba(255, 102, 0, 0.2);
+        }
+
+        /* Dropdown menu */
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 0;
+            background: #1e1e1e;
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding: 8px 0;
+            z-index: 1000;
+            border: 1px solid #4c4c4c;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block !important;
+            margin-top: 5px;
+        }
+
+        /* Tạo đường dẫn cho chuột để hover mượt mà */
+        .user-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: transparent;
+        }
+
+        .user-dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
             color: #fff;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
         }
 
-        .legend-box {
-            width: 25px;
-            height: 25px;
-            border-radius: 5px;
+        .dropdown-item:hover {
+            background-color: rgba(255, 102, 0, 0.1);
+            color: #ff6600;
         }
 
-        .modal-booking-form {
-            margin-top: 20px;
+        .dropdown-divider {
+            height: 1px;
+            background: #4c4c4c;
+            margin: 8px 0;
+            width: 100%;
         }
 
-        .modal-form-group {
+        .logout-item {
+            color: #ff6b6b;
+        }
+
+        .logout-item:hover {
+            color: #ff4444;
+            background-color: rgba(255, 107, 107, 0.1);
+        }
+
+        /* ========== MENU DROPDOWN STYLES ========== */
+        .menu-item-wrapper {
+            position: relative;
+        }
+
+        .menu-item.has-dropdown {
+            cursor: pointer;
+        }
+
+        .menu-item-wrapper .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1e1e1e;
+            min-width: 180px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding: 10px 0;
+            z-index: 999;
+            border: 1px solid #4c4c4c;
+            display: none;
+        }
+
+        .menu-item-wrapper:hover .dropdown-menu {
+            display: block;
+        }
+
+        .menu-item-wrapper .dropdown-item {
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .menu-item-wrapper .dropdown-item:hover {
+            background-color: rgba(255, 102, 0, 0.1);
+            color: #ff6600;
+        }
+        /* Cart specific styles */
+        .cart-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .cart-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 15px;
+        }
+
+        .cart-header h1 {
+            color: #fff;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-header h1 i {
+            color: #ff6600;
+        }
+
+        /* Empty cart */
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .empty-cart i {
+            font-size: 80px;
+            color: #95a5a6;
+            margin-bottom: 20px;
+        }
+
+        .empty-cart h2 {
+            color: #fff;
+            font-size: 28px;
             margin-bottom: 15px;
         }
 
-        .modal-form-group label {
-            display: block;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 5px;
+        .empty-cart p {
+            color: #bdc3c7;
+            font-size: 16px;
+            margin-bottom: 30px;
         }
 
-        .modal-form-group select,
-        .modal-form-group input {
+        /* Cart items */
+        .cart-items {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto auto;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item:hover {
+            background: rgba(255, 102, 0, 0.05);
+        }
+
+        .movie-poster-small {
+            width: 100px;
+            height: 140px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .movie-poster-small img {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #4c4c4c;
-            border-radius: 8px;
-            background: #2e2e2e;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
             color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .item-details {
+            color: #bdc3c7;
             font-size: 14px;
-        }
-
-        .modal-buttons {
+            margin-bottom: 5px;
             display: flex;
+            align-items: center;
             gap: 10px;
-            margin-top: 25px;
-            justify-content: center;
         }
 
-        .modal-btn {
-            padding: 12px 30px;
+        .item-details i {
+            color: #ff6600;
+            width: 16px;
+        }
+
+        .item-price {
+            color: #2ecc71;
+            font-size: 18px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .item-remove {
+            background: #e74c3c;
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-remove:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Cart summary */
+        .cart-summary {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+            font-size: 16px;
+        }
+
+        .summary-row.total {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .summary-row.total span {
+            color: #2ecc71;
+        }
+
+        /* Action buttons */
+        .cart-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            justify-content: flex-end;
+        }
+
+        .btn-continue {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-        }
-
-        .modal-btn-primary {
-            background: #ff6600;
-            color: #fff;
-        }
-
-        .modal-btn-primary:hover {
-            background: #ff8800;
-            transform: translateY(-2px);
-        }
-
-        .modal-btn-secondary {
-            background: #4c4c4c;
-            color: #fff;
-        }
-
-        .modal-btn-secondary:hover {
-            background: #5c5c5c;
-        }
-
-        .seat-selection-summary {
-            background: rgba(76, 76, 76, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            color: #fff;
-        }
-
-        .summary-item {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
         }
 
-        .selected-seats-display {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .seat-badge {
-            background: #2ecc71;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        /* Nút sửa trong giỏ hàng */
-        .edit-seat-btn {
-            background: #3498db;
-            color: #fff;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .edit-seat-btn:hover {
+        .btn-continue:hover {
             background: #2980b9;
-            transform: translateY(-1px);
+            transform: translateY(-3px);
+        }
+
+        .btn-checkout {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-checkout:hover {
+            background: linear-gradient(135deg, #219653 0%, #27ae60 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                gap: 15px;
+            }
+
+            .item-price, .item-remove {
+                grid-column: 2;
+                justify-self: start;
+            }
+
+            .cart-actions {
+                flex-direction: column;
+            }
+
+            .btn-continue, .btn-checkout {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
 <div id="app" class="app">
-    <!-- Header Label với Search -->
+    <!-- Include Header from index.jsp -->
     <div class="header-label">
         <div class="header-container">
             <form action="${pageContext.request.contextPath}/home" method="get" class="search-container">
-                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức..."
-                       value="${searchKeyword != null ? searchKeyword : ''}">
+                <input type="text" name="search" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
                 <button type="submit" style="display:none;">Search</button>
             </form>
             <div class="header-account">
-                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">Kho vé</a>
-                <a href="${pageContext.request.contextPath}/khuyen-mai" class="header-item">Khuyến mãi</a>
-                <a href="${pageContext.request.contextPath}/cart" class="header-item">
-                    Giỏ hàng
-                    <c:if test="${not empty cart and cart.totalItems > 0}">
-                        <span class="cart-badge">${cart.totalItems}</span>
+                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="header-item">
+                    <i class="fas fa-ticket-alt"></i> Kho vé
+                </a>
+                <a href="${pageContext.request.contextPath}/khuyen-mai" class="header-item">
+                    <i class="fas fa-gift"></i> Khuyến mãi
+                </a>
+                <a href="${pageContext.request.contextPath}/Gio-hang.jsp" class="header-item">
+                    <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                    <c:if test="${not empty sessionScope.cart and sessionScope.cart.totalItems > 0}">
+                        <span class="cart-badge">${sessionScope.cart.totalItems}</span>
                     </c:if>
                 </a>
+
                 <c:choose>
-                    <c:when test="${not empty user}">
+                    <c:when test="${not empty sessionScope.loggedUser}">
                         <div class="user-dropdown">
-                            <span class="header-item">${user.fullName} ▼</span>
-                            <div class="user-dropdown-menu">
-                                <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">Hồ sơ</a>
-                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">Đơn hàng</a>
-                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item">Đăng xuất</a>
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.loggedUser.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                                <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
+                                    <i class="fas fa-user"></i> Hồ sơ cá nhân
+                                </a>
+                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
+                                    <i class="fas fa-receipt"></i> Lịch sử đặt vé
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item logout-item">
+                                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                </a>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:when test="${not empty sessionScope.user}">
+                        <div class="user-dropdown">
+                            <span class="header-item user-profile" id="userProfileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                ${sessionScope.user.fullName}
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                                <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
+                                    <i class="fas fa-user"></i> Hồ sơ cá nhân
+                                </a>
+                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">
+                                    <i class="fas fa-receipt"></i> Lịch sử đặt vé
+                                </a>
+                                <a href="${pageContext.request.contextPath}/ticket-warehouse" class="dropdown-item">
+                                    <i class="fas fa-ticket-alt"></i> Vé của tôi
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item logout-item">
+                                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                </a>
                             </div>
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/login" class="header-item">Đăng nhập</a>
+                        <div class="auth-buttons">
+                            <a href="${pageContext.request.contextPath}/Register.jsp" class="header-item register-btn">
+                                <i class="fas fa-user-plus"></i> Đăng ký
+                            </a>
+                            <a href="${pageContext.request.contextPath}/login.jsp" class="header-item login-btn">
+                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                            </a>
+                        </div>
                     </c:otherwise>
                 </c:choose>
             </div>
         </div>
     </div>
 
-    <!-- Header Menu -->
+    <!-- Menu -->
     <div class="header-menu">
         <div class="menu-container">
             <a href="${pageContext.request.contextPath}/home" class="logo">
-                <img src="${pageContext.request.contextPath}/image/231601886-Photoroom.png" alt="dtn logo">
+                <img src="${pageContext.request.contextPath}/img/231601886-Photoroom.png" alt="dtn logo">
             </a>
             <nav class="menu-nav">
-                <a href="${pageContext.request.contextPath}/home" class="menu-item">TRANG CHỦ</a>
-                <a href="${pageContext.request.contextPath}/phim" class="menu-item">PHIM</a>
-                <a href="${pageContext.request.contextPath}/tin-tuc" class="menu-item">TIN TỨC</a>
-                <a href="${pageContext.request.contextPath}/gia-ve" class="menu-item">GIÁ VÉ</a>
-                <a href="${pageContext.request.contextPath}/gioi-thieu" class="menu-item">GIỚI THIỆU</a>
-                <a href="${pageContext.request.contextPath}/lien-he" class="menu-item">LIÊN HỆ</a>
+                <div class="menu-item-wrapper">
+                    <a href="${pageContext.request.contextPath}/home" class="menu-item">
+                        <i class="fas fa-home"></i> TRANG CHỦ
+                    </a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">
+                        <i class="fas fa-film"></i> PHIM
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="${pageContext.request.contextPath}/home?status=Dang+chieu"
+                           class="dropdown-item">Phim đang chiếu</a>
+                        <a href="${pageContext.request.contextPath}/home?status=Sap+chieu"
+                           class="dropdown-item">Phim sắp chiếu</a>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">
+                        <i class="fas fa-newspaper"></i> TIN TỨC
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" href="Gia-ve.jsp">
+                        <i class="fas fa-tag"></i> GIÁ VÉ
+                    </a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" href="Gioi-thieu.jsp">
+                        <i class="fas fa-info-circle"></i> GIỚI THIỆU
+                    </a>
+                </div>
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" href="contact">
+                        <i class="fas fa-phone"></i> LIÊN HỆ
+                    </a>
+                </div>
             </nav>
         </div>
     </div>
 
     <!-- Main Container -->
     <div class="main-container">
-        <h1 class="page-title">Giỏ Hàng Của Bạn</h1>
-
         <div class="cart-container">
-            <!-- Cart Items -->
-            <div class="cart-items">
-                <c:choose>
-                    <c:when test="${empty cart or empty cart.items}">
-                        <div class="empty-cart">
-                            <div class="empty-cart-icon">🛒</div>
-                            <h2>Giỏ hàng của bạn đang trống</h2>
-                            <p>Hãy thêm vé xem phim vào giỏ hàng của bạn!</p>
-                            <a href="${pageContext.request.contextPath}/home" class="continue-shopping">← Tiếp tục mua vé</a>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
+            <div class="cart-header">
+                <h1><i class="fas fa-shopping-cart"></i> GIỎ HÀNG CỦA BẠN</h1>
+            </div>
+
+            <c:choose>
+                <c:when test="${empty cart or cart.totalItems == 0}">
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h2>Giỏ hàng của bạn đang trống</h2>
+                        <p>Hãy chọn những bộ phim yêu thích và thêm vào giỏ hàng!</p>
+                        <a href="${pageContext.request.contextPath}/home" class="btn-continue">
+                            <i class="fas fa-film"></i> KHÁM PHÁ PHIM MỚI
+                        </a>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <!-- Cart Items -->
+                    <div class="cart-items">
                         <c:forEach var="item" items="${cart.items}">
-                            <div class="cart-item" id="item-${item.id}">
-                                <div class="item-poster">
-                                    <img src="${item.posterUrl}" alt="${item.movieTitle}"
-                                         onerror="this.src='${pageContext.request.contextPath}/image/default-poster.jpg'">
+                            <div class="cart-item">
+                                <div class="movie-poster-small">
+                                    <img src="${item.moviePoster}" alt="${item.movieTitle}"
+                                         onerror="this.src='${pageContext.request.contextPath}/img/default-poster.jpg'">
                                 </div>
-                                <div class="item-details">
+
+                                <div class="item-info">
                                     <h3 class="item-title">${item.movieTitle}</h3>
-                                    <div class="item-info">
-                                        <div class="info-row">
-                                            <span class="info-label">Phòng chiếu:</span>
-                                            <span>${item.room}</span>
-                                        </div>
-                                        <div class="info-row">
-                                            <span class="info-label">Ngày giờ:</span>
-                                            <span>${item.showtime}</span>
-                                        </div>
-                                        <div class="info-row">
-                                            <span class="info-label">Loại vé:</span>
-                                            <span>
-                                                <c:choose>
-                                                    <c:when test="${item.ticketType == 'adult'}">Người lớn</c:when>
-                                                    <c:when test="${item.ticketType == 'student'}">Học sinh/Sinh viên</c:when>
-                                                    <c:when test="${item.ticketType == 'child'}">Trẻ em</c:when>
-                                                    <c:otherwise>${item.ticketType}</c:otherwise>
-                                                </c:choose>
-                                            </span>
-                                        </div>
-                                        <c:if test="${not empty item.seats}">
-                                            <div class="info-row">
-                                                <span class="info-label">Ghế:</span>
-                                                <span class="item-seats">${item.seats}</span>
-                                                <button class="edit-seat-btn" onclick="openSeatModal('${item.id}')">
-                                                    Chỉnh sửa ghế
-                                                </button>
-                                            </div>
-                                        </c:if>
+                                    <div class="item-details">
+                                        <span><i class="fas fa-couch"></i> Ghế: ${item.seatCode}</span>
+                                        <span><i class="fas fa-calendar-alt"></i> ${item.showDate}</span>
+                                        <span><i class="fas fa-clock"></i> ${item.showTime}</span>
+                                        <span><i class="fas fa-door-open"></i> ${item.roomName}</span>
                                     </div>
-                                    <div class="item-actions">
-                                        <div class="quantity-control">
-                                            <form method="post" action="${pageContext.request.contextPath}/cart/update" class="quantity-form">
-                                                <input type="hidden" name="itemId" value="${item.id}">
-                                                <button type="button" class="quantity-btn minus"
-                                                        onclick="updateQuantity('${item.id}', ${item.quantity - 1})">−</button>
-                                                <span class="quantity-value">${item.quantity}</span>
-                                                <button type="button" class="quantity-btn plus"
-                                                        onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
-                                            </form>
-                                        </div>
-                                        <span class="item-price"><fmt:formatNumber value="${item.total}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
-                                        <div class="action-icons">
-                                            <a href="${pageContext.request.contextPath}/cart/remove?id=${item.id}"
-                                               class="icon-btn delete" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">🗑️</a>
-                                        </div>
+                                    <div class="item-details">
+                                        <span><i class="fas fa-tags"></i> ${item.ticketTypeName}</span>
                                     </div>
                                 </div>
+
+                                <div class="item-price">
+                                    <fmt:formatNumber value="${item.price}" type="currency"
+                                                      currencySymbol="đ" maxFractionDigits="0"/>
+                                </div>
+
+                                <form action="${pageContext.request.contextPath}/cart" method="post" class="remove-form">
+                                    <input type="hidden" name="action" value="remove">
+                                    <input type="hidden" name="showtimeId" value="${item.showtimeId}">
+                                    <input type="hidden" name="seatId" value="${item.seatId}">
+                                    <button type="submit" class="item-remove">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </button>
+                                </form>
                             </div>
                         </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-
-            <!-- Cart Summary -->
-            <c:if test="${not empty cart and not empty cart.items}">
-                <div class="cart-summary">
-                    <h2 class="summary-title">Tổng Đơn Hàng</h2>
-
-                    <div class="summary-row">
-                        <span>Tạm tính:</span>
-                        <span><fmt:formatNumber value="${cart.subtotal}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
                     </div>
 
-                    <div class="summary-row">
-                        <span>Phí dịch vụ (5%):</span>
-                        <span><fmt:formatNumber value="${cart.serviceFee}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
-                    </div>
-
-                    <c:if test="${cart.discount > 0}">
+                    <!-- Cart Summary -->
+                    <div class="cart-summary">
                         <div class="summary-row">
-                            <span>Giảm giá:</span>
-                            <span style="color: #2ecc71;">-<fmt:formatNumber value="${cart.discount}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></span>
+                            <span>Tổng số vé:</span>
+                            <span>${cart.totalItems}</span>
                         </div>
-                    </c:if>
-
-                    <div class="promo-code">
-                        <div class="promo-input">
-                            <input type="text" id="promoCode" placeholder="Nhập mã khuyến mãi">
-                            <button type="button" onclick="applyPromoCode()">Áp dụng</button>
+                        <div class="summary-row total">
+                            <span>Tổng tiền:</span>
+                            <span><fmt:formatNumber value="${cart.totalAmount}" type="currency"
+                                                    currencySymbol="đ" maxFractionDigits="0"/></span>
                         </div>
-                        <div id="promoMessage" class="promo-message"></div>
                     </div>
 
-                    <div class="summary-row total">
-                        <span>Tổng cộng:</span>
-                        <span class="amount">
-                            <fmt:formatNumber value="${cart.grandTotal}" type="currency" currencySymbol="đ" maxFractionDigits="0"/>
-                        </span>
+                    <!-- Action Buttons -->
+                    <div class="cart-actions">
+                        <a href="${pageContext.request.contextPath}/home" class="btn-continue">
+                            <i class="fas fa-arrow-left"></i> TIẾP TỤC ĐẶT VÉ
+                        </a>
+
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.loggedUser or not empty sessionScope.user}">
+                                <a href="${pageContext.request.contextPath}/thanh-toan?fromCart=true"
+                                   class="btn-checkout">
+                                    <i class="fas fa-credit-card"></i> THANH TOÁN NGAY
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/login.jsp?redirect=thanh-toan.jsp?fromCart=true"
+                                   class="btn-checkout">
+                                    <i class="fas fa-sign-in-alt"></i> ĐĂNG NHẬP ĐỂ THANH TOÁN
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
-
-                    <button class="checkout-btn" onclick="proceedToCheckout()">Thanh toán</button>
-                    <a href="${pageContext.request.contextPath}/cart/clear" class="continue-shopping"
-                       onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')">Xóa giỏ hàng</a>
-                    <a href="${pageContext.request.contextPath}/home" class="continue-shopping">← Tiếp tục mua vé</a>
-                </div>
-            </c:if>
-        </div>
-    </div>
-
-    <!-- Modal chọn ghế -->
-    <div id="seatModal" class="seat-modal">
-        <div class="seat-modal-content">
-            <h2 class="seat-modal-title">Chọn Ghế Ngồi</h2>
-
-            <div class="seat-map-container">
-                <div class="screen-label">MÀN HÌNH</div>
-
-                <!-- Seat map sẽ được tạo bằng JavaScript -->
-                <div id="seatMapContainer" class="seat-map">
-                    <div id="seatRows"></div>
-                </div>
-
-                <div class="seat-legend">
-                    <div class="legend-item">
-                        <div class="legend-box available"></div>
-                        <span>Ghế trống</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box selected"></div>
-                        <span>Đang chọn</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box booked"></div>
-                        <span>Đã đặt</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-box reserved"></div>
-                        <span>Đang giữ</span>
-                    </div>
-                </div>
-
-                <div class="seat-selection-summary">
-                    <div class="summary-item">
-                        <span>Số ghế đã chọn:</span>
-                        <span id="selectedSeatsCount">0</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Tổng tiền:</span>
-                        <span id="seatTotalPrice">0 đ</span>
-                    </div>
-                    <div class="selected-seats-display" id="selectedSeatsDisplay">
-                        <!-- Selected seats will appear here -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-booking-form">
-                <div class="modal-form-group">
-                    <label>Loại vé:</label>
-                    <select id="modalTicketType" onchange="updateSeatPrice()">
-                        <option value="adult">Người lớn - 100.000đ</option>
-                        <option value="student">Học sinh/Sinh viên - 80.000đ</option>
-                        <option value="child">Trẻ em - 60.000đ</option>
-                    </select>
-                </div>
-
-                <div class="modal-form-group">
-                    <label>Số lượng vé:</label>
-                    <input type="number" id="modalQuantity" value="1" min="1" max="10"
-                           onchange="validateSeatSelection()" readonly>
-                </div>
-
-                <div class="modal-buttons">
-                    <button type="button" class="modal-btn modal-btn-primary" onclick="saveSeatSelection()">
-                        Xác nhận
-                    </button>
-                    <button type="button" class="modal-btn modal-btn-secondary" onclick="closeSeatModal()">
-                        Hủy
-                    </button>
-                </div>
-            </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <ul class="footer-menu">
-            <li><a href="${pageContext.request.contextPath}/chinh-sach">Chính sách</a></li>
-            <li><a href="${pageContext.request.contextPath}/phim?status=showing">Phim đang chiếu</a></li>
-            <li><a href="${pageContext.request.contextPath}/phim?status=upcoming">Phim sắp chiếu</a></li>
-            <li><a href="${pageContext.request.contextPath}/tin-tuc">Tin tức</a></li>
-            <li><a href="${pageContext.request.contextPath}/lien-he">Liên hệ</a></li>
-        </ul>
-        <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+        <div class="footer-top">
+            <ul class="footer-menu">
+                <li><a href="Chinh-sach.html"><i class="fas fa-file-contract"></i> Chính sách</a></li>
+                <li><a href="${pageContext.request.contextPath}/home?status=Dang+chieu"><i class="fas fa-film"></i> Phim đang chiếu</a></li>
+                <li><a href="${pageContext.request.contextPath}/home?status=Sap+chieu"><i class="fas fa-clock"></i> Phim sắp chiếu</a></li>
+                <li><a href="Tin-dien-anh.html"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+                <li><a href="Hoi-Dap.jsp"><i class="fas fa-question-circle"></i> Hỏi đáp</a></li>
+                <li><a href="contact.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
+            </ul>
+            <div class="footer-apps">
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p><i class="fas fa-info-circle"></i> Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim.</p>
+            <p><i class="fas fa-copyright"></i> 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+        </div>
     </div>
 </div>
 
 <script>
-    // Biến lưu thông tin hiện tại
-    let currentItemId = null;
-    let currentItemData = null;
-    let selectedSeats = [];
-    let seatPrice = 100000; // Giá mặc định
-
-    // Mở modal chọn ghế
-    function openSeatModal(itemId) {
-        currentItemId = itemId;
-
-        // Lấy thông tin item từ giỏ hàng
-        const itemElement = document.getElementById(`item-${itemId}`);
-        if (!itemElement) return;
-
-        // Lấy thông tin hiện tại
-        const movieTitle = itemElement.querySelector('.item-title').textContent;
-        const seatsText = itemElement.querySelector('.item-seats').textContent;
-        const currentSeats = seatsText.split(', ').filter(s => s.trim() !== '');
-
-        // Lưu thông tin hiện tại
-        currentItemData = {
-            movieTitle: movieTitle,
-            currentSeats: currentSeats,
-            currentQuantity: currentSeats.length
-        };
-
-        // Đặt số lượng và ghế hiện tại
-        document.getElementById('modalQuantity').value = currentSeats.length;
-        selectedSeats = [...currentSeats];
-
-        // Hiển thị modal
-        document.getElementById('seatModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-
-        // Load seat map (giả lập - cần gọi API thực tế)
-        loadSeatMap();
-        updateSelectionDisplay();
-    }
-
-    // Đóng modal
-    function closeSeatModal() {
-        document.getElementById('seatModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        currentItemId = null;
-        currentItemData = null;
-        selectedSeats = [];
-    }
-
-    // Load seat map (giả lập)
-    function loadSeatMap() {
-        const seatRows = document.getElementById('seatRows');
-        seatRows.innerHTML = '';
-
-        // Tạo các hàng ghế (A, B, C, D, E)
-        const rows = ['A', 'B', 'C', 'D', 'E'];
-
-        rows.forEach(row => {
-            const rowDiv = document.createElement('div');
-            rowDiv.className = 'seat-row';
-
-            // Tạo 10 ghế mỗi hàng
-            for (let i = 1; i <= 10; i++) {
-                const seatCode = `${row}${i.toString().padStart(2, '0')}`;
-                const seat = document.createElement('button');
-                seat.className = 'seat available';
-                seat.setAttribute('data-seat', seatCode);
-                seat.textContent = seatCode;
-
-                // Kiểm tra xem ghế có đang được chọn không
-                if (selectedSeats.includes(seatCode)) {
-                    seat.classList.remove('available');
-                    seat.classList.add('selected');
-                }
-
-                // Giả lập trạng thái ghế
-                if (Math.random() < 0.2) {
-                    seat.classList.remove('available');
-                    seat.classList.add('booked');
-                    seat.disabled = true;
-                } else if (Math.random() < 0.1 && !selectedSeats.includes(seatCode)) {
-                    seat.classList.remove('available');
-                    seat.classList.add('reserved');
-                    seat.disabled = true;
-                } else if (!selectedSeats.includes(seatCode)) {
-                    seat.onclick = function() { toggleSeatSelection(this); };
-                }
-
-                rowDiv.appendChild(seat);
-            }
-
-            seatRows.appendChild(rowDiv);
-        });
-    }
-
-    // Chọn/bỏ chọn ghế
-    function toggleSeatSelection(seatElement) {
-        const seatCode = seatElement.getAttribute('data-seat');
-
-        if (seatElement.classList.contains('selected')) {
-            // Bỏ chọn
-            seatElement.classList.remove('selected');
-            seatElement.classList.add('available');
-            selectedSeats = selectedSeats.filter(s => s !== seatCode);
-        } else {
-            // Kiểm tra số lượng tối đa
-            const maxSeats = parseInt(document.getElementById('modalQuantity').value);
-            if (selectedSeats.length >= maxSeats) {
-                alert(`Bạn chỉ có thể chọn tối đa ${maxSeats} ghế`);
-                return;
-            }
-
-            // Chọn ghế
-            seatElement.classList.remove('available');
-            seatElement.classList.add('selected');
-            selectedSeats.push(seatCode);
-        }
-
-        updateSelectionDisplay();
-    }
-
-    // Cập nhật hiển thị
-    function updateSelectionDisplay() {
-        // Cập nhật số ghế đã chọn
-        document.getElementById('selectedSeatsCount').textContent = selectedSeats.length;
-
-        // Cập nhật tổng tiền
-        const total = selectedSeats.length * seatPrice;
-        document.getElementById('seatTotalPrice').textContent = formatCurrency(total);
-
-        // Cập nhật hiển thị ghế đã chọn
-        const display = document.getElementById('selectedSeatsDisplay');
-        display.innerHTML = '';
-
-        selectedSeats.forEach(seatCode => {
-            const badge = document.createElement('div');
-            badge.className = 'seat-badge';
-            badge.textContent = seatCode;
-            display.appendChild(badge);
-        });
-
-        // Cập nhật số lượng
-        document.getElementById('modalQuantity').value = selectedSeats.length;
-    }
-
-    // Cập nhật giá vé
-    function updateSeatPrice() {
-        const ticketType = document.getElementById('modalTicketType').value;
-
-        switch(ticketType) {
-            case 'adult':
-                seatPrice = 100000;
-                break;
-            case 'student':
-                seatPrice = 80000;
-                break;
-            case 'child':
-                seatPrice = 60000;
-                break;
-            default:
-                seatPrice = 100000;
-        }
-
-        updateSelectionDisplay();
-    }
-
-    // Kiểm tra số ghế
-    function validateSeatSelection() {
-        const quantity = parseInt(document.getElementById('modalQuantity').value);
-
-        if (selectedSeats.length > quantity) {
-            // Nếu đã chọn nhiều hơn số lượng mới, bỏ bớt
-            const excess = selectedSeats.length - quantity;
-            for (let i = 0; i < excess; i++) {
-                const seatCode = selectedSeats.pop();
-                // Tìm và bỏ chọn ghế trong seat map
-                const seatElement = document.querySelector(`[data-seat="${seatCode}"]`);
-                if (seatElement) {
-                    seatElement.classList.remove('selected');
-                    seatElement.classList.add('available');
+    // Auto refresh cart badge
+    function updateCartBadge(count) {
+        let badge = document.querySelector('.cart-badge');
+        if (count > 0) {
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'cart-badge';
+                const cartLink = document.querySelector('a[href*="cart"]');
+                if (cartLink) {
+                    cartLink.appendChild(badge);
                 }
             }
-        }
-
-        updateSelectionDisplay();
-    }
-
-    // Lưu lựa chọn ghế
-    function saveSeatSelection() {
-        if (selectedSeats.length === 0) {
-            alert('Vui lòng chọn ít nhất 1 ghế');
-            return;
-        }
-
-        if (!currentItemId) {
-            alert('Có lỗi xảy ra');
-            return;
-        }
-
-        // Cập nhật thông tin trong giỏ hàng
-        const itemElement = document.getElementById(`item-${currentItemId}`);
-        if (itemElement) {
-            // Cập nhật ghế
-            const seatsElement = itemElement.querySelector('.item-seats');
-            seatsElement.textContent = selectedSeats.join(', ');
-
-            // Cập nhật số lượng
-            const quantityElement = itemElement.querySelector('.quantity-value');
-            quantityElement.textContent = selectedSeats.length;
-
-            // Cập nhật tổng tiền
-            const ticketType = document.getElementById('modalTicketType').value;
-            const unitPrice = getTicketPrice(ticketType);
-            const total = selectedSeats.length * unitPrice;
-
-            const priceElement = itemElement.querySelector('.item-price');
-            priceElement.textContent = formatCurrency(total);
-
-            // Gọi API cập nhật giỏ hàng
-            updateCartItem(currentItemId, selectedSeats.length);
-        }
-
-        closeSeatModal();
-    }
-
-    // Cập nhật giỏ hàng qua API
-    function updateCartItem(itemId, newQuantity) {
-        const formData = new FormData();
-        formData.append('itemId', itemId);
-        formData.append('quantity', newQuantity);
-
-        fetch('${pageContext.request.contextPath}/cart/update', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = 'inline-flex';
             }
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Cập nhật tổng giỏ hàng
-                    updateCartSummary(data);
-                } else {
-                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng');
-                    location.reload();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra');
-            });
-    }
-
-    // Cập nhật tổng giỏ hàng
-    function updateCartSummary(data) {
-        // Cập nhật badge
-        const badge = document.querySelector('.cart-badge');
-        if (badge) {
-            if (data.cartItemCount > 0) {
-                badge.textContent = data.cartItemCount;
-                badge.style.display = 'flex';
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        // Cập nhật tổng tiền trong summary
-        document.querySelector('.summary-row.total .amount').textContent =
-            formatCurrency(data.grandTotal);
-
-        // Cập nhật các phần khác trong summary
-        document.querySelectorAll('.summary-row')[0].querySelector('span:last-child').textContent =
-            formatCurrency(data.subtotal);
-        document.querySelectorAll('.summary-row')[1].querySelector('span:last-child').textContent =
-            formatCurrency(data.serviceFee);
-    }
-
-    // Hàm tiện ích
-    function getTicketPrice(ticketType) {
-        switch(ticketType) {
-            case 'adult': return 100000;
-            case 'student': return 80000;
-            case 'child': return 60000;
-            default: return 100000;
+        } else if (badge) {
+            badge.style.display = 'none';
         }
     }
 
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
-        }).format(amount);
-    }
-
-    // Các hàm cũ từ giỏ hàng
-    function updateQuantity(itemId, newQuantity) {
-        if (newQuantity < 1) {
-            if (confirm('Bạn có muốn xóa vé này khỏi giỏ hàng?')) {
-                window.location.href = '${pageContext.request.contextPath}/cart/remove?id=' + itemId;
-            }
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('itemId', itemId);
-        formData.append('quantity', newQuantity);
-
-        fetch('${pageContext.request.contextPath}/cart/update', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert('Có lỗi xảy ra khi cập nhật số lượng');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra');
-            });
-    }
-
-    function applyPromoCode() {
-        const promoCode = document.getElementById('promoCode').value.trim();
-        if (!promoCode) {
-            document.getElementById('promoMessage').textContent = 'Vui lòng nhập mã khuyến mãi';
-            document.getElementById('promoMessage').style.color = '#e74c3c';
-            return;
-        }
-
-        // Giả lập API
-        document.getElementById('promoMessage').textContent = 'Mã khuyến mãi không khả dụng trong demo';
-        document.getElementById('promoMessage').style.color = '#e74c3c';
-
-        // Trong thực tế, gọi API:
-        // fetch('${pageContext.request.contextPath}/cart/apply-promo?code=' + encodeURIComponent(promoCode))
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         const messageEl = document.getElementById('promoMessage');
-        //         if (data.success) {
-        //             messageEl.textContent = data.message;
-        //             messageEl.style.color = '#2ecc71';
-        //             location.reload();
-        //         } else {
-        //             messageEl.textContent = data.message;
-        //             messageEl.style.color = '#e74c3c';
-        //         }
-        //     })
-    }
-
-    function proceedToCheckout() {
-        // Kiểm tra đăng nhập
-        fetch('${pageContext.request.contextPath}/check-auth')
-            .then(response => response.json())
-            .then(data => {
-                if (data.authenticated) {
-                    window.location.href = '${pageContext.request.contextPath}/checkout';
-                } else {
-                    const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search);
-                    window.location.href = '${pageContext.request.contextPath}/login?redirect=' + redirectUrl;
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra khi kiểm tra đăng nhập');
-            });
-    }
-
-    // Đóng modal khi click bên ngoài
-    window.onclick = function(event) {
-        const modal = document.getElementById('seatModal');
-        if (event.target == modal) {
-            closeSeatModal();
-        }
-    }
-
-    // Auto-remove promo message after 5 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-        const promoMessage = document.getElementById('promoMessage');
-        if (promoMessage && promoMessage.textContent) {
-            setTimeout(() => {
-                promoMessage.textContent = '';
-            }, 5000);
-        }
-    });
+    // Initial update
+    updateCartBadge(${cart != null ? cart.totalItems : 0});
 </script>
 </body>
 </html>
