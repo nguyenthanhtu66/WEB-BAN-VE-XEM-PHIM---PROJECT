@@ -6,14 +6,14 @@ import com.mysql.cj.jdbc.Driver;
 import java.sql.SQLException;
 
 public class BaseDao {
-    private static Jdbi jdbi;
+    private Jdbi jdbi;
 
-    protected static Jdbi get(){
+    public Jdbi get(){
         if(jdbi==null) connect();
         return jdbi;
     }
 
-    private static void connect() {
+    private void connect() {
         MysqlDataSource dataSource = new MysqlDataSource();
         System.out.println("jdbc:mysql://" + DBProperties.host() + ":" + DBProperties.port() + "/" + DBProperties.dbname() + "?" + DBProperties.option());
         dataSource.setURL("jdbc:mysql://" + DBProperties.host() + ":" + DBProperties.port() + "/" + DBProperties.dbname() + "?" + DBProperties.option());

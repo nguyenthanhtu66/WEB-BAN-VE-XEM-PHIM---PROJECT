@@ -1,63 +1,70 @@
 package vn.edu.hcmuaf.fit.demo1.controller;
 
-import vn.edu.hcmuaf.fit.demo1.model.User;
-import vn.edu.hcmuaf.fit.demo1.service.TicketService;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import vn.edu.hcmuaf.fit.demo1.model.User;
+import vn.edu.hcmuaf.fit.demo1.model.TicketWarehouse;
+import vn.edu.hcmuaf.fit.demo1.dao.TicketWarehouseDao;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/ticket-warehouse")
 public class TicketWarehouseController extends HttpServlet {
-
-    private final TicketService ticketService = new TicketService();
+    private final TicketWarehouseDao ticketWarehouseDao = new TicketWarehouseDao();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = req.getSession();
+        HttpSession session = request.getSession(false);
+
+        // Kiểm tra đăng nhập
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp?redirect=" + request.getRequestURI());
+            return;
+        }
+
         User user = (User) session.getAttribute("user");
-
-        // 🔒 CHƯA ĐĂNG NHẬP → ĐÁ VỀ LOGIN
         if (user == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
-            return;
+            user = (User) session.getAttribute("loggedUser");
         }
-        int totalTickets = ticketService.countActiveTickets(user.getId());
-        int totalPrice = ticketService.getTotalTicketPrice(user.getId());
 
-        req.setAttribute("totalTickets", totalTickets);
-
-        req.setAttribute("totalPrice", totalPrice);
-
-        req.setAttribute("tickets",
-                ticketService.getTicketsByUser(user.getId()));
-
-        req.getRequestDispatcher("/WEB-INF/views/ticket-warehouse.jsp")
-                .forward(req, resp);
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-
-        User user = (User) req.getSession().getAttribute("user");
         if (user == null) {
-            resp.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/login.jsp?redirect=" + request.getRequestURI());
             return;
         }
 
-        String action = req.getParameter("action");
-        if ("cancel".equals(action)) {
-            int ticketId = Integer.parseInt(req.getParameter("ticketId"));
-            ticketService.cancelTicket(ticketId, user.getId());
-        }
+        try {
+            // Lấy danh sách vé của user
+            List<TicketWarehouse> tickets = ticketWarehouseDao.getTicketsByUserId(user.getId());
 
-        // PRG
-        resp.sendRedirect("ticket-warehouse");
+            // Tính toán thống kê
+            long totalTickets = tickets.size();
+            long validTickets = tickets.stream().filter(t -> "valid".equals(t.getTicketStatus())).count();
+            long usedTickets = tickets.stream().filter(t -> "used".equals(t.getTicketStatus())).count();
+            long expiredTickets = tickets.stream().filter(t -> "expired".equals(t.getTicketStatus())).count();
+            long cancelledTickets = tickets.stream().filter(t -> "cancelled".equals(t.getTicketStatus())).count();
+
+            // Set attributes
+            request.setAttribute("tickets", tickets);
+            request.setAttribute("totalTickets", totalTickets);
+            request.setAttribute("validTickets", validTickets);
+            request.setAttribute("usedTickets", usedTickets);
+            request.setAttribute("expiredTickets", expiredTickets);
+            request.setAttribute("cancelledTickets", cancelledTickets);
+
+            // Forward to JSP
+            request.getRequestDispatcher("/Kho-Ve.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi khi tải kho vé: " + e.getMessage());
+            request.getRequestDispatcher("/Kho-Ve.jsp").forward(request, response);
+        }
     }
 }

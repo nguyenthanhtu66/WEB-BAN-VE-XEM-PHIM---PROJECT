@@ -567,6 +567,33 @@ public class MovieDao extends BaseDao {
                         .list()
         );
     }
+    public List<Movie> getNowShowing() {
+        String sql = """
+        SELECT 
+            id,           
+            title, 
+            poster_url, 
+            genre, 
+            duration, 
+            rating, 
+            status, 
+            age_rating,
+            director,
+            country,
+            cast
+        FROM movies 
+        WHERE status = 'showing'
+        ORDER BY id DESC
+        """;
+
+        return get().withHandle(handle ->
+                handle.createQuery(sql)
+                        .map(new BasicMovieMapper())
+                        .list()
+        );
+    }
+
+
 
     @Override
     public String toString() {
