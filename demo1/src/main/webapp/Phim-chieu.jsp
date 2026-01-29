@@ -1873,80 +1873,25 @@
             console.error("❌ Form not found!");
             return;
         }
-
-        // Reset về trang 1 khi filter
         const pageInput = form.querySelector('input[name="page"]');
         if (pageInput) {
             pageInput.value = '1';
         }
-
-        console.log("✅ Form submitting with filters:");
-        console.log("Genre:", document.getElementById('filter-genre').value);
-        console.log("Duration:", document.getElementById('filter-duration').value);
-        console.log("Age:", document.getElementById('filter-age').value);
-
+        console.log("✅ Form submitting...");
         form.submit();
     }
 
     function clearAllFilters() {
         console.log("🧹 Clearing all filters...");
-        // Reset dropdowns
         document.getElementById('filter-genre').value = '';
         document.getElementById('filter-duration').value = '';
         document.getElementById('filter-age').value = '';
 
-        // Reset về trang 1
         const form = document.getElementById('filterForm');
-        const pageInput = form.querySelector('input[name="page"]');
-        if (pageInput) {
-            pageInput.value = '1';
-        }
-
-        // Submit form
         if (form) {
             form.submit();
         }
     }
-
-    // Auto-submit khi thay đổi filter (tuỳ chọn)
-    function initAutoFilter() {
-        const genreSelect = document.getElementById('filter-genre');
-        const durationSelect = document.getElementById('filter-duration');
-        const ageSelect = document.getElementById('filter-age');
-
-        if (genreSelect) {
-            genreSelect.addEventListener('change', function() {
-                console.log("Genre changed:", this.value);
-                submitFilter();
-            });
-        }
-
-        if (durationSelect) {
-            durationSelect.addEventListener('change', function() {
-                console.log("Duration changed:", this.value);
-                submitFilter();
-            });
-        }
-
-        if (ageSelect) {
-            ageSelect.addEventListener('change', function() {
-                console.log("Age changed:", this.value);
-                submitFilter();
-            });
-        }
-    }
-
-    // Gọi khi trang load xong
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log("✅ DOM Loaded - Initializing filters");
-        initAutoFilter();
-
-        // Log current filter values
-        console.log("Current filter values:");
-        console.log("Genre:", '${param.genre}');
-        console.log("Duration:", '${param.duration}');
-        console.log("Age:", '${param.age}');
-    });
 
     // ========== BOOKING MODAL FUNCTIONS ==========
 

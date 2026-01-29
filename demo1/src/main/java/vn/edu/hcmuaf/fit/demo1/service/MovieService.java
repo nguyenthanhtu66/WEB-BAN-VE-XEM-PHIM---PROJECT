@@ -54,17 +54,6 @@ public class MovieService {
         String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
         return movieDao.getMoviesByGenreAndStatus(genre, dbStatus);
     }
-    // Thêm phương thức filter theo thời lượng (nếu dùng SQL)
-    public List<Movie> getMoviesByDurationAndStatus(String durationFilter, String urlStatus) {
-        String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
-        return movieDao.getMoviesByDurationAndStatus(durationFilter, dbStatus);
-    }
-
-    // Thêm phương thức filter theo độ tuổi (nếu dùng SQL)
-    public List<Movie> getMoviesByAgeRatingAndStatus(String ageRating, String urlStatus) {
-        String dbStatus = MovieDao.convertUrlStatusToDbStatus(urlStatus);
-        return movieDao.getMoviesByAgeRatingAndStatus(ageRating, dbStatus);
-    }
 
     // ==================== PHƯƠNG THỨC NÂNG CAO ====================
 
@@ -109,5 +98,4 @@ public class MovieService {
     public String convertToUrlStatus(String dbStatus) {
         return MovieDao.convertDbStatusToUrlStatus(dbStatus);
     }
-
 }
