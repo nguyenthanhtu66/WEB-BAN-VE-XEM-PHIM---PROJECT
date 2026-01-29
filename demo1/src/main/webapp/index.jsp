@@ -1089,18 +1089,18 @@
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gia-ve.jsp">
+                    <a class="menu-item" href="${pageContext.request.contextPath}/gia-ve">
                         <i class="fas fa-tag"></i> GIÁ VÉ
                     </a>
                 </div>
 
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="Gioi-thieu.jsp">
+                    <a class="menu-item" href="${pageContext.request.contextPath}/gioi-thieu">
                         <i class="fas fa-info-circle"></i> GIỚI THIỆU
                     </a>
                 </div>
                 <div class="menu-item-wrapper">
-                    <a class="menu-item" href="contact.jsp">
+                    <a class="menu-item" href="${pageContext.request.contextPath}/contact">
                         <i class="fas fa-phone"></i> LIÊN HỆ
                     </a>
                 </div>

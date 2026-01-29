@@ -1,0 +1,209 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DTN Ticket Movie Seller</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/introduce.css">
+</head>
+<body>
+<div id="app" class="app">
+    <!-- Header Label với Search -->
+    <div class="header-label">
+        <div class="header-container">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Tìm kiếm phim, tin tức...">
+            </div>
+            <div class="header-account">
+                <a href="ticket-warehouse.html" class="header-item">Kho vé</a>
+                <a href="Khuyen-mai.html" class="header-item">Khuyến mãi</a>
+                <a href="gio-hang.html" class="header-item">
+                    Giỏ hàng
+                    <span class="cart-badge">3</span>
+                </a>
+                <a href="Login.html" class="header-item">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class="header-menu">
+        <div class="menu-container">
+            <a href="index.html" class="logo">
+                <img src="image/231601886-Photoroom.png" alt="dtn logo">
+            </a>
+
+            <nav class="menu-nav">
+                <div class="menu-item-wrapper">
+                    <a href="index.html" class="menu-item">TRANG CHỦ</a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">PHIM</div>
+                    <div class="dropdown-menu">
+                        <a href="Phim-Dang-Chieu.html" class="dropdown-item">Phim đang chiếu</a>
+                        <a href="Phim-Sap-Chieu.html" class="dropdown-item">Phim sắp chiếu</a>
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <div class="menu-item has-dropdown">TIN TỨC</div>
+                    <div class="dropdown-menu">
+                        <a href="Tin-dien-anh.html" class="dropdown-item">Tin điện ảnh</a>
+                        <a href="Binh-luan-phim.html" class="dropdown-item">Bình luận phim</a>
+
+                    </div>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none;" href="Gia-Ve.html">GIÁ VÉ</a>
+                </div>
+
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none; color: #ff6600;" href="Gioi-Thieu.html">GIỚI THIỆU</a>
+                </div>
+                <div class="menu-item-wrapper">
+                    <a class="menu-item" style="text-decoration: none;" href="contact.html">LIÊN HỆ</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">DTN MOVIE TICKET SELLER</h1>
+        <p class="hero-subtitle">Nền tảng đặt vé xem phim trực tuyến hiện đại, mang đến trải nghiệm giải trí đỉnh cao cho mọi khách hàng</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- About Section -->
+        <div class="section">
+            <h2 class="section-title">Về Chúng Tôi</h2>
+            <div class="about-content">
+                <p>
+                    <strong>DTN Movie Ticket Seller</strong> là nền tảng đặt vé xem phim trực tuyến hàng đầu tại Việt Nam, được xây dựng với sứ mệnh số hóa hoàn toàn quy trình mua vé và nâng cao trải nghiệm giải trí cho khách hàng.
+                </p>
+                <p>
+                    Chúng tôi hiểu rằng thời gian của bạn vô cùng quý giá. Vì vậy, DTN Movie đã phát triển một hệ thống đặt vé thông minh, giúp bạn dễ dàng tìm kiếm phim yêu thích, chọn suất chiếu phù hợp, đặt ghế ngồi theo sở thích và thanh toán an toàn chỉ trong vài phút.
+                </p>
+                <p>
+                    Với giao diện thân thiện, tính năng hiện đại và dịch vụ khách hàng tận tâm, chúng tôi cam kết mang đến cho bạn một trải nghiệm đặt vé hoàn hảo từ đầu đến cuối.
+                </p>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500K+</div>
+                    <div class="stat-label">Vé Đã Bán</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100K+</div>
+                    <div class="stat-label">Khách Hàng</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Hỗ Trợ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="section">
+            <h2 class="section-title">Tính Năng Nổi Bật</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h1 class="feature-title">Thông Tin Phim Đầy Đủ</h1>
+                    <p class="feature-description">
+                        Cập nhật liên tục thông tin chi tiết về các bộ phim đang chiếu và sắp chiếu, trailer, đánh giá và lịch chiếu theo từng rạp.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h1 class="feature-title">Chọn Ghế Trực Quan</h1>
+                    <p class="feature-description">
+                        Sơ đồ ghế ngồi rõ ràng, trực quan giúp bạn dễ dàng chọn vị trí yêu thích trong rạp chiếu phim.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h1 class="feature-title">Thanh Toán An Toàn</h1>
+                    <p class="feature-description">
+                        Hỗ trợ đa dạng phương thức thanh toán: thẻ ngân hàng, ví điện tử, chuyển khoản với bảo mật tuyệt đối.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h1 class="feature-title">Vé Điện Tử</h1>
+                    <p class="feature-description">
+                        Nhận vé điện tử ngay sau khi thanh toán, không cần in vé, quét mã QR để vào rạp nhanh chóng.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h1 class="feature-title">Ưu Đãi Hấp Dẫn</h1>
+                    <p class="feature-description">
+                        Nhiều chương trình khuyến mãi, giảm giá, tích điểm đổi quà dành riêng cho thành viên thân thiết.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h1 class="feature-title">Đa Nền Tảng</h1>
+                    <p class="feature-description">
+                        Sử dụng mọi lúc mọi nơi trên web, mobile app (iOS, Android) với giao diện thân thiện, dễ sử dụng.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="section">
+            <h2 class="section-title">Sứ Mệnh & Tầm Nhìn</h2>
+            <div class="mission-vision">
+                <div class="mission-card">
+                    <h3>Sứ Mệnh</h3>
+                    <p>
+                        Số hóa trải nghiệm đặt vé xem phim, mang đến sự tiện lợi tối đa cho khách hàng và hỗ trợ các rạp chiếu phim quản lý hiệu quả hơn. Chúng tôi không ngừng cải tiến công nghệ để phục vụ khách hàng tốt nhất.
+                    </p>
+                </div>
+
+                <div class="mission-card">
+                    <h3>Tầm Nhìn</h3>
+                    <p>
+                        Trở thành nền tảng đặt vé xem phim trực tuyến số 1 Việt Nam, được tin dùng bởi hàng triệu khách hàng. Phát triển hệ sinh thái giải trí toàn diện, kết nối yêu thích điện ảnh với công nghệ hiện đại.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-top">
+            <ul class="footer-menu">
+                <li><a href="Chinh-sach.html">Chính sách</a></li>
+                <li><a href="Phim-Sap-Chieu.html">Phim đang chiếu</a></li>
+                <li><a href="Phim-Dang-Chieu.html">Phim sắp chiếu</a></li>
+                <li><a href="Tin-dien-anh.html">Tin tức</a></li>
+                <li><a href="Hoi-Dap.html">Hỏi đáp</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+            </ul>
+            <div class="footer-apps">
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play"></a>
+                <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"></a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Website được xây dựng nhằm mục đích số hóa quy trình mua vé xem phim, mang đến trải nghiệm hiện đại và thuận tiện cho khách hàng.</p>
+            <p>Hệ thống cho phép người dùng xem thông tin chi tiết về các bộ phim đang chiếu, lịch chiếu theo rạp, chọn ghế ngồi theo sơ đồ trực quan, và thực hiện thanh toán trực tuyến an toàn.</p>
+            <p>© 2025 DTN Movie Ticket Seller. All rights reserved.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
