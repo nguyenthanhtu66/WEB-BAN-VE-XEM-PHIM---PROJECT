@@ -1,0 +1,63 @@
+package vn.edu.hcmuaf.fit.demo1.controller;
+
+import vn.edu.hcmuaf.fit.demo1.model.User;
+import vn.edu.hcmuaf.fit.demo1.service.TicketService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+
+import java.io.IOException;
+
+@WebServlet("/ticket-warehouse")
+public class TicketWarehouseController extends HttpServlet {
+
+    private final TicketService ticketService = new TicketService();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
+
+        // 🔒 CHƯA ĐĂNG NHẬP → ĐÁ VỀ LOGIN
+        if (user == null) {
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
+        }
+        int totalTickets = ticketService.countActiveTickets(user.getId());
+        int totalPrice = ticketService.getTotalTicketPrice(user.getId());
+
+        req.setAttribute("totalTickets", totalTickets);
+
+        req.setAttribute("totalPrice", totalPrice);
+
+        req.setAttribute("tickets",
+                ticketService.getTicketsByUser(user.getId()));
+
+        req.getRequestDispatcher("/WEB-INF/views/ticket-warehouse.jsp")
+                .forward(req, resp);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        User user = (User) req.getSession().getAttribute("user");
+        if (user == null) {
+            resp.sendRedirect("login");
+            return;
+        }
+
+        String action = req.getParameter("action");
+        if ("cancel".equals(action)) {
+            int ticketId = Integer.parseInt(req.getParameter("ticketId"));
+            ticketService.cancelTicket(ticketId, user.getId());
+        }
+
+        // PRG
+        resp.sendRedirect("ticket-warehouse");
+    }
+}

@@ -35,7 +35,6 @@ public class Movie implements Serializable {
         this.status = status;
         this.ageRating = ageRating;
     }
-
     // Constructor đầy đủ
     public Movie(int id, String title, String posterUrl, String synopsis,
                  String description, String director, String cast, String genre,
