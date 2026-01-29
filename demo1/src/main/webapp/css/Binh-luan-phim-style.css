@@ -256,8 +256,11 @@ body {
 .news-status:hover:not(:first-child) {
     color: #ff6600;
 }
-
-.news-status.active {
+.news-status.active{
+    color: #999;
+    font-weight: bold;
+}
+.news-status.near-active {
     color: #ff6600;
     border-bottom: 3px solid #ff6600;
     font-weight: bold;
@@ -267,10 +270,6 @@ body {
     padding: 10px 20px;
     font-weight: bold;
     color: #fff;
-}
-
-.news-status.near-active {
-    color: #999;
 }
 
 .news-selection-content {

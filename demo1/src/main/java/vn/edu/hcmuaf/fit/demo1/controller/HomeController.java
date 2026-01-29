@@ -5,8 +5,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import vn.edu.hcmuaf.fit.demo1.dao.NewsDao;
 import vn.edu.hcmuaf.fit.demo1.model.Movie;
+import vn.edu.hcmuaf.fit.demo1.model.News;
 import vn.edu.hcmuaf.fit.demo1.service.MovieService;
+import vn.edu.hcmuaf.fit.demo1.service.NewsService;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.List;
 public class HomeController extends HttpServlet {
 
     private final MovieService movieService = new MovieService();
+    private final NewsService newsService = new NewsService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,6 +47,9 @@ public class HomeController extends HttpServlet {
         } else {
             movies = movieService.getMoviesByStatusForHome(normalizedStatus);
         }
+
+        List<News> newsList = newsService.getActiveNews();
+        request.setAttribute("newsList", newsList);
 
         request.setAttribute("movies", movies);
         request.setAttribute("currentStatus", currentStatus);

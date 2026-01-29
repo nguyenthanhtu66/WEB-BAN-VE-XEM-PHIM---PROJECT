@@ -2,6 +2,8 @@ package vn.edu.hcmuaf.fit.demo1.dao;
 
 import vn.edu.hcmuaf.fit.demo1.model.User;
 
+import java.util.List;
+
 public class UserDao extends BaseDao {
 
     public void insert(User user){

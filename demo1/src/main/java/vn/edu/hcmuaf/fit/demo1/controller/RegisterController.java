@@ -37,7 +37,6 @@ public class RegisterController extends HttpServlet {
         if(!errors.isEmpty()){
             request.setAttribute("errors", errors);
             request.setAttribute("form", form);
-            request.setAttribute("registerSuccess", true);
             request.getRequestDispatcher("/Register.jsp").forward(request,response);
             return;
         }
@@ -56,7 +55,6 @@ public class RegisterController extends HttpServlet {
         System.out.println(">>> INSERT USER <<<");
         new UserDao().insert(user);
         System.out.println(">>> INSERT DONE <<<");
-
-        response.sendRedirect("login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp?register=success");
     }
 }
