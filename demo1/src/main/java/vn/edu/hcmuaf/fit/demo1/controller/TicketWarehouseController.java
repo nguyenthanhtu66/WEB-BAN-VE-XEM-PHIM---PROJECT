@@ -21,13 +21,10 @@ public class TicketWarehouseController extends HttpServlet {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
 
-        // TẠM THỜI: fake user để test (xóa trước khi nộp)
+        // 🔒 CHƯA ĐĂNG NHẬP → ĐÁ VỀ LOGIN
         if (user == null) {
-            user = new User();
-            user.setId(1); // phải tồn tại trong DB
-            user.setFullName("Nguyễn Văn Demo");
-            user.setEmail("demo@gmail.com");
-            session.setAttribute("user", user);
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
         }
         int totalTickets = ticketService.countActiveTickets(user.getId());
         int totalPrice = ticketService.getTotalTicketPrice(user.getId());

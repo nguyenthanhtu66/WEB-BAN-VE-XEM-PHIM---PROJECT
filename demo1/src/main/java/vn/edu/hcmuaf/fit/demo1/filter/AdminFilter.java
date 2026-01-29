@@ -44,6 +44,5 @@ public class AdminFilter implements Filter {
         // ===== KHÔNG PHẢI ADMIN =====
         response.sendRedirect(request.getContextPath() + "/403.jsp");
 
-       
     }
 }

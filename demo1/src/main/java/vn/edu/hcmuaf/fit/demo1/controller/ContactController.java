@@ -54,7 +54,8 @@ public class ContactController extends HttpServlet {
                 email,
                 dichVu,
                 chiTiet,
-                dongY);
+                dongY,
+                "pending");
 
         // ===== VALIDATE SERVER-SIDE =====
         if (hoTen == null || hoTen.isBlank()
