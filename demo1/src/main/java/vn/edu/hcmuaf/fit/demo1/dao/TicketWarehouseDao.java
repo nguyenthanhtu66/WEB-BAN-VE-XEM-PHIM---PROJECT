@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketWarehouseDAO {
+public class TicketWarehouseDao {
 
     // ===== Lấy danh sách vé theo user =====
     public List<Ticket> findByUserId(int userId) {

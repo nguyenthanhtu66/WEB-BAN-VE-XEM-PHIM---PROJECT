@@ -1,5 +1,5 @@
 package vn.edu.hcmuaf.fit.demo1.service;
-import vn.edu.hcmuaf.fit.demo1.dao.TicketWarehouseDAO;
+import vn.edu.hcmuaf.fit.demo1.dao.TicketWarehouseDao;
 
 import vn.edu.hcmuaf.fit.demo1.model.Ticket;
 
@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TicketService {
 
-    private final TicketWarehouseDAO ticketDAO = new TicketWarehouseDAO();
+    private final TicketWarehouseDao ticketDAO = new TicketWarehouseDao();
 
     public List<Ticket> getTicketsByUser(int userId) {
         return ticketDAO.findByUserId(userId);

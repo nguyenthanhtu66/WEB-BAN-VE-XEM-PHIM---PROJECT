@@ -2,18 +2,22 @@ package vn.edu.hcmuaf.fit.demo1.dao;
 
 import vn.edu.hcmuaf.fit.demo1.model.User;
 
-import java.util.List;
+import java.util.Optional;
 
 public class UserDao extends BaseDao {
 
     public void insert(User user){
         get().useHandle(handle ->
                 handle.createUpdate("""
-            insert into users(
-              email, password, full_name, phone, gender, birth_date, role, is_active
+            INSERT INTO users(
+              email, password, full_name, phone, gender, 
+              birth_date, city, avatar_url, role, is_active,
+              created_at, updated_at
             )
-            values (
-              :email, :password, :fullName, :phone, :gender, :birthDate, :role, :active
+            VALUES (
+              :email, :password, :fullName, :phone, :gender,
+              :birthDate, :city, :avatarUrl, :role, :isActive,
+              :createdAt, :updatedAt
             )
         """)
                         .bindBean(user)
@@ -66,6 +70,25 @@ public class UserDao extends BaseDao {
                 .bind("gender", gender)
                 .bind("birthDate", birthDate)
                 .execute()
+        );
+    }
+
+    // Lấy số lượng user
+    public int countUsers() {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT COUNT(*) FROM users")
+                        .mapTo(Integer.class)
+                        .one()
+        );
+    }
+
+    // Lấy số lượng user theo role
+    public int countUsersByRole(String role) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT COUNT(*) FROM users WHERE role = :role AND is_active = true")
+                        .bind("role", role)
+                        .mapTo(Integer.class)
+                        .one()
         );
     }
 }
