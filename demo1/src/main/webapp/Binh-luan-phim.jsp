@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>DTN Ticket Movie Seller</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Tin-dien-anh-style.css">
+    <link rel="stylesheet" href="style/Binh-luan-phim-style.css">
 </head>
 <body>
 <div id="app" class="app">
@@ -115,53 +115,47 @@
             </nav>
         </div>
     </div>
-        <div class="main-container" id="main-container">
-            <div class = "news-menu">
-                <div class="news-status-container">TIN TỨC</div>
-                <a href="${pageContext.request.contextPath}/tin-dien-anh"
-                   class="news-status ${activeTab == 'dienanh' ? 'active' : ''}">
-                    TIN ĐIỆN ẢNH
-                </a>
-                <a href="${pageContext.request.contextPath}/binh-luan-phim"
-                   class="news-status ${activeTab == 'binhluan' ? 'active' : ''}">
-                    BÌNH LUẬN PHIM
-                </a>
-            </div>
-            <div class="news-selection-content">
-                <c:forEach var="n" items="${newsList}">
-                    <a href="Tin-tuc-chi-tiet?id=${n.id}" class="news-link">
-                        <div class="news-card">
-                            <div class="news-poster">
-                                <img src="${pageContext.request.contextPath}/img/${n.image_url}">
-                            </div>
-                            <div class="news-info">
-                                <p class="news-date">${n.news_date}</p>
-                                <h3 class="news-title">${n.title}</h3>
-                            </div>
+    <div class="main-container" id="main-container">
+        <div class = "news-menu">
+            <div class="news-status-container">TIN TỨC</div>
+            <a href="Tin-dien-anh.jsp" class="news-status active">TIN ĐIỆN ẢNH</a>
+            <a href="Binh-luan-phim.jsp" class="news-status near-active">BÌNH LUẬN PHIM</a>
+        </div>
+        <div class="news-selection-content">
+            <c:forEach var="n" items="${newsList}">
+                <a href="Tin-tuc-chi-tiet?id=${n.id}" class="news-link">
+                    <div class="news-card">
+                        <div class="news-poster">
+                            <img src="${pageContext.request.contextPath}/img/${n.image_url}">
                         </div>
-                    </a>
-                </c:forEach>
-
-            </div>
-            <div class="pagination">
-                <c:if test="${currentPage > 1}">
-                    <a href="?page=${currentPage - 1}" class="page-btn prev"><</a>
-                </c:if>
-
-                <c:forEach begin="1" end="${totalPage}" var="p">
-                    <a href="?page=${p}" class="page-number ${p == currentPage ? 'active' : ''}">
-                            ${p}
-                    </a>
-                </c:forEach>
-
-                <c:if test="${currentPage < totalPage}">
-                    <a href="?page=${currentPage + 1}" class="page-btn next">></a>
-                </c:if>
-            </div>
+                        <div class="news-info">
+                            <p class="news-date">${n.news_date}</p>
+                            <h3 class="news-title">${n.title}</h3>
+                        </div>
+                    </div>
+                </a>
+            </c:forEach>
 
         </div>
+        <div class="pagination">
+            <c:if test="${currentPage > 1}">
+                <a href="?page=${currentPage - 1}" class="page-btn prev"><</a>
+            </c:if>
 
-        <!-- Footer -->
+            <c:forEach begin="1" end="${totalPage}" var="p">
+                <a href="?page=${p}" class="page-number ${p == currentPage ? 'active' : ''}">
+                        ${p}
+                </a>
+            </c:forEach>
+
+            <c:if test="${currentPage < totalPage}">
+                <a href="?page=${currentPage + 1}" class="page-btn next">></a>
+            </c:if>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
     <!-- Footer -->
     <div class="footer">
         <div class="footer-top">
@@ -188,7 +182,7 @@
             <p><i class="fas fa-copyright"></i> 2025 DTN Movie Ticket Seller. All rights reserved.</p>
         </div>
     </div>
-    </div>
+</div>
 <style>
     * {
         margin: 0;
@@ -215,90 +209,7 @@
         top: 0;
         z-index: 1001;
     }
-    /* USER DROPDOWN WRAPPER */
-    .user-dropdown {
-        position: relative;
-        display: inline-block;
-    }
 
-    /* Header item (nút user) dùng chung style với menu-item */
-    .user-dropdown .header-item {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        color: #fff;
-        font-weight: 500;
-        padding: 8px 12px;
-        cursor: pointer;
-    }
-
-    .user-dropdown .header-item:hover {
-        color: #ff6600;
-        background-color: rgba(255, 102, 0, 0.1);
-    }
-
-    /* Mũi tên ▼ */
-    .user-dropdown .header-item::after {
-        content: '▼';
-        font-size: 10px;
-        margin-left: 4px;
-        transition: transform 0.3s ease;
-    }
-
-    /* Lật mũi tên khi hover */
-    .user-dropdown:hover .header-item::after {
-        transform: rotate(180deg);
-    }
-
-    /* DROPDOWN MENU Style giống .dropdown-menu */
-    .user-dropdown-menu {
-        position: absolute;
-        top: 100%;
-        right: 0; /* Menu user mở sang phải */
-        background: #1e1e1e;
-        min-width: 180px;
-        border-radius: 8px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
-        padding: 8px 0;
-        z-index: 200; /* cao hơn menu thường */
-    }
-
-    /* Hiển thị khi hover */
-    .user-dropdown:hover .user-dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
-    /* ITEM TRONG MENU */
-    .user-dropdown-menu .dropdown-item {
-        padding: 12px 20px;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        transition: all 0.2s ease;
-    }
-
-    /* Hover giống kiểu bạn đang dùng */
-    .user-dropdown-menu .dropdown-item:hover {
-        background-color: #4c4c4c;
-        color: #ff6600;
-        padding-left: 25px;
-    }
-
-    .user-dropdown-menu .dropdown-item i {
-        color: #bbb;
-        font-size: 15px;
-    }
     .header-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -489,6 +400,90 @@
         padding-left: 25px;
     }
 
+    /* USER DROPDOWN WRAPPER */
+    .user-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Header item (nút user) dùng chung style với menu-item */
+    .user-dropdown .header-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #fff;
+        font-weight: 500;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .user-dropdown .header-item:hover {
+        color: #ff6600;
+        background-color: rgba(255, 102, 0, 0.1);
+    }
+
+    /* Mũi tên ▼ */
+    .user-dropdown .header-item::after {
+        content: '▼';
+        font-size: 10px;
+        margin-left: 4px;
+        transition: transform 0.3s ease;
+    }
+
+    /* Lật mũi tên khi hover */
+    .user-dropdown:hover .header-item::after {
+        transform: rotate(180deg);
+    }
+
+    /* DROPDOWN MENU Style giống .dropdown-menu */
+    .user-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0; /* Menu user mở sang phải */
+        background: #1e1e1e;
+        min-width: 180px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        padding: 8px 0;
+        z-index: 200; /* cao hơn menu thường */
+    }
+
+    /* Hiển thị khi hover */
+    .user-dropdown:hover .user-dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    /* ITEM TRONG MENU */
+    .user-dropdown-menu .dropdown-item {
+        padding: 12px 20px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    /* Hover giống kiểu bạn đang dùng */
+    .user-dropdown-menu .dropdown-item:hover {
+        background-color: #4c4c4c;
+        color: #ff6600;
+        padding-left: 25px;
+    }
+
+    .user-dropdown-menu .dropdown-item i {
+        color: #bbb;
+        font-size: 15px;
+    }
     /* Tin tuc -> Tin dien anh */
     .main-container {
         max-width: 1200px;
@@ -531,8 +526,11 @@
     .news-status:hover:not(:first-child) {
         color: #ff6600;
     }
-
-    .news-status.active {
+    .news-status.active{
+        color: #999;
+        font-weight: bold;
+    }
+    .news-status.near-active {
         color: #ff6600;
         border-bottom: 3px solid #ff6600;
         font-weight: bold;
@@ -542,10 +540,6 @@
         padding: 10px 20px;
         font-weight: bold;
         color: #fff;
-    }
-
-    .news-status.near-active {
-        color: #999;
     }
 
     .news-selection-content {
@@ -779,5 +773,4 @@
 
 </style>
 </body>
-
 </html>
